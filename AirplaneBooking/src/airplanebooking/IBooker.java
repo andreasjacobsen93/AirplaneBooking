@@ -10,6 +10,13 @@ package airplanebooking;
  *
  * @author Andreas
  */
-public interface GUI {
-    void loadFrame();
+public interface IBooker {
+    
+    String[][] getList(String sortBy);
+    
+    void Book(int flight, int[] seats, Customer customer);
+    
+    String[] getDetails(int flight, int[] seats);
+    
+    
 }

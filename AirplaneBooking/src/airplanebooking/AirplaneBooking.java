@@ -6,17 +6,20 @@
 
 package airplanebooking;
 
+import airplanebooking.swing.SwingMain;
+
 /**
  *
  * @author Andreas
  */
-public class AirplaneBooking {
+public class AirplaneBooking{
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        GUI app = new SwingMain();
+        app.loadFrame();
     }
-    
 }
