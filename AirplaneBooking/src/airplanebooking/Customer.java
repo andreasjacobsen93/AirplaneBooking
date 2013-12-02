@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package airplanebooking;
 
 /**
@@ -12,13 +6,21 @@ package airplanebooking;
  */
 public class Customer {
     
-    private String name;
+    private String maritialStatus;
+    private String firstName;
+    private String lastName;
     private String address;
+    private Integer phone;
+    private String mail;
     
-    public Customer(String name, String address)
+    public Customer(String maritialStatus, String firstName, String lastName, String address, Integer phone, String mail)
     {
-        this.name = name;
+        this.maritialStatus = maritialStatus;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.address = address;
+        this.phone = phone;
+        this.mail = mail;
     }
     
 }
