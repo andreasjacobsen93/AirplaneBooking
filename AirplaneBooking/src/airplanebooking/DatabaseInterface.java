@@ -5,25 +5,24 @@
  */
 package airplanebooking;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Alex
  */
 public interface DatabaseInterface {
 
-    //Below are all DB connection related method declarations.
-    public void getConnection();
-
-    public void closeConnection();
-
     //Below are all customer related DB method declarations.
-    public void createCustomer(String firstname, String lastname, String addressStreet, int addressZip, String adressCity, String addressCountry, String email, int phonenumber);
+    public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber);
 
-    public void editCustomer(int customerID, String firstname, String lastname, String addressStreet, int addressZip, String adressCity, String email, int phonenumber);
+    public void editCustomer(int customerID, String maritalstatus,  String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber);
 
     public void deleteCustomer(int customerID);
 
-    public void getCustomer(int customerID);
+    public Customer getCustomer(int customerID);
+    
+    public ArrayList getCustomers(String q);
 
     //Below are all reservation related DB method declarations.
     public void createReservation(int customerID, String flightID, int seats);
