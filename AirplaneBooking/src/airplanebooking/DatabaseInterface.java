@@ -22,7 +22,9 @@ public interface DatabaseInterface {
 
     public Customer getCustomer(int customerID);
     
-    public ArrayList getCustomers(String q);
+    public ArrayList<Customer> getCustomers(String q);
+    
+    public ArrayList<Customer> getCustomers(int q);
 
     //Below are all reservation related DB method declarations.
     public void createReservation(int customerID, String flightID, int seats);

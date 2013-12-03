@@ -196,12 +196,38 @@ public class DatabaseHandler implements DatabaseInterface {
  /*   public ArrayList getCustomers() {
         
     return customers;
-    }
-    public ArrayList getCustomers(int q) {
+    }*/
+    
+    @Override
+    public ArrayList<Customer> getCustomers(int q) {
+    
+        String sql = "SELECT * FROM customers WHERE addresszip ="+q+" OR phonenumber ="+q;
         
-    return customers;
+        executeQuery(sql);
+        
+        try {
+            
+            results.beforeFirst();
+            
+             while (results.next())
+              {
+              String maritalstatus = results.getString("maritalstatus");
+              String firstname = results.getString("firstname");
+              String lastname = results.getString("lastname");
+              String address = results.getString("addressstreet") + " " + results.getInt("addresszip") + " " + results.getString("addresscity") + " " + results.getString("addresscountry");
+              int phonenumber = results.getInt("phonenumber");
+              String email = results.getString("email");
+              customer = new Customer(maritalstatus,firstname,lastname,address,phonenumber,email);
+              customers.add(customer);
+              }
+             return customers;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong in getting your customers",ex);
+        } finally {
+         closeConnection();  
+        }
     }
-*/
+
     @Override
     public ArrayList<Customer> getCustomers(String q) {
         String sql = "SELECT * FROM customers WHERE firstname =\""+q+"\" OR lastname =\""+q+"\" OR addressstreet =\""+q+"\" OR email =\""+q+"\"";
