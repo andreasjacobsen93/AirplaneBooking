@@ -70,7 +70,6 @@ public class DatabaseHandler implements DatabaseInterface {
             statement.executeUpdate(sql);
 
         } catch (SQLException e) {
-
             System.out.println(e);
         } finally {
             closeConnection();

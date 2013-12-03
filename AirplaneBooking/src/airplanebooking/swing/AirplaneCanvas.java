@@ -349,9 +349,9 @@ public class AirplaneCanvas extends javax.swing.JComponent {
     {
         int l = 0;
         
-        if (FClass) l = l + ((FseatLength * (FseatSize+5))-5) + 30;
-        if (BClass) l = l + ((BseatLength * (BseatSize+5))-5) + 30;
-        if (EClass) l = l + ((EseatLength * (EseatSize+5))-5);
+        if (FClass) l += ((FseatLength * (FseatSize+5))-5) + 30;
+        if (BClass) l += ((BseatLength * (BseatSize+5))-5) + 30;
+        if (EClass) l += ((EseatLength * (EseatSize+5))-5);
         
         return l;
     }
