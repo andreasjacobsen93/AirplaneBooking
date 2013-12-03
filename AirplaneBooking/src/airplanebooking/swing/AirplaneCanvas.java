@@ -1,5 +1,6 @@
 package airplanebooking.swing;
 
+import airplanebooking.Booking;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
@@ -45,12 +46,14 @@ public class AirplaneCanvas extends javax.swing.JComponent {
     public int x;
     public int y;
     
-    public AirplaneCanvas()
+    //private Boolean bookable;
+    
+    public AirplaneCanvas(Boolean bookable)
     {
         // Economy Class
         EseatGroups = 2;
         EseatLength = 20;
-        ErowSeats = 3;
+        ErowSeats = 4;
         EseatSize = 10;
         EClass = EseatGroups > 0 && EseatLength > 0 && ErowSeats > 0;
         
@@ -65,7 +68,7 @@ public class AirplaneCanvas extends javax.swing.JComponent {
         // First Class
         FseatGroups = 2;
         FseatLength = 2;
-        FrowSeats = 1;
+        FrowSeats = 2;
         FseatSize = 15;
         FClass = FseatGroups > 0 && FseatLength > 0 && FrowSeats > 0;
         FtotalSeats = FseatGroups*FseatLength*FrowSeats;
@@ -96,7 +99,6 @@ public class AirplaneCanvas extends javax.swing.JComponent {
             @Override
             public void mouseMoved(java.awt.event.MouseEvent e) {
                 x = e.getX(); y = e.getY();
-                repaint();
 
                 for (int i = 0; i < seatsCount; i++)
                 {
@@ -129,15 +131,48 @@ public class AirplaneCanvas extends javax.swing.JComponent {
                         seatClass = "";
                     }
                 }
+                
+                repaint();
             }
         });
         
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                
-            }
-        });
+        if (bookable == true)
+        {
+            addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent e) {
+                    x = e.getX(); y = e.getY();
+
+                    for (int i = 0; i < seatsCount; i++)
+                    {
+                        if (x > seats[i][2] && y > seats[i][3] && x < seats[i][4] && y < seats[i][5])
+                        {
+                            if (seats[i][1] == 0)
+                            {
+                                // Red
+                                // Do nothing
+                            }
+                            else if (seats[i][1] == 2)
+                            {
+                                // Blue
+                                // Remove booking
+                                seats[i][1] = 1;
+                                Booking.removeSeat(i+1);
+                            }
+                            else
+                            {
+                                // Green    
+                                // Add booking
+                                seats[i][1] = 2;
+                                Booking.addSeat(i+1);
+                            }
+                        }
+                    }
+
+                    repaint();
+                }
+            });
+        }
     }
     
     @Override
@@ -231,13 +266,16 @@ public class AirplaneCanvas extends javax.swing.JComponent {
                     if (seats[seat][1] == 0)
                     {
                         g.setColor(Color.red);
-                        g.fillRect(((l*(seatSize+5))+iniX), ((s*(seatSize+5))-5)+(r*rowSpace)+iniY, seatSize, seatSize);
+                    }
+                    else if (seats[seat][1] == 2)
+                    {
+                        g.setColor(Color.blue);
                     }
                     else
                     {
                         g.setColor(Color.green);
-                        g.fillRect(((l*(seatSize+5))+iniX), ((s*(seatSize+5))-5)+(r*rowSpace)+iniY, seatSize, seatSize);
                     }
+                    g.fillRect(((l*(seatSize+5))+iniX), ((s*(seatSize+5))-5)+(r*rowSpace)+iniY, seatSize, seatSize);
                     
                     // Set seat coordinates
                     seats[seat][2] = (l*(seatSize+5))+iniX;

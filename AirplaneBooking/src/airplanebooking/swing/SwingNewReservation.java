@@ -1,34 +1,32 @@
 package airplanebooking.swing;
 
 import airplanebooking.Booking;
+import airplanebooking.BookingListener;
 import airplanebooking.GUI;
 
 /**
  *
  * @author Andreas
  */
-public class SwingMain extends javax.swing.JFrame implements GUI {
+public class SwingNewReservation extends javax.swing.JFrame implements GUI, BookingListener {
 
     /**
      * Creates new form SwingMainFrame
      */
-    public SwingMain() {
+    public SwingNewReservation() {
+        Booking.reset();
         initComponents();
-        setTitle("Airplane Booking");
-    }
+        setTitle("Airplane Booking - New Reservation...");
         
+        // TODO: subscribe to event and change seat numbers on seat change
+    }
+                       
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        listFlights = new java.awt.List();
-        buttonFindCustomer = new java.awt.Button();
-        buttonFilter = new java.awt.Button();
-        checkboxFreeSeatsOnly = new java.awt.Checkbox();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        buttonNewReservation = new java.awt.Button();
         labelAirplaneName = new java.awt.Label();
-        AirplaneCanvasPanel = new AirplaneCanvas(false);
+        AirplaneCanvasPanel = new AirplaneCanvas(true);
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         buttonDeleteReservation = new java.awt.Button();
@@ -46,54 +44,9 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         textEmail = new java.awt.TextField();
         textFirstName = new java.awt.TextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1100, 800));
-
-        listFlights.setMultipleMode(true);
-
-        buttonFindCustomer.setLabel("Find customer...");
-
-        buttonFilter.setLabel("Filter...");
-
-        checkboxFreeSeatsOnly.setLabel("Free seats only");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(listFlights, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonFindCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(checkboxFreeSeatsOnly, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(listFlights, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkboxFreeSeatsOnly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonFindCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        setMinimumSize(new java.awt.Dimension(926, 570));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        buttonNewReservation.setLabel("New reservation...");
-        buttonNewReservation.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonNewReservationMouseClicked(evt);
-            }
-        });
 
         labelAirplaneName.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         labelAirplaneName.setText("Airbus name and number");
@@ -110,7 +63,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         );
         AirplaneCanvasPanelLayout.setVerticalGroup(
             AirplaneCanvasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 224, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -120,9 +73,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonNewReservation, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
-                    .addComponent(labelAirplaneName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE))
+                    .addComponent(labelAirplaneName, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
+                    .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -131,23 +83,19 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
                 .addContainerGap()
                 .addComponent(labelAirplaneName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonNewReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
-        buttonDeleteReservation.setLabel("Delete reservation...");
+        buttonDeleteReservation.setLabel("Create reservation...");
 
-        labelSeats.setText("Seats: 47, 48, 49");
+        labelSeats.setText("Seats: ");
 
         labelRoute.setText("Paris - London");
 
         labelTime.setText("29-11-2013 @ 15:47");
 
-        checkboxLunchOnboard.setEnabled(false);
         checkboxLunchOnboard.setLabel("Lunch on-board");
         checkboxLunchOnboard.setName(""); // NOI18N
         checkboxLunchOnboard.setState(true);
@@ -163,7 +111,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonDeleteReservation, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                    .addComponent(buttonDeleteReservation, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                     .addComponent(checkboxLunchOnboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelTravelClass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -192,28 +140,22 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
                 .addContainerGap())
         );
 
+        buttonDeleteReservation.getAccessibleContext().setAccessibleName("Create reservation...");
+
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Customer"));
 
-        textMaritialStatus.setEditable(false);
-        textMaritialStatus.setText("Mr.");
+        textMaritialStatus.setText("");
 
-        textLastName.setEditable(false);
-        textLastName.setName(""); // NOI18N
-        textLastName.setText("customerLastName");
+        textLastName.setText("");
 
-        textAddress.setEditable(false);
         textAddress.setMaximumSize(new java.awt.Dimension(100, 80));
-        textAddress.setName(""); // NOI18N
-        textAddress.setText("customerAddress");
+        textAddress.setText("");
 
-        textPhone.setEditable(false);
-        textPhone.setText("customerPhone");
+        textPhone.setText("");
 
-        textEmail.setEditable(false);
-        textEmail.setText("customerEmail");
+        textEmail.setText("");
 
-        textFirstName.setEditable(false);
-        textFirstName.setText("customerFirstName");
+        textFirstName.setText("");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -228,7 +170,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(textMaritialStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
+                        .addComponent(textFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
                     .addComponent(textAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -295,42 +237,26 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
-    }                                                                   
+    }                                            
     
     @Override
-    public void run()
+    public void run() 
     {
         setVisible(true);
     }
-    
-    private void buttonNewReservationMouseClicked(java.awt.event.MouseEvent evt) {                                                  
-        // TODO add your handling code here:
-        SwingNewReservation SNR = new SwingNewReservation();
-        SNR.run();
-        Booking.addListener(SNR);
-    } 
 
     // Variables declaration - do not modify                     
     private javax.swing.JComponent AirplaneCanvasPanel;
     private java.awt.Button buttonDeleteReservation;
-    private java.awt.Button buttonFilter;
-    private java.awt.Button buttonFindCustomer;
-    private java.awt.Button buttonNewReservation;
-    private java.awt.Checkbox checkboxFreeSeatsOnly;
     private java.awt.Checkbox checkboxLunchOnboard;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -342,12 +268,27 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
     private java.awt.Label labelSeats;
     private java.awt.Label labelTime;
     private java.awt.Label labelTravelClass;
-    private java.awt.List listFlights;
     private java.awt.TextArea textAddress;
     private java.awt.TextField textEmail;
     private java.awt.TextField textFirstName;
     private java.awt.TextField textLastName;
     private java.awt.TextField textMaritialStatus;
     private java.awt.TextField textPhone;
-    // End of variables declaration                   
+    // End of variables declaration
+
+    @Override
+    public void bookingChanged() {
+        
+        int i = 0;
+        String seats = "";
+        
+        for (int s : Booking.getSeats())
+        {
+            if (i == 0) seats += ""+s;
+            else seats += ", "+s;
+            i++;
+        }
+        
+        labelSeats.setText("Seats: " + seats);
+    }
 }
