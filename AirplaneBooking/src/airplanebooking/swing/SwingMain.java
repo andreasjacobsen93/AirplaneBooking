@@ -90,6 +90,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
 
         buttonNewReservation.setLabel("New reservation...");
         buttonNewReservation.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonNewReservationMouseClicked(evt);
             }

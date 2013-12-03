@@ -6,12 +6,12 @@ package airplanebooking;
  */
 public class Customer {
     
-    private String maritialStatus;
-    private String firstName;
-    private String lastName;
-    private String address;
-    private Integer phone;
-    private String mail;
+    private final String maritialStatus;
+    private final String firstName;
+    private final String lastName;
+    private final String address;
+    private final String phone;
+    private final String mail;
     
     public Customer(String maritialStatus, String firstName, String lastName, String address, Integer phone, String mail)
     {
@@ -19,8 +19,19 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.phone = phone;
+        this.phone = phone.toString();
         this.mail = mail;
+    }
+    
+    public Customer(int customerID)
+    {
+        // database get customer from database
+        this.maritialStatus = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.address = "";
+        this.phone = "";
+        this.mail = "";
     }
     
     public String getMaritalStatus(){
@@ -40,14 +51,22 @@ public class Customer {
     }
     
     public String getPhone(){
-        String phone = this.phone.toString();
-        return phone;
+        String number = phone.toString();
+        return number;
     }
     public String getEmail(){
         return mail;
     }
     
-    
-    
-
+    public String[] getCustomerDataList()
+    {
+        String[] list = new String[6];
+        list[0] = maritialStatus;
+        list[1] = firstName;
+        list[2] = lastName;
+        list[3] = address;
+        list[4] = phone;
+        list[5] = mail;
+        return list;
+    }
 }

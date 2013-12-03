@@ -22,11 +22,12 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     }
                        
     private void initComponents() {
-
+        
+        AirplaneCan = new AirplaneCanvas(true);
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         labelAirplaneName = new java.awt.Label();
-        AirplaneCanvasPanel = new AirplaneCanvas(true);
+        AirplaneCanvasPanel = AirplaneCan;
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         buttonDeleteReservation = new java.awt.Button();
@@ -43,6 +44,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         textPhone = new java.awt.TextField();
         textEmail = new java.awt.TextField();
         textFirstName = new java.awt.TextField();
+        buttonFindBestSeats = new java.awt.Button();
 
         setMinimumSize(new java.awt.Dimension(926, 570));
 
@@ -55,6 +57,14 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         AirplaneCanvasPanel.setMinimumSize(new java.awt.Dimension(0, 180));
         AirplaneCanvasPanel.setPreferredSize(new java.awt.Dimension(0, 180));
 
+        buttonFindBestSeats.setLabel("Find best seats...");
+        buttonFindBestSeats.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonFindBestSeatsMouseClicked();
+            }
+        });
+
         javax.swing.GroupLayout AirplaneCanvasPanelLayout = new javax.swing.GroupLayout(AirplaneCanvasPanel);
         AirplaneCanvasPanel.setLayout(AirplaneCanvasPanelLayout);
         AirplaneCanvasPanelLayout.setHorizontalGroup(
@@ -63,7 +73,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         );
         AirplaneCanvasPanelLayout.setVerticalGroup(
             AirplaneCanvasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 224, Short.MAX_VALUE)
+            .addGap(0, 180, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -73,6 +83,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonFindBestSeats, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
                     .addComponent(labelAirplaneName, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
                     .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE))
                 .addContainerGap())
@@ -83,7 +94,10 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
                 .addContainerGap()
                 .addComponent(labelAirplaneName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
+                .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonFindBestSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
@@ -253,9 +267,11 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         setVisible(true);
     }
 
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify          
+    private AirplaneCanvas AirplaneCan;
     private javax.swing.JComponent AirplaneCanvasPanel;
     private java.awt.Button buttonDeleteReservation;
+    private java.awt.Button buttonFindBestSeats;
     private java.awt.Checkbox checkboxLunchOnboard;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -275,20 +291,42 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     private java.awt.TextField textMaritialStatus;
     private java.awt.TextField textPhone;
     // End of variables declaration
+    
+    public void buttonFindBestSeatsMouseClicked()
+    {
+        SwingFindBestSeats fbsForm = new SwingFindBestSeats(AirplaneCan);
+        fbsForm.run();
+    }
 
     @Override
     public void bookingChanged() {
-        
+        // Seat label
         int i = 0;
-        String seats = "";
-        
+        String seats = "Seats: ";      
         for (int s : Booking.getSeats())
         {
             if (i == 0) seats += ""+s;
             else seats += ", "+s;
             i++;
         }
+        labelSeats.setText(seats);
         
-        labelSeats.setText("Seats: " + seats);
+        // Classes label
+        i = 0;
+        String classes = "";
+        if (Booking.isFirstClass()) {
+            classes += "First Class";
+            i++;
+        }
+        if (Booking.isBusinessClass()) {
+            if (i>0) classes += ", ";
+            classes += "Business Class";
+            i++;
+        }
+        if (Booking.isEconomyClass()) {
+            if (i>0) classes += ", ";
+            classes += "Economy Class";
+        }
+        labelTravelClass.setText(classes);
     }
 }

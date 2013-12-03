@@ -42,6 +42,7 @@ public class AirplaneCanvas extends javax.swing.JComponent {
     
     public int seatNumber;
     public String seatClass;
+    private int seatsCount;
     
     public int x;
     public int y;
@@ -82,7 +83,7 @@ public class AirplaneCanvas extends javax.swing.JComponent {
         iniY = 10;
         
         // All seats available
-        final int seatsCount = (EseatGroups*EseatLength*ErowSeats)+(BseatGroups*BseatLength*BrowSeats)+(FseatGroups*FseatLength*FrowSeats);
+        seatsCount = (EseatGroups*EseatLength*ErowSeats)+(BseatGroups*BseatLength*BrowSeats)+(FseatGroups*FseatLength*FrowSeats);
         seats = new int[seatsCount][6];
         seat = 0;
         
@@ -157,14 +158,14 @@ public class AirplaneCanvas extends javax.swing.JComponent {
                                 // Blue
                                 // Remove booking
                                 seats[i][1] = 1;
-                                Booking.removeSeat(i+1);
+                                Booking.removeSeat(i+1, getClassType(i+1));
                             }
                             else
                             {
                                 // Green    
                                 // Add booking
                                 seats[i][1] = 2;
-                                Booking.addSeat(i+1);
+                                Booking.addSeat(i+1, getClassType(i+1));
                             }
                         }
                     }
@@ -173,6 +174,30 @@ public class AirplaneCanvas extends javax.swing.JComponent {
                 }
             });
         }
+    }
+    
+    public void clickSeat(int i)
+    {
+        if (seats[i][1] == 0)
+        {
+            // Red
+            // Do nothing
+        }
+        else if (seats[i][1] == 2)
+        {
+            // Blue
+            // Remove booking
+            seats[i][1] = 1;
+            Booking.removeSeat(i+1, getClassType(i+1));
+        }
+        else
+        {
+            // Green    
+            // Add booking
+            seats[i][1] = 2;
+            Booking.addSeat(i+1, getClassType(i+1));
+        }
+        repaint();
     }
     
     @Override
@@ -342,6 +367,25 @@ public class AirplaneCanvas extends javax.swing.JComponent {
                 return (EseatGroups * ((ErowSeats*(EseatSize+5)))) + (15*(EseatGroups - 1));
         }
         return 0;
+    }
+    
+    public String getClassType(int s)
+    {
+        if (FClass && FtotalSeats > s)
+        {
+            return "f";
+        }
+        // Current seat is Business Class
+        else if (BClass && FtotalSeats + BtotalSeats > s)
+        {
+            return "b";
+        }
+        // Current seat is Economy Class
+        else if (EClass && seatsCount > s)
+        {
+            return "e";
+        }
+        return "error";
     }
     
     // Get the length of all the seats in pixel
