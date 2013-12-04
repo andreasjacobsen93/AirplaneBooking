@@ -6,7 +6,7 @@
 
 package airplanebooking.swing;
 
-import airplanebooking.Booking;
+import airplanebooking.CurrentBooking;
 import airplanebooking.GUI;
 
 /**
@@ -95,7 +95,7 @@ public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
         // TODO add your handling code here:
         
         // Find best seats
-        Booking.findBestSeats(Integer.parseInt(textField1.getText()), "Economy Class");
+        CurrentBooking.findBestSeats(Integer.parseInt(textField1.getText()), "Economy Class");
         
         this.dispose();
     }//GEN-LAST:event_button1ActionPerformed

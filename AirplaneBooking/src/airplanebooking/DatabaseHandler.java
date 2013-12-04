@@ -158,6 +158,7 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
 
             while (results.next()) {
+                int id = results.getInt("id");
                 String maritalstatus = results.getString("maritalstatus");
                 String firstname = results.getString("firstname");
                 String lastname = results.getString("lastname");
@@ -165,7 +166,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 int phonenumber = results.getInt("phonenumber");
                 String email = results.getString("email");
 
-                customer = new Customer(maritalstatus, firstname, lastname, address, phonenumber, email);
+                customer = new Customer(id, maritalstatus, firstname, lastname, address, phonenumber, email);
 
             }
             statement.close();
@@ -195,13 +196,14 @@ public class DatabaseHandler implements DatabaseInterface {
             results.beforeFirst();
 
             while (results.next()) {
+                int id = results.getInt("id");
                 String maritalstatus = results.getString("maritalstatus");
                 String firstname = results.getString("firstname");
                 String lastname = results.getString("lastname");
                 String address = results.getString("addressstreet") + " " + results.getInt("addresszip") + " " + results.getString("addresscity") + " " + results.getString("addresscountry");
                 int phonenumber = results.getInt("phonenumber");
                 String email = results.getString("email");
-                customer = new Customer(maritalstatus, firstname, lastname, address, phonenumber, email);
+                customer = new Customer(id, maritalstatus, firstname, lastname, address, phonenumber, email);
                 customers.add(customer);
             }
             statement.close();
@@ -222,13 +224,14 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
             results.beforeFirst();
             while (results.next()) {
+                int id = results.getInt("id");
                 String maritalstatus = results.getString("maritalstatus");
                 String firstname = results.getString("firstname");
                 String lastname = results.getString("lastname");
                 String address = results.getString("addressstreet") + " " + results.getInt("addresszip") + " " + results.getString("addresscity") + " " + results.getString("addresscountry");
                 int phonenumber = results.getInt("phonenumber");
                 String email = results.getString("email");
-                customer = new Customer(maritalstatus, firstname, lastname, address, phonenumber, email);
+                customer = new Customer(id, maritalstatus, firstname, lastname, address, phonenumber, email);
                 customers.add(customer);
             }
             statement.close();
@@ -243,19 +246,67 @@ public class DatabaseHandler implements DatabaseInterface {
 
     //Below are unimplemented methods.
     @Override
-    public void createReservation(int customerID, String flightID, int seats) {
+    public void createReservation(int customerID, String flightID, int seats, int food) {
+        
+            String sql = "INSERT INTO reservations "
+                    + "VALUES (null, "
+                    + "" + customerID + ", "
+                    + "'" + flightID + "', "
+                    + "" + seats + ", "
+                    + "" + food + ")";
+        try 
+        {   
+            executeUpdate(sql);
+        } 
+        catch (SQLException ex) 
+        {
+            throw new RuntimeException("Something went wrong while creating your reservation",ex);
+        }
+        
     }
 
     @Override
-    public void editReservation(int customerID, String flightID, int seats) {
+    public void editReservation(int reservationID, int customerID, String flightID, int seats, int food) {
+                
+            String sql = "UPDATE reservations SET "
+                    + "customer_id = " + customerID + ", "
+                    + "flightid = '" + flightID + "', "
+                    + "seats = " + seats + ", "
+                    + "food = " + food+ " "
+                    + "WHERE id = " + reservationID;
+        try 
+        {   
+            executeUpdate(sql);
+        } 
+        catch (SQLException ex) 
+        {
+            throw new RuntimeException("Something went wrong while creating your reservation",ex);
+        }
     }
 
     @Override
     public void deleteReservation(int reservationID) {
+        
+        String sql = "DELETE FROM reservations WHERE id = "+reservationID;
+        
+        try 
+        {   
+            executeUpdate(sql);
+        } 
+        catch (SQLException ex) 
+        {
+            throw new RuntimeException("Something went wrong while deleting your reservation",ex);
+        }
+        
     }
 
     @Override
     public void getReservation(int reservationID) {
+        
+        String sql = "SELECT * FROM reservations WHERE id = " + reservationID;
+        //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
+        executeQuery(sql);
+        
     }
 
 }

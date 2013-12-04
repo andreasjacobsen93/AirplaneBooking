@@ -1,6 +1,6 @@
 package airplanebooking.swing;
 
-import airplanebooking.Booking;
+import airplanebooking.CurrentBooking;
 import airplanebooking.BookingListener;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -96,14 +96,14 @@ public class AirplaneCanvas extends javax.swing.JComponent implements BookingLis
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = 0; i < seatsCount; i++)
         {
-            Booking.reset();
+            CurrentBooking.reset();
             Random rand = new Random();
             int r = rand.nextInt(2);
             seats[i][0] = i+1;
             seats[i][1] = r;
             if (r < 1) list.add(i+1);
         }
-        Booking.setBookedSeats(list);
+        CurrentBooking.setBookedSeats(list);
         
         // Event for mouse movement
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -149,7 +149,7 @@ public class AirplaneCanvas extends javax.swing.JComponent implements BookingLis
         
         if (bookable == true)
         {
-            Booking.addListener(this);
+            CurrentBooking.addListener(this);
             addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -169,14 +169,14 @@ public class AirplaneCanvas extends javax.swing.JComponent implements BookingLis
                                 // Blue
                                 // Remove booking
                                 //seats[i][1] = 1;
-                                Booking.removeSeat(i+1);
+                                CurrentBooking.removeSeat(i+1);
                             }
                             else
                             {
                                 // Green    
                                 // Add booking
                                 //seats[i][1] = 2;
-                                Booking.addSeat(i+1);
+                                CurrentBooking.addSeat(i+1);
                             }
                         }
                     }
@@ -199,14 +199,14 @@ public class AirplaneCanvas extends javax.swing.JComponent implements BookingLis
             // Blue
             // Remove booking
             seats[i][1] = 1;
-            Booking.removeSeat(i+1);
+            CurrentBooking.removeSeat(i+1);
         }
         else
         {
             // Green    
             // Add booking
             seats[i][1] = 2;
-            Booking.addSeat(i+1);
+            CurrentBooking.addSeat(i+1);
         }
         repaint();
     }
@@ -427,8 +427,8 @@ public class AirplaneCanvas extends javax.swing.JComponent implements BookingLis
         for (int i = 0; i < seatsCount; i++)
         {
             seats[i][1] = 1;
-            if (Booking.isBlocked(i+1)) seats[i][1] = 0;
-            if (Booking.isBooked(i+1) && bookable) seats[i][1] = 2;
+            if (CurrentBooking.isBlocked(i+1)) seats[i][1] = 0;
+            if (CurrentBooking.isBooked(i+1) && bookable) seats[i][1] = 2;
         }
 
         repaint();

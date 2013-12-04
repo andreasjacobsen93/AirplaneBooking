@@ -1,6 +1,6 @@
 package airplanebooking.swing;
 
-import airplanebooking.Booking;
+import airplanebooking.CurrentBooking;
 import airplanebooking.GUI;
 
 /**
@@ -200,7 +200,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
 
         textLastName.setEditable(false);
         textLastName.setName(""); // NOI18N
-        textLastName.setText("customerLastName");
+        textLastName.setText("customerLastname");
+        
 
         textAddress.setEditable(false);
         textAddress.setMaximumSize(new java.awt.Dimension(100, 80));
@@ -314,13 +315,15 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
     public void run()
     {
         setVisible(true);
+        
+        
     }
     
     private void buttonNewReservationMouseClicked(java.awt.event.MouseEvent evt) {                                                  
         // TODO add your handling code here:
         SwingNewReservation SNR = new SwingNewReservation();
         SNR.run();
-        Booking.addListener(SNR);
+        CurrentBooking.addListener(SNR);
     } 
 
     // Variables declaration - do not modify                     

@@ -6,11 +6,12 @@ package airplanebooking;
  */
 public interface IBooker {
     
-    String[][] getFlightList(String[] searchFilters);
+    String[][] getFlightList(String sortBy);
     
     void Book(int flight, int[] seats, Customer customer);
     
     int[] getReservedSeats(int flight);
     
-    String[] getCustomer(int flight, int seat);
+    String[] getCustomer(int customerId);
+    
 }

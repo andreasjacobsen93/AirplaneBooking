@@ -27,9 +27,9 @@ public interface DatabaseInterface {
     public ArrayList<Customer> getCustomers(int q);
 
     //Below are all reservation related DB method declarations.
-    public void createReservation(int customerID, String flightID, int seats);
+    public void createReservation(int customerID, String flightID, int seats, int food);
 
-    public void editReservation(int customerID, String flightID, int seats);
+    public void editReservation(int reservationID, int customerID, String flightID, int seats, int food);
 
     public void deleteReservation(int reservationID);
 

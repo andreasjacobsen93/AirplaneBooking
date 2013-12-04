@@ -1,6 +1,6 @@
 package airplanebooking.swing;
 
-import airplanebooking.Booking;
+import airplanebooking.CurrentBooking;
 import airplanebooking.BookingListener;
 import airplanebooking.GUI;
 
@@ -14,7 +14,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
      * Creates new form SwingMainFrame
      */
     public SwingNewReservation() {
-        Booking.reset();
+        CurrentBooking.reset();
         initComponents();
         setTitle("Airplane Booking - New Reservation...");
         
@@ -303,7 +303,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         // Seat label
         int i = 0;
         String seats = "Seats: ";      
-        for (int s : Booking.getSeats())
+        for (int s : CurrentBooking.getSeats())
         {
             if (i == 0) seats += ""+s;
             else seats += ", "+s;
@@ -314,16 +314,16 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         // Classes label
         i = 0;
         String classes = "";
-        if (Booking.isFirstClass()) {
+        if (CurrentBooking.isFirstClass()) {
             classes += "First Class";
             i++;
         }
-        if (Booking.isBusinessClass()) {
+        if (CurrentBooking.isBusinessClass()) {
             if (i>0) classes += ", ";
             classes += "Business Class";
             i++;
         }
-        if (Booking.isEconomyClass()) {
+        if (CurrentBooking.isEconomyClass()) {
             if (i>0) classes += ", ";
             classes += "Economy Class";
         }
