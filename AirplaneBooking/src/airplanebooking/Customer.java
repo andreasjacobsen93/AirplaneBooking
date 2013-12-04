@@ -1,5 +1,7 @@
 package airplanebooking;
 
+import java.sql.Array;
+
 /**
  *
  * @author Andreas
@@ -11,17 +13,17 @@ public class Customer {
     private final String firstName;
     private final String lastName;
     private final String address;
-    private final String phone;
+    private final Integer phone;
     private final String mail;
     
-    public Customer(Integer id, String maritialStatus, String firstName, String lastName, String address, Integer phone, String mail)
+    public Customer(int id, String maritialStatus, String firstName, String lastName, String address, int phone, String mail)
     {
         this.id = id;
         this.maritialStatus = maritialStatus;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.phone = phone.toString();
+        this.phone = phone;
         this.mail = mail;
     }
     
@@ -33,8 +35,12 @@ public class Customer {
         this.firstName = "";
         this.lastName = "";
         this.address = "";
-        this.phone = "";
+        this.phone = 0;
         this.mail = "";
+    }
+    
+    public int getID(){
+        return id;
     }
     
     public String getMaritalStatus(){
@@ -53,23 +59,23 @@ public class Customer {
         return address;
     }
     
-    public String getPhone(){
-        String number = phone.toString();
-        return number;
+    public int getPhone(){
+        return phone;
     }
     public String getEmail(){
         return mail;
     }
     
-    public String[] getCustomerDataList()
+    public Object[] getCustomerDataList()
     {
-        String[] list = new String[6];
-        list[0] = maritialStatus;
-        list[1] = firstName;
-        list[2] = lastName;
-        list[3] = address;
-        list[4] = phone;
-        list[5] = mail;
+        Object [] list = new Array[7];
+        list[0] = id;
+        list[1] = maritialStatus;
+        list[2] = firstName;
+        list[3] = lastName;
+        list[4] = address;
+        list[5] = phone;
+        list[6] = mail;
         return list;
     }
 }
