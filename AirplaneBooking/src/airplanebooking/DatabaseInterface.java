@@ -33,5 +33,5 @@ public interface DatabaseInterface {
 
     public void deleteReservation(int reservationID);
 
-    public void getReservation(int reservationID);
+    public Booking getReservation(int reservationID);
 }

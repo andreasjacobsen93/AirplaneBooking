@@ -25,6 +25,7 @@ public class DatabaseHandler implements DatabaseInterface {
     Statement statement = null;
     ResultSet results = null;
     Customer customer = null;
+    Booking reservation = null;
     ArrayList<Customer> customers = new ArrayList<>();
     DataSource ds_unpooled = null;
     DataSource ds_pooled = null;
@@ -301,11 +302,32 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     @Override
-    public void getReservation(int reservationID) {
+    public Booking getReservation(int reservationID) {
         
         String sql = "SELECT * FROM reservations WHERE id = " + reservationID;
         //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
         executeQuery(sql);
+        
+        try {
+
+            while (results.next()) {
+                int id = results.getInt("id");
+                int customerid = results.getInt("customerid");
+                String flightid = results.getString("flightid");
+                int food = results.getInt("food");
+
+                reservation = new Booking(id, customerid, flightid, food);
+
+            }
+            statement.close();
+            return reservation;
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while getting the reservation:", ex);
+
+        } catch (NullPointerException e) {
+            throw new RuntimeException("You didn't supply a valid reservation ID", e);
+        }
         
     }
 
