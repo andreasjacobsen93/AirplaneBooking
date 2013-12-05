@@ -6,6 +6,7 @@
 package airplanebooking;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +26,8 @@ public class DatabaseHandler implements DatabaseInterface {
     ResultSet results = null;
     Customer customer = null;
     Booking reservation = null;
-    ArrayList<Customer> customers = new ArrayList<>();
+    ArrayList<Seat> seats = new ArrayList();
+    ArrayList<Customer> customers = new ArrayList();
     ComboPooledDataSource cpds = new ComboPooledDataSource();
 
     public DatabaseHandler() {
@@ -273,7 +275,8 @@ public class DatabaseHandler implements DatabaseInterface {
             if (customerExists(currentCustomer)) {
                 customer = currentCustomer;
                 int customerID = customer.getID();
-
+                
+                
                 String sql = "INSERT INTO reservations "
                         + "VALUES (null, "
                         + "" + customerID + ", "
@@ -317,6 +320,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
                 statement.executeUpdate(sql);
                 customer = getCustomer(statement.executeUpdate(sql, 1));
+                createReservation(customer, flightID, seats, food);
             }
 
         } catch (SQLException ex) {
@@ -378,9 +382,20 @@ public class DatabaseHandler implements DatabaseInterface {
                 int customerid = results.getInt("customer_id");
                 String flightid = results.getString("flightid");
                 int food = results.getInt("food");
+                String getSeats = "SELECT r2s.seat_id "+
+                                  "FROM `reservation2seat` r2s " +
+                                  "INNER JOIN reservations rs " +
+                                  "ON r2s.reservation_id = rs.id " +
+                                  "WHERE r2s.reservation_id = rs.id ";
+                
+                ResultSet seatResults = statement.executeQuery(getSeats);
+                while(seatResults.next()){
+                Seat seat = new Seat(seatResults.getInt("seat_id"));
+                seats.add(seat);
+                }              
 
-                reservation = new Booking(id, customerid, flightid, food);
-
+                reservation = new Booking(id, customerid, flightid, seats, food);
+                
             }
             statement.close();
             return reservation;

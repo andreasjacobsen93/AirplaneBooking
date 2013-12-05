@@ -13,8 +13,8 @@ package airplanebooking;
 public class Seat
 {
     // instance variables - replace the example below with your own
-    private int index;
-    private boolean reservationStatus;
+    private final int index;
+   
 
     /**
      * Constructor for objects of class Seat
@@ -25,35 +25,12 @@ public class Seat
         // The index of the seat
         index = i;
         // The reservation status of the seat.
-        reservationStatus= false;
+        
     }
 
-    /**
-     * @return true if reserved, false otherwise.
-     */
-    public boolean checkIfReserved()
-    {
-
-        return reservationStatus;
-            
-
-    }
-    /**
-     * 
-     * @return 
-     */
     public int getIndex()
     {
         return index;
     }
     
-    public void reserveSeat()
-    {
-        reservationStatus = true;
-    }
-    
-    public void clearSeat()
-    {
-        reservationStatus = false;
-    }
 }
