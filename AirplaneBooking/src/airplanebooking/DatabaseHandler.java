@@ -5,7 +5,7 @@
  */
 package airplanebooking;
 
-import com.mchange.v2.c3p0.DataSources;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +13,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sql.DataSource;
 
 /**
  *
@@ -27,26 +26,23 @@ public class DatabaseHandler implements DatabaseInterface {
     Customer customer = null;
     Booking reservation = null;
     ArrayList<Customer> customers = new ArrayList<>();
-    DataSource ds_unpooled = null;
-    DataSource ds_pooled = null;
+    ComboPooledDataSource cpds = new ComboPooledDataSource();;
 
     public DatabaseHandler() {
-        //contructor method to initiate DataSource for pooled connections on spawning an object.
+        //contructor method to initiate (combo)DataSource for pooled connections on spawning an object.
         initiateDataSource();
+        
     }
 
     private void initiateDataSource() {
-        try {
-            //first we establish unpooled DB connection.
-            ds_unpooled = DataSources.unpooledDataSource("jdbc:mysql://mysql.itu.dk/Airplanebooking",
-                    "aljon",
-                    "Jegeradministratorher123");
-            //Use C3P0 to convert unpooled DataSource to pooled DataSource
-            ds_pooled = DataSources.pooledDataSource(ds_unpooled);
+           
+            cpds.setJdbcUrl("jdbc:mysql://mysql.itu.dk/Airplanebooking");
+            cpds.setUser("aljon");
+            cpds.setPassword("Jegeradministratorher123");
+            cpds.setMinPoolSize(1);  
+            cpds.setAcquireIncrement(3);
+            cpds.setMaxPoolSize(10);
 
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     private void executeUpdate(String sql) throws SQLException {
@@ -54,7 +50,7 @@ public class DatabaseHandler implements DatabaseInterface {
         
         try {
             //Query DataSource for connection, and establish statement handler
-            con = ds_pooled.getConnection();
+            con = cpds.getConnection();
             statement = con.createStatement();
             //pass statement to statement handler -> db.
             statement.executeUpdate(sql);
@@ -64,16 +60,17 @@ public class DatabaseHandler implements DatabaseInterface {
         } finally {
             //remember to close statment and release resources back to DB.
             statement.close();
+            con.close();
         }
 
     }
 
-    private ResultSet executeQuery(String sql) {
+    private ResultSet executeQuery(String sql) throws SQLException {
         //first we establish DB connection.
 
         //establish statement handler.
         try {
-            con = ds_pooled.getConnection();
+            con = cpds.getConnection();
             statement = con.createStatement();
             
             //pass statement to statement handler -> db and save ResultSet.
@@ -82,9 +79,11 @@ public class DatabaseHandler implements DatabaseInterface {
         } catch (SQLException e) {
 
             System.out.println(e);
+        } finally {
+            con.close();
         }
         return results;
-    }
+    } 
 
     @Override
     public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
@@ -154,10 +153,10 @@ public class DatabaseHandler implements DatabaseInterface {
     public Customer getCustomer(int customerID) {
         String sql = "SELECT * FROM customers WHERE id = " + customerID;
         //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
-        executeQuery(sql);
+        
 
         try {
-
+            executeQuery(sql);
             while (results.next()) {
                 int id = results.getInt("id");
                 String maritalstatus = results.getString("maritalstatus");
@@ -190,10 +189,10 @@ public class DatabaseHandler implements DatabaseInterface {
 
         String sql = "SELECT * FROM customers WHERE addresszip =" + q + " OR phonenumber =" + q;
 
-        executeQuery(sql);
+        
 
         try {
-
+            executeQuery(sql);
             results.beforeFirst();
 
             while (results.next()) {
@@ -220,9 +219,10 @@ public class DatabaseHandler implements DatabaseInterface {
     public ArrayList<Customer> getCustomers(String q) {
         String sql = "SELECT * FROM customers WHERE firstname =\"" + q + "\" OR lastname =\"" + q + "\" OR addressstreet =\"" + q + "\" OR email =\"" + q + "\"";
 
-        executeQuery(sql);
+        
 
         try {
+            executeQuery(sql);
             results.beforeFirst();
             while (results.next()) {
                 int id = results.getInt("id");
@@ -245,7 +245,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
-    //Below are unimplemented methods.
+    
     @Override
     public void createReservation(int customerID, String flightID, int seats, int food) {
         
@@ -305,14 +305,14 @@ public class DatabaseHandler implements DatabaseInterface {
     public Booking getReservation(int reservationID) {
         
         String sql = "SELECT * FROM reservations WHERE id = " + reservationID;
-        //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
-        executeQuery(sql);
+        //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
+        
         
         try {
-
+            executeQuery(sql);
             while (results.next()) {
                 int id = results.getInt("id");
-                int customerid = results.getInt("customerid");
+                int customerid = results.getInt("customer_id");
                 String flightid = results.getString("flightid");
                 int food = results.getInt("food");
 
@@ -330,5 +330,53 @@ public class DatabaseHandler implements DatabaseInterface {
         }
         
     }
-
+    //Below are unimplemented methods.
+    
+    @Override
+    public void createFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime){
+        String sql = "INSERT INTO flights "
+                    + "VALUES (null, "
+                    + "" + firstSeats + ", "
+                    + "" + businessSeats + ", "
+                    + "" + economySeats + ", "
+                    + "" + totalSeats + ", "
+                    + "'" + departureTime + "', "
+                    + "'" + arrivalTime + "')";
+        try 
+        {   
+            executeUpdate(sql);
+        } 
+        catch (SQLException ex) 
+        {
+            throw new RuntimeException("Something went wrong while creating your reservation",ex);
+        }
+    } 
+    
+    @Override
+    public void editFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime){
+        
+    }
+    
+    @Override
+    public void deleteFlight(int flightID){
+    
+    }
+    
+    @Override
+    public void getFlight(int flightID){
+    
+    }
+    
+     public void deleteSeats (int i){
+        String sql = "DELETE FROM seats WHERE seat_id= "+i;
+        try 
+        {   
+            executeUpdate(sql);
+        } 
+        catch (SQLException ex) 
+        {
+            throw new RuntimeException("Something went wrong while creating your seats",ex);
+        }
+    } 
+    
 }

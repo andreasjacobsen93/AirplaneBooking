@@ -26,6 +26,7 @@ public interface DatabaseInterface {
     
     public ArrayList<Customer> getCustomers(int q);
 
+    
     //Below are all reservation related DB method declarations.
     public void createReservation(int customerID, String flightID, int seats, int food);
 
@@ -34,4 +35,16 @@ public interface DatabaseInterface {
     public void deleteReservation(int reservationID);
 
     public Booking getReservation(int reservationID);
+    
+    //Below are all flight related DB method declarations.
+    
+    public void createFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime); 
+    
+    public void editFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime);
+    
+    public void deleteFlight(int flightID);
+    
+    public void getFlight(int flightID);
+    
+    
 }
