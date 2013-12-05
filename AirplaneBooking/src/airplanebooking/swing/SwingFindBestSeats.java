@@ -95,7 +95,7 @@ public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
         // TODO add your handling code here:
         
         // Find best seats
-        CurrentBooking.findBestSeats(Integer.parseInt(textField1.getText()), "Economy Class");
+        CurrentBooking.findBestSeats(Integer.parseInt(textField1.getText()));
         
         this.dispose();
     }//GEN-LAST:event_button1ActionPerformed

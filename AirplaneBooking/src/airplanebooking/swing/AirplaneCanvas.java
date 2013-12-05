@@ -4,8 +4,6 @@ import airplanebooking.CurrentBooking;
 import airplanebooking.BookingListener;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *
@@ -54,6 +52,8 @@ public class AirplaneCanvas extends javax.swing.JComponent implements BookingLis
     
     public AirplaneCanvas(Boolean bookable)
     {
+        
+        //CurrentBooking.reset();
         this.bookable = bookable;
         
         // Economy Class
@@ -92,18 +92,14 @@ public class AirplaneCanvas extends javax.swing.JComponent implements BookingLis
         seats = new int[seatsCount][6];
         seat = 0;
         
-        // Create random data for seats
-        ArrayList<Integer> list = new ArrayList<>();
+        CurrentBooking.reset();
+        // Create data for seats
         for (int i = 0; i < seatsCount; i++)
         {
-            CurrentBooking.reset();
-            Random rand = new Random();
-            int r = rand.nextInt(2);
             seats[i][0] = i+1;
-            seats[i][1] = r;
-            if (r < 1) list.add(i+1);
         }
-        CurrentBooking.setBookedSeats(list);
+        this.bookingChanged();
+
         
         // Event for mouse movement
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
