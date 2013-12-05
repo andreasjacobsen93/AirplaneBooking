@@ -251,22 +251,23 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     public boolean customerExists(Customer customer) {
-       
-            String firstname = customer.getFirstName();
-            String lastname = customer.getLastName();
-            String email = customer.getEmail();
-            boolean exists = false;
-            
-            String sql = "SELECT COUNT(*) FROM customers WHERE firstname="+firstname+" OR lastname ="+ lastname+ "OR email = "+email;
+
+        String firstname = customer.getFirstName();
+        String lastname = customer.getLastName();
+        String email = customer.getEmail();
+        boolean exists = false;
+
+        String sql = "SELECT COUNT(*) FROM customers WHERE firstname='" + firstname + "' AND lastname = '" + lastname + "' AND email = '"+email+"' OR email = '" + email + "'";
         try {
             executeQuery(sql);
             exists = 0 != results.getInt(1);
-        
+            System.out.println(exists);
+
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return exists;
-        
+
     }
 
     @Override
@@ -275,8 +276,7 @@ public class DatabaseHandler implements DatabaseInterface {
             if (customerExists(currentCustomer)) {
                 customer = currentCustomer;
                 int customerID = customer.getID();
-                
-                
+
                 String sql = "INSERT INTO reservations "
                         + "VALUES (null, "
                         + "" + customerID + ", "
@@ -382,20 +382,20 @@ public class DatabaseHandler implements DatabaseInterface {
                 int customerid = results.getInt("customer_id");
                 String flightid = results.getString("flightid");
                 int food = results.getInt("food");
-                String getSeats = "SELECT r2s.seat_id "+
-                                  "FROM `reservation2seat` r2s " +
-                                  "INNER JOIN reservations rs " +
-                                  "ON r2s.reservation_id = rs.id " +
-                                  "WHERE r2s.reservation_id = rs.id ";
-                
+                String getSeats = "SELECT r2s.seat_id "
+                        + "FROM `reservation2seat` r2s "
+                        + "INNER JOIN reservations rs "
+                        + "ON r2s.reservation_id = rs.id "
+                        + "WHERE r2s.reservation_id = rs.id ";
+
                 ResultSet seatResults = statement.executeQuery(getSeats);
-                while(seatResults.next()){
-                Seat seat = new Seat(seatResults.getInt("seat_id"));
-                seats.add(seat);
-                }              
+                while (seatResults.next()) {
+                    Seat seat = new Seat(seatResults.getInt("seat_id"));
+                    seats.add(seat);
+                }
 
                 reservation = new Booking(id, customerid, flightid, seats, food);
-                
+
             }
             statement.close();
             return reservation;
