@@ -1,5 +1,7 @@
 package airplanebooking;
 
+import airplanebooking.DB.Flight;
+import airplanebooking.DB.Customer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

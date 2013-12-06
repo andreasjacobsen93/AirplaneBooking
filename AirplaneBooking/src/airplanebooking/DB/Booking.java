@@ -1,5 +1,6 @@
-package airplanebooking;
+package airplanebooking.DB;
 
+import airplanebooking.DB.Seat;
 import java.sql.Array;
 import java.util.ArrayList;
 
@@ -49,6 +50,10 @@ public class Booking {
     
     public int getFood(){
         return food;
+    }
+    
+    public ArrayList<Seat> getSeats(){
+        return seats;
     }
         
     public Object[] getBookingDataList()

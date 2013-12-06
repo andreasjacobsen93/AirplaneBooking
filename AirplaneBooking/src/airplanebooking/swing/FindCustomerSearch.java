@@ -1,8 +1,8 @@
 package airplanebooking.swing;
 
-import airplanebooking.Customer;
-import airplanebooking.DatabaseHandler;
-import airplanebooking.DatabaseInterface;
+import airplanebooking.DB.Customer;
+import airplanebooking.DB.DatabaseHandler;
+import airplanebooking.DB.DatabaseInterface;
 import airplanebooking.GUI;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;

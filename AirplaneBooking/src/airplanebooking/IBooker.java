@@ -1,5 +1,7 @@
 package airplanebooking;
 
+import airplanebooking.DB.Customer;
+
 /**
  *
  * @author Andreas

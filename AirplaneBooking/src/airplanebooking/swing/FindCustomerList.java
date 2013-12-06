@@ -1,7 +1,7 @@
 package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking;
-import airplanebooking.Customer;
+import airplanebooking.DB.Customer;
 import airplanebooking.GUI;
 import java.util.ArrayList;
 

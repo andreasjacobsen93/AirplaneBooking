@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package airplanebooking;
+package airplanebooking.DB;
 
 /**
  *
@@ -18,6 +18,7 @@ public class Seat
 
     /**
      * Constructor for objects of class Seat
+     * @param i
      */
     public Seat(int i)
     {
