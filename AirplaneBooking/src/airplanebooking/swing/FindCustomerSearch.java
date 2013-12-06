@@ -6,6 +6,8 @@
 
 package airplanebooking.swing;
 
+import airplanebooking.DatabaseHandler;
+import airplanebooking.DatabaseInterface;
 import airplanebooking.GUI;
 
 /**
@@ -111,11 +113,30 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
+        String firstname = null;
+        String lastname = null;
+        String email = null;
+        Integer phone = null;
+        
+        if (textFirstName.getText().isEmpty() && !"customerFirstName".equals(textFirstName.getText())) 
+            firstname = textFirstName.getText();
+        
+        if (textLastName3.getText().isEmpty() && !"customerFirstName".equals(textLastName3.getText())) 
+            lastname = textLastName3.getText();
+        
+        if (textEmail.getText().isEmpty() && !"customerFirstName".equals(textEmail.getText())) 
+            email = textEmail.getText();
+        
+        if (textPhone.getText().isEmpty() && !"customerFirstName".equals(textPhone.getText())) 
+            phone = Integer.parseInt(textPhone.getText());
+        
         switch(nextStep)
         {
             case "reservations":
                 break;
             case "customers":
+                DatabaseInterface db = new DatabaseHandler();
+                db.get
                 break;
         }
     }//GEN-LAST:event_buttonSearchActionPerformed

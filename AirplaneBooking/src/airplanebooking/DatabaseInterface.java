@@ -25,6 +25,8 @@ public interface DatabaseInterface {
     public ArrayList<Customer> getCustomers(String q);
     
     public ArrayList<Customer> getCustomers(int q);
+    
+    public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone);
 
     
     //Below are all reservation related DB method declarations.
