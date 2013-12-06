@@ -2,6 +2,7 @@ package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
+import airplanebooking.Customer;
 import airplanebooking.GUI;
 
 /**
@@ -55,7 +56,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         labelAirplaneName.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        labelAirplaneName.setText("Airbus name and number");
+        //labelAirplaneName.setText("Airbus name and number");
 
         AirplaneCanvasPanel.setBackground(new java.awt.Color(153, 153, 153));
         AirplaneCanvasPanel.setMinimumSize(new java.awt.Dimension(0, 180));
@@ -117,7 +118,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
 
         buttonDeleteReservation.setLabel("Create reservation...");
 
-        labelSeats.setText("Seats: ");
+        labelSeats.setText("No seats chosen.");
 
         labelRoute.setText("Paris - London");
 
@@ -127,7 +128,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         checkboxLunchOnboard.setName(""); // NOI18N
         checkboxLunchOnboard.setState(true);
 
-        labelTravelClass.setText("Business class");
+        labelTravelClass.setText("No seats chosen.");
 
         labelPrice.setText("Price: 300 USD");
 
@@ -362,5 +363,19 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
             classes += "Economy Class";
         }
         labelTravelClass.setText(classes);
+        
+        if (CurrentBooking.getCustomer() != null)
+        {
+            Customer c = CurrentBooking.getCustomer();
+            textMaritialStatus.setText(c.getMaritalStatus());
+            textFirstName.setText(c.getFirstName());
+            textLastName.setText(c.getLastName());
+            textAddressCity.setText(c.getAddressCity());
+            textAddressCountry.setText(c.getAddressCountry());
+            textAddressStreet.setText(c.getAddressStreet());
+            textAddressZip.setText(String.valueOf(c.getAddressZip()));
+            textEmail.setText(c.getEmail());
+            textPhone.setText(String.valueOf(c.getPhone()));
+        }
     }
 }

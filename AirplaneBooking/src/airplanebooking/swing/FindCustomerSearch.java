@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package airplanebooking.swing;
 
+import airplanebooking.Customer;
 import airplanebooking.DatabaseHandler;
 import airplanebooking.DatabaseInterface;
 import airplanebooking.GUI;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -118,25 +115,36 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
         String email = null;
         Integer phone = null;
         
-        if (textFirstName.getText().isEmpty() && !"customerFirstName".equals(textFirstName.getText())) 
+        if (!textFirstName.getText().isEmpty() && !"customerFirstName".equals(textFirstName.getText())) 
             firstname = textFirstName.getText();
         
-        if (textLastName3.getText().isEmpty() && !"customerFirstName".equals(textLastName3.getText())) 
+        if (!textLastName3.getText().isEmpty() && !"customerLastName".equals(textLastName3.getText())) 
             lastname = textLastName3.getText();
         
-        if (textEmail.getText().isEmpty() && !"customerFirstName".equals(textEmail.getText())) 
+        if (!textEmail.getText().isEmpty() && !"customerEmail".equals(textEmail.getText())) 
             email = textEmail.getText();
         
-        if (textPhone.getText().isEmpty() && !"customerFirstName".equals(textPhone.getText())) 
+        if (!textPhone.getText().isEmpty() && !"customerPhone".equals(textPhone.getText())) 
             phone = Integer.parseInt(textPhone.getText());
+        
+        if (firstname == null && lastname == null && email == null && phone == null)
+        {
+            JOptionPane.showMessageDialog(null, "No data is inputted!");
+            return;
+        }
+        
+        DatabaseInterface db = new DatabaseHandler();
+        ArrayList<Customer> list = db.getCustomers(firstname, lastname, email, phone);
         
         switch(nextStep)
         {
             case "reservations":
+                
                 break;
             case "customers":
-                DatabaseInterface db = new DatabaseHandler();
-                db.get
+                FindCustomerList fclForm = new FindCustomerList(list);
+                fclForm.run();
+                this.dispose();
                 break;
         }
     }//GEN-LAST:event_buttonSearchActionPerformed

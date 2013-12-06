@@ -53,6 +53,11 @@ public class CurrentBooking {
     public static void addCustomer(Customer c) {
         customer = c;
     }
+    
+    public static Customer getCustomer()
+    {
+        return customer;
+    }
 
     public static void addFlight(Flight f) {
         flight = f;
