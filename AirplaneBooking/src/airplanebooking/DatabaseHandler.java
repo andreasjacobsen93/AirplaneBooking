@@ -25,6 +25,7 @@ public class DatabaseHandler implements DatabaseInterface {
     ResultSet results = null;
     Customer customer = null;
     Booking reservation = null;
+    ArrayList<Booking> reservations = new ArrayList();
     ArrayList<Seat> seats = new ArrayList();
     ArrayList<Customer> customers = new ArrayList();
     ComboPooledDataSource cpds = new ComboPooledDataSource();
@@ -83,9 +84,9 @@ public class DatabaseHandler implements DatabaseInterface {
             statement.close();
             //
             results.close();
-           // results = null;
+            // results = null;
             con.close();
-           // con = null;
+            // con = null;
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -243,35 +244,37 @@ public class DatabaseHandler implements DatabaseInterface {
         }
 
     }
-    
+
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone) {
-        
+
         String sql = "SELECT * FROM customers WHERE ";
-        
+
         int i = 0;
-        if (firstName != null)
-        {
+        if (firstName != null) {
             sql += "firstname = \"" + firstName + "\"";
             i++;
         }
-        
-        if (lastName != null)
-        {
-            if (i > 0) sql += " AND ";
+
+        if (lastName != null) {
+            if (i > 0) {
+                sql += " AND ";
+            }
             sql += "lastname = \"" + lastName + "\"";
             i++;
         }
-        
-        if (Email != null)
-        {
-            if (i > 0) sql += " AND ";
+
+        if (Email != null) {
+            if (i > 0) {
+                sql += " AND ";
+            }
             sql += "email = \"" + Email + "\"";
             i++;
         }
-        
-        if (Phone != null)
-        {
-            if (i > 0) sql += " AND ";
+
+        if (Phone != null) {
+            if (i > 0) {
+                sql += " AND ";
+            }
             sql += "phonenumber = \"" + Phone + "\"";
         }
 
@@ -315,12 +318,12 @@ public class DatabaseHandler implements DatabaseInterface {
             exists = 0 != results.getInt(1);
             System.out.println(exists);
             //statement.close();
-          //  results.close();
+            //  results.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-           // closeConnection();
+            // closeConnection();
         }
 
         return exists;
@@ -339,12 +342,11 @@ public class DatabaseHandler implements DatabaseInterface {
                         + "" + customerID + ", "
                         + "'" + flightID + "', "
                         + "" + food + ")";
-                
+
                 int[] key = new int[1];
                 key[0] = 1;
                 statement.executeUpdate(sql, key[0]);
-                
-                           
+
                 ResultSet rs = statement.getGeneratedKeys();
                 rs.first();
                 int reservationID = rs.getInt(1);
@@ -352,12 +354,12 @@ public class DatabaseHandler implements DatabaseInterface {
                 closeConnection();
                 for (Seat seat : seats) {
                     System.out.println(seat.getIndex());
-                    sql = "INSERT INTO reservation2seat VALUES ("+reservationID+", "+seat.getIndex()+")";
+                    sql = "INSERT INTO reservation2seat VALUES (" + reservationID + ", " + seat.getIndex() + ")";
 
                     executeUpdate(sql);
-                    
+
                 }
-                
+
             } else {
 
                 String maritalstatus = currentCustomer.getMaritalStatus();
@@ -447,7 +449,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 String getSeats = "SELECT r2s.seat_id "
                         + "FROM `reservation2seat` r2s "
                         + "INNER JOIN reservations rs "
-                        + "ON r2s.reservation_id = rs.id "
+                        + "ON r2s.reservation_id ="+ id +""
                         + "WHERE r2s.reservation_id = rs.id ";
 
                 ResultSet seatResults = statement.executeQuery(getSeats);
@@ -499,6 +501,35 @@ public class DatabaseHandler implements DatabaseInterface {
 
     @Override
     public void getFlight(int flightID) {
+
+    }
+
+    //  @Override
+    public ArrayList<Booking> getCustomerReservations(int customerID) {
+
+        String sql = "SELECT rsv.id "
+                + "FROM `reservations` rsv "
+                + "INNER JOIN customers cs "
+                + "ON rsv.id = cs.id "
+                + "WHERE rsv.id = "+customerID;
+        //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
+
+        try {
+            executeQuery(sql);
+            while (results.next()) {
+                Booking currentBooking = getReservation(results.getInt(1));
+                reservations.add(currentBooking);
+
+            }
+            statement.close();
+            return reservations;
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while getting the reservation:", ex);
+
+        } catch (NullPointerException e) {
+            throw new RuntimeException("You didn't supply a valid reservation ID", e);
+        }
 
     }
 
