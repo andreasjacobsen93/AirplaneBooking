@@ -331,34 +331,58 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    public boolean seatsExist(ArrayList<Seat> seats, Flight flight) {
+        boolean exists = false;
+        for (Seat currentSeat : seats) {
+            try {
+                String sql = "SELECT f.id, r2s.seat_id FROM flights f, reservation2seat r2s WHERE f.id =" + flight.getID() + " AND r2s.seat_id =" + currentSeat;
+                executeQuery(sql);
+                if (results.getRow() == 0) {
+                    exists = false;
+                } else {
+                    exists = true;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return exists;
+    }
+
     @Override
-    public void createReservation(Customer currentCustomer, String flightID, ArrayList<Seat> seats, int food) {
+    public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, int food) {
         try {
             if (customerExists(currentCustomer)) {
-                customer = currentCustomer;
-                int customerID = customer.getID();
+                if (!seatsExist(seats, flight)) {
+                    customer = currentCustomer;
+                    int customerID = customer.getID();
+                    int flightID = flight.getID();
+                    System.out.println(flightID);
+                    String sql = "INSERT INTO reservations "
+                            + "VALUES (null, "
+                            + "" + customerID + ", "
+                            + "'" + flightID + "', "
+                            + "" + food + ")";
 
-                String sql = "INSERT INTO reservations "
-                        + "VALUES (null, "
-                        + "" + customerID + ", "
-                        + "'" + flightID + "', "
-                        + "" + food + ")";
+                    int[] key = new int[1];
+                    key[0] = 1;
+                    statement.executeUpdate(sql, key[0]);
 
-                int[] key = new int[1];
-                key[0] = 1;
-                statement.executeUpdate(sql, key[0]);
+                    ResultSet rs = statement.getGeneratedKeys();
+                    rs.first();
+                    int reservationID = rs.getInt(1);
+                    System.out.println(reservationID);
+                //System.out.println(reservationID);
 
-                ResultSet rs = statement.getGeneratedKeys();
-                rs.first();
-                int reservationID = rs.getInt(1);
-                System.out.println(reservationID);
-                closeConnection();
-                for (Seat seat : seats) {
-                    System.out.println(seat.getIndex());
-                    sql = "INSERT INTO reservation2seat VALUES (" + reservationID + ", " + seat.getIndex() + ")";
+                    for (Seat seat : seats) {
+                        System.out.println(seat.getIndex());
+                        sql = "INSERT INTO reservation2seat VALUES (" + reservationID + ", " + seat.getIndex() + ")";
 
-                    executeUpdate(sql);
+                        executeUpdate(sql);
 
+                    }
+                } else {
+                    System.out.println("YOUR SEATS ALREADY EXIST, RESERVATION CREATION ABORTED!");
                 }
 
             } else {
@@ -388,7 +412,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
                 statement.executeUpdate(sql);
                 customer = getCustomer(statement.executeUpdate(sql, 1));
-                createReservation(customer, flightID, seats, food);
+                createReservation(customer, flight, seats, food);
 
             }
 
@@ -447,13 +471,14 @@ public class DatabaseHandler implements DatabaseInterface {
                 int customerid = results.getInt("customer_id");
                 String flightid = results.getString("flightid");
                 int food = results.getInt("food");
+
                 String getSeats = "SELECT r2s.seat_id "
                         + "FROM `reservation2seat` r2s "
                         + "INNER JOIN reservations rs "
-                        + "ON r2s.reservation_id ="+ id +""
+                        + "ON r2s.reservation_id = " + id + " "
                         + "WHERE r2s.reservation_id = rs.id ";
 
-                ResultSet seatResults = statement.executeQuery(getSeats);
+                ResultSet seatResults = executeQuery(getSeats);
                 while (seatResults.next()) {
                     Seat seat = new Seat(seatResults.getInt("seat_id"));
                     seats.add(seat);
@@ -462,7 +487,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 reservation = new Booking(id, customerid, flightid, seats, food);
 
             }
-            statement.close();
+            //statement.close();
             return reservation;
 
         } catch (SQLException ex) {
@@ -512,7 +537,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 + "FROM `reservations` rsv "
                 + "INNER JOIN customers cs "
                 + "ON rsv.id = cs.id "
-                + "WHERE rsv.id = "+customerID;
+                + "WHERE rsv.id = " + customerID;
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
 
         try {
@@ -522,7 +547,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 reservations.add(currentBooking);
 
             }
-            statement.close();
+            //statement.close();
             return reservations;
 
         } catch (SQLException ex) {
@@ -532,6 +557,21 @@ public class DatabaseHandler implements DatabaseInterface {
             throw new RuntimeException("You didn't supply a valid reservation ID", e);
         }
 
+    }
+
+    public ArrayList<Seat> getFlightBookedSeats(int flightID) {
+        try {
+            String sql = "SELECT s.seat_id FROM reservation2seat s, reservations r WHERE flightid =" + flightID + " AND  r.id = s.reservation_id";
+            executeQuery(sql);
+            while (results.next()) {
+                Seat seat = new Seat(results.getInt(1));
+                seats.add(seat);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return seats;
     }
 
     public void deleteSeats(int i) {
