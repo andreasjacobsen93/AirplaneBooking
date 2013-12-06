@@ -16,9 +16,10 @@ public class Flight {
     private final Seat[] seats;
     private final String departureTime;
     private final String arrivalTime;
+    private final String departurePlace;
+    private final String arrivalPlace;
     
-    
-    public Flight(int id, int firstSeats, int businessSeats, int economySeats, String departureTime, String arrivalTime)
+    public Flight(int id, int firstSeats, int businessSeats, int economySeats, String departurePlace, String departureTime, String arrivalPlace, String arrivalTime)
     {
         this.id = id;
         this.firstSeats = firstSeats;
@@ -26,7 +27,9 @@ public class Flight {
         this.economySeats = economySeats;
         this.totalSeats = firstSeats+businessSeats+economySeats;
         this.seats = new Seat[totalSeats];
+        this.departurePlace = departurePlace;
         this.departureTime = departureTime;
+        this.arrivalPlace = arrivalPlace;
         this.arrivalTime = arrivalTime;
     }
     
@@ -38,9 +41,10 @@ public class Flight {
         this.businessSeats = 0;
         this.economySeats = 0;
         this.totalSeats = 0;
-        //seats? skal måske ikke være med.
         this.seats = new Seat[totalSeats];
+        this.departurePlace = "";
         this.departureTime = "";
+        this.arrivalPlace = "";
         this.arrivalTime = "";  
     }
     
@@ -77,15 +81,17 @@ public class Flight {
     
     public Object[] getCustomerDataList()
     {
-        Object [] list = new Array[7];
+        Object [] list = new Array[9];
         list[0] = id;
         list[1] = firstSeats;
         list[2] = businessSeats;
         list[3] = economySeats;
         list[4] = totalSeats;
         list[5] = seats;
-        list[6] = departureTime;
-        list[7] = arrivalTime;
+        list[6] = departurePlace;
+        list[7] = departureTime;
+        list[8] = arrivalPlace;
+        list[9] = arrivalTime;
         return list;
     }
 }

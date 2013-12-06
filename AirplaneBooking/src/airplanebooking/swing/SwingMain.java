@@ -52,8 +52,20 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         listFlights.setMultipleMode(true);
 
         buttonFindCustomer.setLabel("Find customer...");
+        buttonFindCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonFindCustomerMouseClicked();
+            }
+        });
 
         buttonFilter.setLabel("Filter...");
+        buttonFilter.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonFilterMouseClicked();
+            }
+        });
 
         checkboxFreeSeatsOnly.setLabel("Free seats only");
 
@@ -92,7 +104,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         buttonNewReservation.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonNewReservationMouseClicked(evt);
+                buttonNewReservationMouseClicked();
             }
         });
 
@@ -315,16 +327,26 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
     public void run()
     {
         setVisible(true);
-        
-        
     }
     
-    private void buttonNewReservationMouseClicked(java.awt.event.MouseEvent evt) {                                                  
+    private void buttonNewReservationMouseClicked() {                                                  
         // TODO add your handling code here:
         SwingNewReservation SNR = new SwingNewReservation();
         SNR.run();
         CurrentBooking.addListener(SNR);
     } 
+    
+    private void buttonFindCustomerMouseClicked(){
+        FindCustomerSearch fcsForm = new FindCustomerSearch("reservations");
+        fcsForm.run();
+    } 
+    
+    private void buttonFilterMouseClicked(){
+        FlightSearchFilter fsfForm = new FlightSearchFilter();
+        fsfForm.run();
+    }
+    
+    
 
     // Variables declaration - do not modify                     
     private javax.swing.JComponent AirplaneCanvasPanel;

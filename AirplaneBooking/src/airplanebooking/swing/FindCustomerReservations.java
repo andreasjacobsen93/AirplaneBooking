@@ -6,7 +6,6 @@ import airplanebooking.DatabaseHandler;
 import airplanebooking.DatabaseInterface;
 import airplanebooking.GUI;
 import java.util.ArrayList;
-import static java.util.Collections.list;
 
 /**
  *
@@ -14,7 +13,7 @@ import static java.util.Collections.list;
  */
 public class FindCustomerReservations extends javax.swing.JFrame implements GUI {
 
-    private ArrayList<Customer> list;
+    private final ArrayList<Customer> list;
     /**
      * Creates new form FindCustomerReservations
      * @param list

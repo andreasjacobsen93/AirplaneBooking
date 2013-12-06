@@ -1,7 +1,6 @@
 package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
-import javax.swing.JComponent;
 import airplanebooking.BookingListener;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,7 +9,7 @@ import java.awt.Graphics;
  *
  * @author Andreas
  */
-public class AirplaneCanvas extends javax.swing.JComponent implements BookingListener {
+public final class AirplaneCanvas extends javax.swing.JComponent implements BookingListener {
     
     // Economy Class
     private final Boolean EClass;
