@@ -1,6 +1,6 @@
 package airplanebooking.swing;
 
-import airplanebooking.CurrentBooking;
+import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
 import airplanebooking.GUI;
 
@@ -40,11 +40,15 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         jPanel6 = new javax.swing.JPanel();
         textMaritialStatus = new java.awt.TextField();
         textLastName = new java.awt.TextField();
-        textAddress = new java.awt.TextArea();
+        textAddressZip = new java.awt.TextField();
+        textAddressStreet = new java.awt.TextField();
+        textAddressCity = new java.awt.TextField();
+        textAddressCountry = new java.awt.TextField();
         textPhone = new java.awt.TextField();
         textEmail = new java.awt.TextField();
         textFirstName = new java.awt.TextField();
         buttonFindBestSeats = new java.awt.Button();
+        buttonExistingCustomer = new java.awt.Button();
 
         setMinimumSize(new java.awt.Dimension(926, 570));
 
@@ -62,6 +66,14 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonFindBestSeatsMouseClicked();
+            }
+        });
+        
+        buttonExistingCustomer.setLabel("Existing customer...");
+        buttonExistingCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonExistingCustomerMouseClicked();
             }
         });
 
@@ -96,7 +108,8 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonFindBestSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addComponent(buttonFindBestSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -158,18 +171,15 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Customer"));
 
-        textMaritialStatus.setText("");
-
-        textLastName.setText("");
-
-        textAddress.setMaximumSize(new java.awt.Dimension(100, 80));
-        textAddress.setText("");
-
-        textPhone.setText("");
-
-        textEmail.setText("");
-
-        textFirstName.setText("");
+        textMaritialStatus.setText("customerMaritialStatus");
+        textFirstName.setText("customerFirstName");
+        textLastName.setText("customerLastName");
+        textAddressZip.setText("customerAddressZip");
+        textAddressStreet.setText("customerAddressStreet");
+        textAddressCity.setText("customerAddressCity");
+        textAddressCountry.setText("customerAddressCountry");
+        textPhone.setText("customerPhone");
+        textEmail.setText("customerEmail");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -178,6 +188,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonExistingCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(textLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(textPhone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(textEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -185,12 +196,18 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
                         .addComponent(textMaritialStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
-                    .addComponent(textAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(textAddressCountry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(textAddressCity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textAddressZip, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textAddressStreet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addComponent(buttonExistingCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textMaritialStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -198,12 +215,19 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(textAddressStreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(textAddressCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textAddressCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textAddressZip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -272,6 +296,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     private javax.swing.JComponent AirplaneCanvasPanel;
     private java.awt.Button buttonDeleteReservation;
     private java.awt.Button buttonFindBestSeats;
+    private java.awt.Button buttonExistingCustomer;
     private java.awt.Checkbox checkboxLunchOnboard;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -284,7 +309,10 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     private java.awt.Label labelSeats;
     private java.awt.Label labelTime;
     private java.awt.Label labelTravelClass;
-    private java.awt.TextArea textAddress;
+    private java.awt.TextField textAddressCity;
+    private java.awt.TextField textAddressCountry;
+    private java.awt.TextField textAddressStreet;
+    private java.awt.TextField textAddressZip;
     private java.awt.TextField textEmail;
     private java.awt.TextField textFirstName;
     private java.awt.TextField textLastName;
@@ -296,6 +324,12 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     {
         SwingFindBestSeats fbsForm = new SwingFindBestSeats(AirplaneCan);
         fbsForm.run();
+    }
+    
+    public void buttonExistingCustomerMouseClicked()
+    {
+        FindCustomerSearch fcsForm = new FindCustomerSearch("customers");
+        fcsForm.run();
     }
 
     @Override

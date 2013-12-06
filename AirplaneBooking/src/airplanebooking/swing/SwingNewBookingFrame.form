@@ -91,7 +91,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="labelAirplaneName" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="AirplaneCanvasPanel" pref="224" max="32767" attributes="0"/>
+                      <Component id="AirplaneCanvasPanel" pref="214" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -129,7 +129,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="224" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="214" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -180,12 +180,17 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="buttonDeleteReservation" pref="300" max="32767" attributes="0"/>
-                              <Component id="checkboxLunchOnboard" alignment="0" max="32767" attributes="0"/>
                               <Component id="labelTravelClass" alignment="0" max="32767" attributes="0"/>
                               <Component id="labelPrice" alignment="0" max="32767" attributes="0"/>
-                              <Component id="labelTime" alignment="0" max="32767" attributes="0"/>
-                              <Component id="labelRoute" max="32767" attributes="0"/>
                               <Component id="labelSeats" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="checkboxLunchOnboard" max="32767" attributes="0"/>
+                                      <Component id="labelTime" max="32767" attributes="0"/>
+                                      <Component id="labelRoute" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -206,7 +211,7 @@
                           <Component id="labelTravelClass" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="labelPrice" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="20" max="32767" attributes="0"/>
                           <Component id="buttonDeleteReservation" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -218,9 +223,6 @@
                   <Properties>
                     <Property name="label" type="java.lang.String" value="Create reservation..."/>
                   </Properties>
-                  <AccessibilityProperties>
-                    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Create reservation..."/>
-                  </AccessibilityProperties>
                 </Component>
                 <Component class="java.awt.Label" name="labelSeats">
                   <Properties>
@@ -279,7 +281,13 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="textFirstName" pref="270" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="textAddress" alignment="0" max="32767" attributes="0"/>
+                              <Component id="textAddressCountry" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="textAddressCity" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="textAddressZip" min="-2" pref="120" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="textAddressStreet" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -293,15 +301,24 @@
                               <Component id="textMaritialStatus" min="-2" max="-2" attributes="0"/>
                               <Component id="textFirstName" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="textLastName" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="textAddress" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="textPhone" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="textEmail" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="textAddressStreet" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="textAddressCity" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="textAddressCountry" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="textPhone" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="textEmail" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="textAddressZip" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -318,15 +335,6 @@
                     <Property name="text" type="java.lang.String" value="customerLastName"/>
                   </Properties>
                 </Component>
-                <Component class="java.awt.TextArea" name="textAddress">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[100, 80]"/>
-                    </Property>
-                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
-                    <Property name="text" type="java.lang.String" value="customerAddress"/>
-                  </Properties>
-                </Component>
                 <Component class="java.awt.TextField" name="textPhone">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="customerPhone"/>
@@ -340,6 +348,30 @@
                 <Component class="java.awt.TextField" name="textFirstName">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="customerFirstName"/>
+                  </Properties>
+                </Component>
+                <Component class="java.awt.TextField" name="textAddressZip">
+                  <Properties>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
+                    <Property name="text" type="java.lang.String" value="customerAddressZip"/>
+                  </Properties>
+                </Component>
+                <Component class="java.awt.TextField" name="textAddressStreet">
+                  <Properties>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
+                    <Property name="text" type="java.lang.String" value="customerAddressStreet"/>
+                  </Properties>
+                </Component>
+                <Component class="java.awt.TextField" name="textAddressCity">
+                  <Properties>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
+                    <Property name="text" type="java.lang.String" value="customerAddressCity"/>
+                  </Properties>
+                </Component>
+                <Component class="java.awt.TextField" name="textAddressCountry">
+                  <Properties>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
+                    <Property name="text" type="java.lang.String" value="customerAddressCountry"/>
                   </Properties>
                 </Component>
               </SubComponents>

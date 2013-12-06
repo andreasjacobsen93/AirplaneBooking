@@ -1,6 +1,6 @@
 package airplanebooking.swing;
 
-import airplanebooking.CurrentBooking;
+import airplanebooking.CurrentBooking; 
 import airplanebooking.GUI;
 
 /**

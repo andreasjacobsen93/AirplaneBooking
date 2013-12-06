@@ -1,6 +1,7 @@
 package airplanebooking.swing;
 
-import airplanebooking.CurrentBooking;
+import airplanebooking.CurrentBooking; 
+import javax.swing.JComponent;
 import airplanebooking.BookingListener;
 import java.awt.Color;
 import java.awt.Graphics;

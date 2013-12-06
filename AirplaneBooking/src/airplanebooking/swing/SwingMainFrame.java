@@ -6,7 +6,17 @@
 
 package airplanebooking.swing;
 
-import airplanebooking.GUI;
+import airplanebooking.GUI; 
+import java.awt.Button; 
+import java.awt.Checkbox; 
+import java.awt.Label; 
+import java.awt.List; 
+import java.awt.TextArea; 
+import java.awt.TextField; 
+import java.awt.event.ActionEvent; 
+import java.awt.event.MouseEvent; 
+import javax.swing.JFrame; 
+import javax.swing.JPanel;
 
 /**
  *
