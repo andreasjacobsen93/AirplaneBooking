@@ -6,7 +6,6 @@
 package airplanebooking;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,7 +46,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
-    private void executeUpdate(String sql) throws SQLException {
+    private void executeUpdate(String sql) {
 
         try {
             //Query DataSource for connection, and establish statement handler
@@ -58,15 +57,10 @@ public class DatabaseHandler implements DatabaseInterface {
 
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            //remember to close statment and release resources back to DB.
-            statement.close();
-            con.close();
         }
-
     }
 
-    private ResultSet executeQuery(String sql) throws SQLException {
+    private ResultSet executeQuery(String sql) {
         //first we establish DB connection.
 
         //establish statement handler.
@@ -80,82 +74,85 @@ public class DatabaseHandler implements DatabaseInterface {
         } catch (SQLException e) {
 
             System.out.println(e);
-        } finally {
-            con.close();
         }
         return results;
     }
 
-    @Override
-    public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
+    private void closeConnection() {
         try {
-            //create string (sql statement), which we'd like to pass to the statement handler.
-            String sql = "INSERT INTO customers "
-                    + "VALUES (null, "
-                    + "'" + maritalstatus + "', "
-                    + "'" + firstname + "', "
-                    + "'" + lastname + "', "
-                    + "'" + addressStreet + "', "
-                    + "" + addressZip + ", "
-                    + "'" + addressCity + "', "
-                    + "'" + addressCountry + "', "
-                    + "'" + email + "', "
-                    + "" + phonenumber + ")";
-            System.out.println("Customer " + firstname + " " + lastname + " created.");
-            //execute the statement
-            executeUpdate(sql);
+            statement.close();
+            //
+            results.close();
+           // results = null;
+            con.close();
+           // con = null;
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
+
+        //create string (sql statement), which we'd like to pass to the statement handler.
+        String sql = "INSERT INTO customers "
+                + "VALUES (null, "
+                + "'" + maritalstatus + "', "
+                + "'" + firstname + "', "
+                + "'" + lastname + "', "
+                + "'" + addressStreet + "', "
+                + "" + addressZip + ", "
+                + "'" + addressCity + "', "
+                + "'" + addressCountry + "', "
+                + "'" + email + "', "
+                + "" + phonenumber + ")";
+        System.out.println("Customer " + firstname + " " + lastname + " created.");
+        //execute the statement
+        executeUpdate(sql);
 
     }
 
     @Override
     public void editCustomer(int customerID, String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
-        try {
-            //create string (sql statement), which we'd like to pass to the statement handler.
-            String sql = "UPDATE customers SET "
-                    + "maritalstatus = '" + maritalstatus + "', "
-                    + "firstname = '" + firstname + "', "
-                    + "lastname = '" + lastname + "', "
-                    + "addressstreet = '" + addressStreet + "', "
-                    + "addresszip = " + addressZip + ", "
-                    + "addresscity = '" + addressCity + "', "
-                    + "addresscountry = '" + addressCountry + "', "
-                    + "email = '" + email + "', "
-                    + "phonenumber = " + phonenumber
-                    + "WHERE id = " + customerID;
 
-            System.out.println("Customer " + firstname + " " + lastname + " edited.");
+        //create string (sql statement), which we'd like to pass to the statement handler.
+        String sql = "UPDATE customers SET "
+                + "maritalstatus = '" + maritalstatus + "', "
+                + "firstname = '" + firstname + "', "
+                + "lastname = '" + lastname + "', "
+                + "addressstreet = '" + addressStreet + "', "
+                + "addresszip = " + addressZip + ", "
+                + "addresscity = '" + addressCity + "', "
+                + "addresscountry = '" + addressCountry + "', "
+                + "email = '" + email + "', "
+                + "phonenumber = " + phonenumber
+                + "WHERE id = " + customerID;
 
-            //execute statement
-            executeUpdate(sql);
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("Customer " + firstname + " " + lastname + " edited.");
+
+        //execute statement
+        executeUpdate(sql);
     }
 
     @Override
     public void deleteCustomer(int customerID) {
-        try {
-            //create string (sql statement), which we'd like to pass to the statement handler.
-            String sql = "DELETE FROM customers WHERE id = " + customerID;
 
-            System.out.println("Customer with customerID:" + customerID + " deleted.");
+        //create string (sql statement), which we'd like to pass to the statement handler.
+        String sql = "DELETE FROM customers WHERE id = " + customerID;
 
-            //execute statement
-            executeUpdate(sql);
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("Customer with customerID:" + customerID + " deleted.");
+
+        //execute statement
+        executeUpdate(sql);
+
     }
 
     @Override
     public Customer getCustomer(int customerID) {
-        String sql = "SELECT * FROM customers WHERE id = " + customerID;
-        //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
-
         try {
+            String sql = "SELECT * FROM customers WHERE id = " + customerID;
+            //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
+
             executeQuery(sql);
             while (results.next()) {
                 int id = results.getInt("id");
@@ -172,15 +169,13 @@ public class DatabaseHandler implements DatabaseInterface {
                 customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
 
             }
-            statement.close();
-            return customer;
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while getting the customer:", ex);
-
-        } catch (NullPointerException e) {
-            throw new RuntimeException("You didn't supply a valid customer ID", e);
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
         }
+        return customer;
     }
 
     /*   public ArrayList getCustomers() {
@@ -210,12 +205,12 @@ public class DatabaseHandler implements DatabaseInterface {
                 customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
                 customers.add(customer);
             }
-            statement.close();
+
             return customers;
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong in getting your customers", ex);
         } finally {
-
+            closeConnection();
         }
     }
 
@@ -240,12 +235,11 @@ public class DatabaseHandler implements DatabaseInterface {
                 customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
                 customers.add(customer);
             }
-            statement.close();
             return customers;
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong in getting your customers", ex);
         } finally {
-
+            closeConnection();
         }
 
     }
@@ -257,15 +251,21 @@ public class DatabaseHandler implements DatabaseInterface {
         String email = customer.getEmail();
         boolean exists = false;
 
-        String sql = "SELECT COUNT(*) FROM customers WHERE firstname='" + firstname + "' AND lastname = '" + lastname + "' AND email = '"+email+"' OR email = '" + email + "'";
+        String sql = "SELECT COUNT(*) FROM customers WHERE firstname='" + firstname + "' AND lastname = '" + lastname + "' AND email = '" + email + "' OR email = '" + email + "'";
         try {
             executeQuery(sql);
+            results.first();
             exists = 0 != results.getInt(1);
             System.out.println(exists);
+            //statement.close();
+          //  results.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           // closeConnection();
         }
+
         return exists;
 
     }
@@ -282,17 +282,25 @@ public class DatabaseHandler implements DatabaseInterface {
                         + "" + customerID + ", "
                         + "'" + flightID + "', "
                         + "" + food + ")";
-
-                statement.executeUpdate(sql);
-                int reservationID = statement.executeUpdate(sql, 1);
-
+                
+                int[] key = new int[1];
+                key[0] = 1;
+                statement.executeUpdate(sql, key[0]);
+                
+                           
+                ResultSet rs = statement.getGeneratedKeys();
+                rs.first();
+                int reservationID = rs.getInt(1);
+                System.out.println(reservationID);
+                closeConnection();
                 for (Seat seat : seats) {
-                    sql = "UPDATE reservation2seat SET "
-                            + "reservation_id = " + reservationID + ", "
-                            + "seat_id= " + seat.getIndex();
+                    System.out.println(seat.getIndex());
+                    sql = "INSERT INTO reservation2seat VALUES ("+reservationID+", "+seat.getIndex()+")";
 
                     executeUpdate(sql);
+                    
                 }
+                
             } else {
 
                 String maritalstatus = currentCustomer.getMaritalStatus();
@@ -321,39 +329,40 @@ public class DatabaseHandler implements DatabaseInterface {
                 statement.executeUpdate(sql);
                 customer = getCustomer(statement.executeUpdate(sql, 1));
                 createReservation(customer, flightID, seats, food);
+
             }
 
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong while creating your reservation", ex);
+        } finally {
+            closeConnection();
         }
 
     }
 
     @Override
     public void editReservation(int reservationID, int customerID, String flightID, ArrayList<Seat> seats, int food) {
-        try {
-            String sql = "UPDATE reservations SET "
-                    + "customer_id = " + customerID + ", "
-                    + "flightid = '" + flightID + "', "
-                    + "food = " + food + " "
-                    + "WHERE id = " + reservationID;
 
+        String sql = "UPDATE reservations SET "
+                + "customer_id = " + customerID + ", "
+                + "flightid = '" + flightID + "', "
+                + "food = " + food + " "
+                + "WHERE id = " + reservationID;
+
+        executeUpdate(sql);
+        if (seats.isEmpty()) {
+            sql = "DELETE FROM reservation2seat WHERE reservation_id=" + reservationID;
             executeUpdate(sql);
-            if (seats.isEmpty()) {
-                sql = "DELETE FROM reservation2seat WHERE reservation_id=" + reservationID;
-                executeUpdate(sql);
-            } else {
-                for (Seat seat : seats) {
-                    sql = "UPDATE reservation2seat SET "
-                            + "reservation_id = " + reservationID + ", "
-                            + "seat_id= " + seat.getIndex();
+        } else {
+            for (Seat seat : seats) {
+                sql = "UPDATE reservation2seat SET "
+                        + "reservation_id = " + reservationID + ", "
+                        + "seat_id= " + seat.getIndex();
 
-                    executeUpdate(sql);
-                }
+                executeUpdate(sql);
             }
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while editing your reservation", ex);
         }
+
     }
 
     @Override
@@ -361,11 +370,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
         String sql = "DELETE FROM reservations WHERE id = " + reservationID;
 
-        try {
-            executeUpdate(sql);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while deleting your reservation", ex);
-        }
+        executeUpdate(sql);
 
     }
 
@@ -420,11 +425,9 @@ public class DatabaseHandler implements DatabaseInterface {
                 + "" + totalSeats + ", "
                 + "'" + departureTime + "', "
                 + "'" + arrivalTime + "')";
-        try {
-            executeUpdate(sql);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while creating your reservation", ex);
-        }
+
+        executeUpdate(sql);
+
     }
 
     @Override
@@ -443,12 +446,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     public void deleteSeats(int i) {
-        String sql = "DELETE FROM seats WHERE seat_id= " + i;
-        try {
-            executeUpdate(sql);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while creating your seats", ex);
-        }
+
     }
 
 }
