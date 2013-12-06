@@ -71,9 +71,18 @@ public class Flight {
         return seats;
     }
     
+    public String getDeparturePlace(){
+        return departurePlace;
+    }
+    
     public String getDepartureTime(){
         return departureTime;
     }
+    
+    public String getArrivalPlace(){
+        return arrivalPlace;
+    }
+
     public String getArrivalTime(){
         return arrivalTime;
     }
