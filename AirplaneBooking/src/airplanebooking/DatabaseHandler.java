@@ -245,6 +245,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    @Override
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone) {
 
         String sql = "SELECT * FROM customers WHERE ";
@@ -504,7 +505,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
-    //  @Override
+    @Override
     public ArrayList<Booking> getCustomerReservations(int customerID) {
 
         String sql = "SELECT rsv.id "

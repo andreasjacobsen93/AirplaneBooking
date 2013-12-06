@@ -19,10 +19,10 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI {
     public FindCustomerList(ArrayList<Customer> list) {
         initComponents();
         this.list = list;
-        
+
         for (int i = 0; i < list.size(); i++)
         {
-            list1.add(list.get(i).getFirstName());
+            list1.add(list.get(i).getFirstName() + " " + list.get(i).getLastName());
         }
     }
 
@@ -68,7 +68,7 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI {
     private void button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MouseClicked
         // TODO add your handling code here:
         CurrentBooking.addCustomer(list.get(list1.getSelectedIndex()));
-        CurrentBooking.updated();
+        CurrentBooking.update();
         this.dispose();
     }//GEN-LAST:event_button1MouseClicked
 

@@ -344,7 +344,8 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
             else seats += ", "+s;
             i++;
         }
-        labelSeats.setText(seats);
+        if (i > 0) labelSeats.setText(seats);
+        else labelSeats.setText("No seats chosen.");
         
         // Classes label
         i = 0;
@@ -361,8 +362,10 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         if (CurrentBooking.isEconomyClass()) {
             if (i>0) classes += ", ";
             classes += "Economy Class";
+            i++;
         }
-        labelTravelClass.setText(classes);
+        if (i > 0) labelTravelClass.setText(classes);
+        else labelTravelClass.setText("No seats chosen.");
         
         if (CurrentBooking.getCustomer() != null)
         {

@@ -42,7 +42,6 @@ public class Flight {
         this.seats = new Seat[totalSeats];
         this.departureTime = "";
         this.arrivalTime = "";  
-        
     }
     
     public int getID(){

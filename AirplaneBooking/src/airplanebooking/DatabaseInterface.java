@@ -38,6 +38,8 @@ public interface DatabaseInterface {
 
     public Booking getReservation(int reservationID);
     
+    public ArrayList<Booking> getCustomerReservations(int customerID);
+    
     //Below are all flight related DB method declarations.
     
     public void createFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime); 

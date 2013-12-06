@@ -95,16 +95,16 @@ public class CurrentBooking {
                 blockedSeats.add(i + 1);
             }
         }
-        updated();
+        update();
     }
 
-    private static void update() {
+    public static void update() {
         EconomyClass = false;
         BusinessClass = false;
         FirstClass = false;
 
         for (int i : bookedSeats) {
-            // Current seat is Economy Class
+            // Current seat is First Class
             if (FirstSeats > i) {
                 FirstClass = true;
             } 
@@ -113,7 +113,7 @@ public class CurrentBooking {
                 BusinessClass = true;
             } 
             // Current seat is Economy Class
-            else if (FirstSeats + BusinessSeats + EconomySeats > i) {
+            else {
                 EconomyClass = true;
             }
         }

@@ -15,7 +15,6 @@ public class Booking {
     private final Integer food;
     private final ArrayList<Seat> seats;
     
-    
     public Booking(int id, int customerID, String flightID, ArrayList<Seat> seats, int food)
     {
         this.id = id;

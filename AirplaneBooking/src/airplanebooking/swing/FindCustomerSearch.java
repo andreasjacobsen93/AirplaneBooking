@@ -77,9 +77,9 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
 
         buttonSearch.setLabel("Search for customer...");
         buttonSearch.setName(""); // NOI18N
-        buttonSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonSearchActionPerformed(evt);
+        buttonSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonSearchMouseClicked(evt);
             }
         });
 
@@ -109,7 +109,7 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
+    private void buttonSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchMouseClicked
         String firstname = null;
         String lastname = null;
         String email = null;
@@ -139,31 +139,24 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
         switch(nextStep)
         {
             case "reservations":
-                
+                    FindCustomerReservations fcrForm = new FindCustomerReservations(list);
+                    fcrForm.run();
+                    this.dispose();
                 break;
             case "customers":
-                FindCustomerList fclForm = new FindCustomerList(list);
-                fclForm.run();
-                this.dispose();
+                    FindCustomerList fclForm = new FindCustomerList(list);
+                    fclForm.run();
+                    this.dispose();
                 break;
         }
-    }//GEN-LAST:event_buttonSearchActionPerformed
+    }//GEN-LAST:event_buttonSearchMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button buttonSearch;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private java.awt.TextField textEmail;
     private java.awt.TextField textFirstName;
-    private java.awt.TextField textLastName;
-    private java.awt.TextField textLastName1;
-    private java.awt.TextField textLastName2;
     private java.awt.TextField textLastName3;
-    private java.awt.TextField textMaritialStatus;
-    private java.awt.TextField textMaritialStatus1;
-    private java.awt.TextField textMaritialStatus2;
     private java.awt.TextField textPhone;
     // End of variables declaration//GEN-END:variables
 
