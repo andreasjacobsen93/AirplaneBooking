@@ -1,6 +1,8 @@
 package airplanebooking.DB;
 
 import java.sql.Array;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,6 +20,7 @@ public class Customer {
     private final String addressCountry;
     private final Integer phone;
     private final String mail;
+
     
     public Customer(int id, String maritialStatus, String firstName, String lastName, String addressStreet, int addressZip, String addressCity, String addressCountry, int phone, String mail)
     {
@@ -67,6 +70,7 @@ public class Customer {
     public String getAddressStreet(){
         return addressStreet;
     }
+    
     
     public int getAddressZip(){
         return addressZip;

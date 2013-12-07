@@ -18,9 +18,13 @@ public interface DatabaseInterface {
     //Below are all customer related DB method declarations.
     */
     
-    public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber);
+    public void createCustomer(String maritalstatus, String firstname, 
+            String lastname, String addressStreet, int addressZip, 
+            String addressCity, String addressCountry, String email, int phonenumber);
 
-    public void editCustomer(int customerID, String maritalstatus,  String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber);
+    public void editCustomer(int customerID, String maritalstatus,  String firstname, 
+            String lastname, String addressStreet, int addressZip, String addressCity, 
+            String addressCountry, String email, int phonenumber);
 
     public void deleteCustomer(int customerID);
 
@@ -54,9 +58,11 @@ public interface DatabaseInterface {
     //Below are all flight related DB method declarations.
     */
     
-    public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime); 
+    public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, 
+            String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime); 
     
-    public void editFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime);
+   public void editFlight(int flightID, int airplaneID, int firstCost, int businessCost, int economyCost, 
+           String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime);
     
     public void deleteFlight(int flightID);
     

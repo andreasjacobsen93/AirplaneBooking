@@ -9,6 +9,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -20,20 +21,22 @@ import java.util.logging.Logger;
  * @author Alex
  */
 public class DatabaseHandler implements DatabaseInterface {
-    //DB fields
+
+    //DB & SQL fields
     Connection con = null;
     Statement statement = null;
     ResultSet results = null;
-    ComboPooledDataSource cpds = new ComboPooledDataSource();    
-    
+    SQLWarning warning = new SQLWarning();
+    ComboPooledDataSource cpds = new ComboPooledDataSource();
+
     //Customer field
-    Customer customer = null;
-    ArrayList<Customer> customers = new ArrayList();    
-    
+    Customer customer;
+    ArrayList<Customer> customers = new ArrayList();
+
     //Booking field
     Booking reservation = null;
     ArrayList<Booking> reservations = new ArrayList();
-    
+
     //Flight field
     Flight flight = null;
 
@@ -42,8 +45,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     //Airplane field
     Airplane airplane = null;
-
-
 
     public DatabaseHandler() {
         //contructor method to initiate (combo)DataSource for pooled connections on spawning an object.
@@ -70,6 +71,7 @@ public class DatabaseHandler implements DatabaseInterface {
             statement = con.createStatement();
             //pass statement to statement handler -> db.
             statement.executeUpdate(sql);
+            statement.getWarnings();
 
         } catch (SQLException e) {
             System.out.println(e);
@@ -83,7 +85,7 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
             con = cpds.getConnection();
             statement = con.createStatement();
-
+            statement.getWarnings();
             //pass statement to statement handler -> db and save ResultSet.
             results = statement.executeQuery(sql);
 
@@ -94,14 +96,29 @@ public class DatabaseHandler implements DatabaseInterface {
         return results;
     }
 
+    private String getWarnings() {
+        String status = warning.getMessage();
+        return status;
+        /*        if (!status.isEmpty()) {
+         return status;
+         } else {
+         status = "Completed without error.";
+         return status;
+         }
+         */
+    }
+
     private void closeConnection() {
         try {
+            
+            if (con != null){
             statement.close();
             //
             results.close();
             // results = null;
             con.close();
             // con = null;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -166,25 +183,30 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public Customer getCustomer(int customerID) {
         try {
-            String sql = "SELECT * FROM customers WHERE id = " + customerID;
-            //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
+            if (customerExists(customerID)) {
+                String sql = "SELECT * FROM customers WHERE id = " + customerID;
+                //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
 
-            executeQuery(sql);
-            while (results.next()) {
-                int id = results.getInt("id");
-                String maritalstatus = results.getString("maritalstatus");
-                String firstname = results.getString("firstname");
-                String lastname = results.getString("lastname");
-                String addressStreet = results.getString("addressstreet");
-                int addressZip = results.getInt("addresszip");
-                String addressCity = results.getString("addresscity");
-                String addressCountry = results.getString("addresscountry");
-                int phonenumber = results.getInt("phonenumber");
-                String email = results.getString("email");
+                executeQuery(sql);
+                while (results.next()) {
+                    int id = results.getInt("id");
+                    String maritalstatus = results.getString("maritalstatus");
+                    String firstname = results.getString("firstname");
+                    String lastname = results.getString("lastname");
+                    String addressStreet = results.getString("addressstreet");
+                    int addressZip = results.getInt("addresszip");
+                    String addressCity = results.getString("addresscity");
+                    String addressCountry = results.getString("addresscountry");
+                    int phonenumber = results.getInt("phonenumber");
+                    String email = results.getString("email");
 
-                customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
-
-            }
+                    customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
+                    System.out.println(getWarnings());
+                 
+                }
+            } else {
+                                  
+                }
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,10 +216,6 @@ public class DatabaseHandler implements DatabaseInterface {
         return customer;
     }
 
-    /*   public ArrayList getCustomers() {
-        
-     return customers;
-     }*/
     @Override
     public ArrayList<Customer> getCustomers(int q) {
 
@@ -344,6 +362,27 @@ public class DatabaseHandler implements DatabaseInterface {
         }
 
         return exists;
+
+    }
+
+    public boolean customerExists(int customerID) {
+        String sql = "SELECT * FROM customers WHERE id="+customerID;
+        executeQuery(sql);
+        Boolean exists = false;
+        try {
+        results.first();
+        if (results.wasNull()){
+            exists = false;
+        } else {
+            exists = true;
+
+        }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+        }
+      return exists;
 
     }
 
@@ -515,6 +554,49 @@ public class DatabaseHandler implements DatabaseInterface {
         }
 
     }
+    
+     public Booking getReservation(int seatID, int flightID) {
+
+        String sql = "SELECT * FROM reservation2seat WHERE seat_id = "+seatID+" AND flight_id="+flightID;
+        //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
+        executeQuery(sql);
+        try {
+            
+            int reservationID = results.getInt(1);
+            sql = "SELECT * FROM reservations WHERE id = " + reservationID;
+            executeQuery(sql);
+            while (results.next()) {
+                int id = results.getInt("id");
+                int customerid = results.getInt("customer_id");
+                int flightid = results.getInt("flightid");
+                int food = results.getInt("food");
+
+                String getSeats = "SELECT r2s.seat_id "
+                        + "FROM `reservation2seat` r2s "
+                        + "INNER JOIN reservations rs "
+                        + "ON r2s.reservation_id = " + id + " "
+                        + "WHERE r2s.reservation_id = rs.id ";
+
+                ResultSet seatResults = executeQuery(getSeats);
+                while (seatResults.next()) {
+                    Seat seat = new Seat(seatResults.getInt("seat_id"));
+                    seats.add(seat);
+                }
+
+                reservation = new Booking(id, customerid, flightid, seats, food);
+
+            }
+            //statement.close();
+            return reservation;
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while getting the reservation:", ex);
+
+        } catch (NullPointerException e) {
+            throw new RuntimeException("You didn't supply a valid reservation ID", e);
+        }
+
+    }
 
     @Override
     public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
@@ -615,13 +697,26 @@ public class DatabaseHandler implements DatabaseInterface {
      *   Below are unimplemented methods.
      */
     @Override
-    public void editFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
+    public void editFlight(int flightID, int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
 
+        String sql = "UPDATE flights SET "
+                + "airplane_id = " + airplaneID + ", "
+                + "firstcost = " + firstCost + ", "
+                + "businesscost = " + businessCost + ", "
+                + "economycost = " + economyCost + ", "
+                + "departuretime = '" + departurePlace + "', "
+                + "departureplace = '" + departureTime + "', "
+                + "arrivaltime = '" + arrivalTime + "', "
+                + "arrivalplace = '" + arrivalPlace + "', "
+                + "WHERE id = " + flightID;
+
+        executeUpdate(sql);
     }
 
     @Override
     public void deleteFlight(int flightID) {
-
+        String sql = "DELETE FROM flights WHERE id =" + flightID;
+        executeUpdate(sql);
     }
 
     @Override
@@ -637,14 +732,13 @@ public class DatabaseHandler implements DatabaseInterface {
             String fcSeatFormation = results.getString("fcseatformation");
             String bcSeatFormation = results.getString("bcseatformation");
             String ecSeatFormation = results.getString("ecseatformation");
-            
+
             airplane = new Airplane(id, firstSeats, businessSeats, economySeats, fcSeatFormation, bcSeatFormation, ecSeatFormation);
-            
-            
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return airplane;
     }
+
 }
