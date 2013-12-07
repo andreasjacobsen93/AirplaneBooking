@@ -52,6 +52,8 @@ public interface DatabaseInterface {
     
     public ArrayList<Booking> getCustomerReservations(int customerID);
     
+    public Booking getReservation(int seatID, int flightID);
+    
     public boolean seatsExist(ArrayList<Seat> seats, Flight flight);
     
     /*

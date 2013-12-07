@@ -21,6 +21,7 @@ public class CurrentFlight {
     
     private static Flight flight;
     private static Airplane airplane;
+    private static int seat;
     
     public static void setFlight(Flight f)
     {
@@ -38,6 +39,16 @@ public class CurrentFlight {
     public static Airplane getAirplane()
     {
         return airplane;
+    }
+    
+    public static void setSeat(int s)
+    {
+        seat = s;
+    }
+    
+    public static int getSeat()
+    {
+        return seat;
     }
     
     public static void updated() {

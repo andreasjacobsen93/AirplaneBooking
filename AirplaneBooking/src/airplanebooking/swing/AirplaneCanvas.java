@@ -504,7 +504,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         repaint();
     }
     
-    public static void addListener(SeatListener listener) {
+    public void addListener(SeatListener listener) {
         listeners.add(listener);
     }
 }

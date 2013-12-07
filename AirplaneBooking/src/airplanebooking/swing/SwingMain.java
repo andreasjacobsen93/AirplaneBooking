@@ -2,6 +2,10 @@ package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.CurrentFlight;
+import airplanebooking.DB.Booking;
+import airplanebooking.DB.Customer;
+import airplanebooking.DB.DatabaseHandler;
+import airplanebooking.DB.DatabaseInterface;
 import airplanebooking.FlightListener;
 import airplanebooking.GUI;
 import airplanebooking.SeatListener;
@@ -12,13 +16,19 @@ import airplanebooking.SeatListener;
  */
 public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener, SeatListener {
 
+    private Boolean ready;
+    
     /**
      * Creates new form SwingMainFrame
      */
     public SwingMain() {
-        AirplaneCanvasPanel = new javax.swing.JPanel();
+        AirplaneCanvasPanel = new AirplaneCanvas();
         initComponents();
         setTitle("Airplane Booking");
+        ready = false;
+        jPanel3.setVisible(false); // Airplane
+        jPanel5.setVisible(false); // Options
+        jPanel6.setVisible(false); // Customer
     }
         
     private void initComponents() {
@@ -112,7 +122,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         });
 
         labelAirplaneName.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        labelAirplaneName.setText("Airbus name and number");
+        labelAirplaneName.setText("");
 
         AirplaneCanvasPanel.setBackground(new java.awt.Color(153, 153, 153));
         AirplaneCanvasPanel.setMinimumSize(new java.awt.Dimension(0, 180));
@@ -157,20 +167,20 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
 
         buttonDeleteReservation.setLabel("Delete reservation...");
 
-        labelSeats.setText("Seats: 47, 48, 49");
+        labelSeats.setText("Seats:");
 
-        labelRoute.setText("Paris - London");
+        labelRoute.setText(" - ");
 
-        labelTime.setText("29-11-2013 @ 15:47");
+        labelTime.setText("");
 
         checkboxLunchOnboard.setEnabled(false);
         checkboxLunchOnboard.setLabel("Lunch on-board");
         checkboxLunchOnboard.setName(""); // NOI18N
         checkboxLunchOnboard.setState(true);
 
-        labelTravelClass.setText("Business class");
+        labelTravelClass.setText("");
 
-        labelPrice.setText("Price: 300 USD");
+        labelPrice.setText("Price: 0 USD");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -334,10 +344,12 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     
     private void buttonNewReservationMouseClicked() {                                                  
         // TODO add your handling code here:
-        SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
-        CurrentBooking.reset();
-        CurrentBooking.addListener(SNR);
-        SNR.run();
+        if(ready == true) {
+            SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
+            CurrentBooking.reset();
+            CurrentBooking.addListener(SNR);
+            SNR.run();
+        }
     } 
     
     private void buttonFindCustomerMouseClicked(){
@@ -351,7 +363,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     }
     
     // Variables declaration - do not modify
-    private javax.swing.JComponent AirplaneCanvasPanel;
+    private AirplaneCanvas AirplaneCanvasPanel;
     private java.awt.Button buttonDeleteReservation;
     private java.awt.Button buttonFilter;
     private java.awt.Button buttonFindCustomer;
@@ -381,6 +393,10 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
 
     @Override
     public void flightChanged() {
+        jPanel3.setVisible(true); // Airplane
+        jPanel5.setVisible(true); // Options
+        
+        ready = true;
         AirplaneCanvasPanel = new AirplaneCanvas(false, CurrentFlight.getFlight());
         initComponents();
         labelAirplaneName.setText(CurrentFlight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + ":" + CurrentFlight.getFlight().getID());
@@ -390,17 +406,55 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
 
     @Override
     public void seatChanged() {
+        jPanel6.setVisible(true); // Customer
         
-        textMaritialStatus.setText("Mr.");
-        textLastName.setText("customerLastname");
-        textAddress.setText("customerAddress");
-        textPhone.setText("customerPhone");
-        textEmail.setText("customerEmail");
-        textFirstName.setText("customerFirstName");
+        DatabaseInterface db = new DatabaseHandler();
+        Booking b = db.getReservation(CurrentFlight.getSeat(), CurrentFlight.getFlight().getID());
+        Customer c = db.getCustomer(b.getCustomerID());
         
-        labelSeats.setText("Seats: 47, 48, 49");
-        checkboxLunchOnboard.setState(true);
-        labelTravelClass.setText("Business class");
+        textMaritialStatus.setText(c.getMaritalStatus());
+        textFirstName.setText(c.getFirstName());
+        textLastName.setText(c.getLastName());
+        textAddress.setText(c.getAddressStreet()+"\n"+c.getAddressCity()+" "+c.getAddressZip()+"\n"+c.getAddressCountry());
+        textPhone.setText(String.valueOf(c.getPhone()));
+        textEmail.setText(c.getEmail());
+        
+        int i = 0;
+        String seats = "Seats: ";      
+        for (int s : CurrentBooking.getSeats())
+        {
+            if (i == 0) seats += ""+s;
+            else seats += ", "+s;
+            i++;
+        }
+        if (i > 0) labelSeats.setText(seats);
+        else labelSeats.setText("No seats chosen.");
+        
+        // Classes label
+        i = 0;
+        String classes = "";
+        if (CurrentBooking.isFirstClass()) {
+            classes += "First Class";
+            i++;
+        }
+        if (CurrentBooking.isBusinessClass()) {
+            if (i>0) classes += ", ";
+            classes += "Business Class";
+            i++;
+        }
+        if (CurrentBooking.isEconomyClass()) {
+            if (i>0) classes += ", ";
+            classes += "Economy Class";
+            i++;
+        }
+        if (i > 0) labelTravelClass.setText(classes);
+        else labelTravelClass.setText("No seats chosen.");
+        
+        if (b.getFood() == 1)
+            checkboxLunchOnboard.setState(true);
+        else
+            checkboxLunchOnboard.setState(false);
+
         labelPrice.setText("Price: 300 USD");
     }
 }

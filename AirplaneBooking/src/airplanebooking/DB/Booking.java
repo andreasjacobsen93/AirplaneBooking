@@ -15,19 +15,24 @@ public class Booking {
     private final Integer flightID;
     private final Integer food;
     private final ArrayList<Seat> seats;
+    private final Integer price;
     
-    public Booking(int id, int customerID, int flightID, ArrayList<Seat> seats, int food)
+    public Booking(int id, int customerID, int flightID, ArrayList<Seat> seats, int food, int price)
     {
         this.id = id;
         this.customerID = customerID;
         this.flightID = flightID;
         this.seats = seats;
         this.food = food;
-
+        this.price = price;
     }
     
     public int getID(){
         return id;
+    }
+    
+    public int getPrice(){
+        return price;
     }
     
     public int getCustomerID(){
