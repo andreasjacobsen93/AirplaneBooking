@@ -12,11 +12,11 @@ public class Booking {
     
     private final Integer id;
     private final Integer customerID;
-    private final String flightID;
+    private final Integer flightID;
     private final Integer food;
     private final ArrayList<Seat> seats;
     
-    public Booking(int id, int customerID, String flightID, ArrayList<Seat> seats, int food)
+    public Booking(int id, int customerID, Integer flightID, ArrayList<Seat> seats, int food)
     {
         this.id = id;
         this.customerID = customerID;
@@ -31,7 +31,7 @@ public class Booking {
         // database get reservation from database
         this.id = 0;
         this.customerID = 0;
-        this.flightID = "";
+        this.flightID = 0;
         this.food = 0;
         this.seats = new ArrayList();
     }
@@ -44,7 +44,7 @@ public class Booking {
         return customerID;
     }
     
-    public String getFlightID(){
+    public Integer getFlightID(){
         return flightID;
     }
     

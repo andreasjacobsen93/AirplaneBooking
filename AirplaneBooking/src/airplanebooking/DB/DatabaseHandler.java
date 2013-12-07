@@ -472,7 +472,7 @@ public class DatabaseHandler implements DatabaseInterface {
             while (results.next()) {
                 int id = results.getInt("id");
                 int customerid = results.getInt("customer_id");
-                String flightid = results.getString("flightid");
+                int flightid = results.getInt("flightid");
                 int food = results.getInt("food");
 
                 String getSeats = "SELECT r2s.seat_id "
