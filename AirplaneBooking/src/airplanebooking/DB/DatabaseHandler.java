@@ -46,6 +46,9 @@ public class DatabaseHandler implements DatabaseInterface {
     //Airplane field
     Airplane airplane = null;
 
+    /**
+     *
+     */
     public DatabaseHandler() {
         //contructor method to initiate (combo)DataSource for pooled connections on spawning an object.
         initiateDataSource();
@@ -124,6 +127,20 @@ public class DatabaseHandler implements DatabaseInterface {
         }
     }
 
+    /**
+     * This method creates a row in the database, containing the parameters that match the input, and thus creates and stores a new Customer.
+     *
+     * @param maritalstatus String value for Marital Status. <br><b>Max 10 characters.</b><br>
+     * @param firstname String value for First Name of the Customer. <br><b> Max 20 characters.</b><br>
+     * @param lastname String value for Last Name of the Customer. <br><b>Max 20 characters.</b><br>
+     * @param addressStreet String value for the Address Street of the Customer. <br><b>Max 40 characters.</b><br>
+     * @param addressZip Integer value for the Zip code of the Customers City. <br><b>Ranges from 0 - 4294967295.</b><br>
+     * @param addressCity  String value for the Address City of the Customer. <br><b>Max 30 characters.</b><br>
+     * @param addressCountry String value for the Address Country of the Customer. <br><b>Max 30 characters.</b><br>
+     * @param email String value for the Email of the Customer. <br><b>Max 30 characters.</b><br>
+     * @param phonenumber Integer value for the Phone Number of the customer. <br><b>Ranges from 0 - 4294967295<b>.
+     * 
+     */
     @Override
     public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
 
@@ -145,6 +162,19 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param customerID
+     * @param maritalstatus
+     * @param firstname
+     * @param lastname
+     * @param addressStreet
+     * @param addressZip
+     * @param addressCity
+     * @param addressCountry
+     * @param email
+     * @param phonenumber
+     */
     @Override
     public void editCustomer(int customerID, String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
 
@@ -167,6 +197,10 @@ public class DatabaseHandler implements DatabaseInterface {
         executeUpdate(sql);
     }
 
+    /**
+     *
+     * @param customerID
+     */
     @Override
     public void deleteCustomer(int customerID) {
 
@@ -180,6 +214,11 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param customerID
+     * @return
+     */
     @Override
     public Customer getCustomer(int customerID) {
         try {
@@ -216,6 +255,11 @@ public class DatabaseHandler implements DatabaseInterface {
         return customer;
     }
 
+    /**
+     *
+     * @param q
+     * @return
+     */
     @Override
     public ArrayList<Customer> getCustomers(int q) {
 
@@ -248,6 +292,11 @@ public class DatabaseHandler implements DatabaseInterface {
         }
     }
 
+    /**
+     *
+     * @param q
+     * @return
+     */
     @Override
     public ArrayList<Customer> getCustomers(String q) {
         String sql = "SELECT * FROM customers WHERE firstname =\"" + q + "\" OR lastname =\"" + q + "\" OR addressstreet =\"" + q + "\" OR email =\"" + q + "\"";
@@ -278,6 +327,14 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param firstName
+     * @param lastName
+     * @param Email
+     * @param Phone
+     * @return
+     */
     @Override
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone) {
 
@@ -338,6 +395,11 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param customer
+     * @return
+     */
     @Override
     public boolean customerExists(Customer customer) {
 
@@ -365,6 +427,11 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param customerID
+     * @return
+     */
     public boolean customerExists(int customerID) {
         String sql = "SELECT * FROM customers WHERE id="+customerID;
         executeQuery(sql);
@@ -381,6 +448,12 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param seats
+     * @param flight
+     * @return
+     */
     @Override
     public boolean seatsExist(ArrayList<Seat> seats, Flight flight) {
         boolean exists = false;
@@ -396,6 +469,13 @@ public class DatabaseHandler implements DatabaseInterface {
         return exists;
     }
 
+    /**
+     *
+     * @param currentCustomer
+     * @param flight
+     * @param seats
+     * @param food
+     */
     @Override
     public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, int food) {
         try {
@@ -471,6 +551,14 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param reservationID
+     * @param customerID
+     * @param flightID
+     * @param seats
+     * @param food
+     */
     @Override
     public void editReservation(int reservationID, int customerID, String flightID, ArrayList<Seat> seats, int food) {
 
@@ -496,6 +584,10 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param reservationID
+     */
     @Override
     public void deleteReservation(int reservationID) {
 
@@ -505,6 +597,11 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param reservationID
+     * @return
+     */
     @Override
     public Booking getReservation(int reservationID) {
 
@@ -545,8 +642,14 @@ public class DatabaseHandler implements DatabaseInterface {
         }
 
     }
-    
-     public Booking getReservation(int seatID, int flightID) {
+
+    /**
+     *
+     * @param seatID
+     * @param flightID
+     * @return
+     */
+    public Booking getReservation(int seatID, int flightID) {
 
         String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id ="+seatID+" AND flight_id="+flightID;
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
@@ -592,6 +695,17 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param airplaneID
+     * @param firstCost
+     * @param businessCost
+     * @param economyCost
+     * @param departurePlace
+     * @param departureTime
+     * @param arrivalPlace
+     * @param arrivalTime
+     */
     @Override
     public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
         String sql = "INSERT INTO flights "
@@ -609,6 +723,11 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param flightID
+     * @return
+     */
     @Override
     public Flight getFlight(int flightID) {
         try {
@@ -639,6 +758,11 @@ public class DatabaseHandler implements DatabaseInterface {
         return flight;
     }
 
+    /**
+     *
+     * @param customerID
+     * @return
+     */
     @Override
     public ArrayList<Booking> getCustomerReservations(int customerID) {
 
@@ -668,6 +792,11 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    /**
+     *
+     * @param flightID
+     * @return
+     */
     @Override
     public ArrayList<Seat> getFlightBookedSeats(int flightID) {
         try {
@@ -683,12 +812,18 @@ public class DatabaseHandler implements DatabaseInterface {
         }
         return seats;
     }
-
-    /*
-     *   Below are unimplemented methods.
-     *   Below are unimplemented methods.
-     *   Below are unimplemented methods.
-     *   Below are unimplemented methods.
+    
+    /**
+     *
+     * @param flightID
+     * @param airplaneID
+     * @param firstCost
+     * @param businessCost
+     * @param economyCost
+     * @param departurePlace
+     * @param departureTime
+     * @param arrivalPlace
+     * @param arrivalTime
      */
     @Override
     public void editFlight(int flightID, int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
@@ -707,12 +842,21 @@ public class DatabaseHandler implements DatabaseInterface {
         executeUpdate(sql);
     }
 
+    /**
+     *
+     * @param flightID
+     */
     @Override
     public void deleteFlight(int flightID) {
         String sql = "DELETE FROM flights WHERE id =" + flightID;
         executeUpdate(sql);
     }
 
+    /**
+     *
+     * @param airplaneID
+     * @return
+     */
     @Override
     public Airplane getAirplane(int airplaneID) {
         try {
@@ -736,4 +880,12 @@ public class DatabaseHandler implements DatabaseInterface {
         return airplane;
     }
 
+
+    /*
+     *   Below are unimplemented methods.
+     *   Below are unimplemented methods.
+     *   Below are unimplemented methods.
+     *   Below are unimplemented methods.
+     */
+    
 }
