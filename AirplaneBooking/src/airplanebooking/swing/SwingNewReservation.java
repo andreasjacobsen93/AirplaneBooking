@@ -50,6 +50,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         textFirstName = new java.awt.TextField();
         buttonFindBestSeats = new java.awt.Button();
         buttonExistingCustomer = new java.awt.Button();
+        buttonResetBookedSeats = new java.awt.Button();
 
         setMinimumSize(new java.awt.Dimension(926, 570));
 
@@ -67,6 +68,14 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonFindBestSeatsMouseClicked();
+            }
+        });
+
+        buttonResetBookedSeats.setLabel("Reset booked seats...");
+        buttonResetBookedSeats.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonResetBookedSeatsMouseClicked();
             }
         });
         
@@ -96,7 +105,10 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonFindBestSeats, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(buttonFindBestSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(buttonResetBookedSeats, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(labelAirplaneName, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
                     .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE))
                 .addContainerGap())
@@ -109,9 +121,9 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addComponent(buttonFindBestSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonFindBestSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonResetBookedSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
@@ -298,6 +310,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     private java.awt.Button buttonDeleteReservation;
     private java.awt.Button buttonFindBestSeats;
     private java.awt.Button buttonExistingCustomer;
+    private java.awt.Button buttonResetBookedSeats;
     private java.awt.Checkbox checkboxLunchOnboard;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -323,14 +336,19 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     
     public void buttonFindBestSeatsMouseClicked()
     {
-        SwingFindBestSeats fbsForm = new SwingFindBestSeats(AirplaneCan);
+        GUI fbsForm = new SwingFindBestSeats(AirplaneCan);
         fbsForm.run();
     }
     
     public void buttonExistingCustomerMouseClicked()
     {
-        FindCustomerSearch fcsForm = new FindCustomerSearch("customers");
+        GUI fcsForm = new FindCustomerSearch("customers");
         fcsForm.run();
+    }
+    
+    public void buttonResetBookedSeatsMouseClicked()
+    {
+        CurrentBooking.clearBookedSeats();
     }
 
     @Override

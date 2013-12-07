@@ -64,6 +64,12 @@ public class CurrentBooking {
     public static void addFlight(Flight f) {
         flight = f;
     }
+    
+    public static void clearBookedSeats()
+    {
+        bookedSeats.clear();
+        update();
+    }
 
     public static void reset() {
         bookedSeats = new ArrayList<>();//null;
@@ -222,80 +228,9 @@ public class CurrentBooking {
 
     public static void findBestSeats(int amount) {
         bookedSeats.clear();
-        update();
-
-        ArrayList<Integer> list = new ArrayList<>();
-
+        //update();
+        
         // ECONOMY CLASS IS THE ONLY ONE WORKING!!
-        if (amount <= ErowSeats) {
-            int s = FirstSeats + BusinessSeats;
-            for (int i = 0; i < EseatGroups * EseatLength; i++) {
-                int sp = 0;
-                int seatsInRow = 0;
-                for (int j = 0; j < ErowSeats; j++) {
-                    s++;
-
-                    if (!blockedSeats.contains(s)) {
-                        sp++;
-                        seatsInRow++;
-                        list.add(s);
-                    } else {
-                        seatsInRow = 0;
-                    }
-
-                    if (sp == amount && seatsInRow == amount) {
-                        addSeats(list);
-                        return;
-                    }
-                }
-                list.clear();
-            }
-
-            s = FirstSeats + BusinessSeats;
-            for (int i = 0; i < EseatGroups * EseatLength; i++) {
-                int sp = 0;
-                for (int j = 0; j < ErowSeats; j++) {
-                    s++;
-
-                    if (!blockedSeats.contains(s)) {
-                        sp++;
-                        list.add(s);
-                    }
-
-                    if (sp == amount) {
-                        addSeats(list);
-                        return;
-                    }
-                }
-                list.clear();
-            }
-        }
-
-        if (amount <= ErowSeats * EseatGroups) {
-            int s = FirstSeats + BusinessSeats;
-            for (int i = 0; i < EseatLength; i++) {
-                int sp = 0;
-                int seatsInRow = 0;
-                for (int j = 0; j < EseatGroups * ErowSeats; j++) {
-                    s++;
-
-                    if (!blockedSeats.contains(s)) {
-                        sp++;
-                        seatsInRow++;
-                        list.add(s);
-                    } else {
-                        seatsInRow = 0;
-                    }
-
-                    if (sp == amount && seatsInRow == amount) {
-                        addSeats(list);
-                        return;
-                    }
-                }
-                list.clear();
-            }
-        }
-
         findSeatsAlgorithm(amount);
     }
 
@@ -306,6 +241,7 @@ public class CurrentBooking {
     }
 
     private static void findSeatsAlgorithm(int amount) {
+
         // Først laver vi et int 2d array som holder alle sæde numrene
         int[][] seatsArray = new int[EseatGroups * ErowSeats][EseatLength];
         int s = FirstSeats + BusinessSeats; // Antallet af sæder som ikke er med i economy class
@@ -322,11 +258,7 @@ public class CurrentBooking {
         // Så kører vi alle sæderne i gennem
         for (int i = 0; i < EseatGroups * ErowSeats; i++) {
             for (int j = 0; j < EseatLength; j++) {
-                //System.out.println("-----------NEW------------");
-                //System.out.println(i + ":" + j);
-
-                Boolean stopped = false;
-
+                
                 // Create new combination holder
                 bestSeats bs = new bestSeats();
 
@@ -336,101 +268,23 @@ public class CurrentBooking {
 
                 bs.score++;
 
-                bs.tempSeats.add(i); //System.out.println("1. saved " + i + " and seat " + seatsArray[i][j]);
+                bs.tempSeats.add(i);
                 bs.seats.add(seatsArray[i][j]);
 
-                for (int ii = i + 1; ii < EseatGroups * ErowSeats; ii++) {
-                    if (bs.seats.size() >= amount) {
-                        break;
-                    }
-
-                    if (blockedSeats.contains(seatsArray[ii][j])) {
-                        stopped = true;
-                        break;
-                    }
-
-                    bs.score++;
-                    bs.tempSeats.add(ii); //System.out.println("2. saved " + ii + " and seat " + seatsArray[ii][j]);
-                    bs.seats.add(seatsArray[ii][j]);
-                }
-
-                if (stopped == true) {
-                    continue;
-                }
-
-                ArrayList<Integer> tempSeatsFirst = bs.tempSeats;
-                ArrayList<Integer> tempSeatsSecond = new ArrayList<>();
-
-                for (int jj = j + 1; jj < EseatLength; jj++) {
-                    if (bs.seats.size() >= amount) {
-                        break;
-                    }
-
-                    if (tempSeatsFirst.isEmpty()) {
-                        break;
-                    }
-
-                    for (int ii : tempSeatsFirst) {
-                        //System.out.println(jj + ":" + ii);
-
-                        if (bs.seats.size() >= amount) {
-                            break;
-                        }
-
-                        if (!blockedSeats.contains(seatsArray[ii][jj])) {
-                            bs.score++;
-
-                            tempSeatsSecond.add(ii);
-                            //System.out.println("3. saved " + ii + " and seat " + seatsArray[ii][jj]);
-                            bs.seats.add(seatsArray[ii][jj]);
-                        } else {
-                            bs.score--;
-                        }
-                    }
-
-                    tempSeatsFirst = tempSeatsSecond;
-                    tempSeatsSecond.clear();
-                }
-
-                tempSeatsFirst = bs.tempSeats;
-                tempSeatsSecond.clear();
-                for (int jj = j - 1; jj >= 0; jj++) {
-                    if (bs.seats.size() >= amount) {
-                        break;
-                    }
-
-                    if (tempSeatsFirst.isEmpty()) {
-                        break;
-                    }
-
-                    for (int ii : tempSeatsFirst) {
-                        //System.out.println(jj + ":" + ii);
-
-                        if (bs.seats.size() >= amount) {
-                            break;
-                        }
-
-                        if (!blockedSeats.contains(seatsArray[ii][jj])) {
-                            bs.score++;
-
-                            tempSeatsSecond.add(ii);
-                            //System.out.println("3. saved " + ii + " and seat " + seatsArray[ii][jj]);
-                            bs.seats.add(seatsArray[ii][jj]);
-                        } else {
-                            bs.score--;
-                        }
-                    }
-
-                    tempSeatsFirst = tempSeatsSecond;
-                    tempSeatsSecond.clear();
-                }
+                vAlgorithmSearch(i, j, bs, amount, seatsArray);
+                
+                hAlgorithmSearch(j+1, "+", bs, amount, seatsArray);
+                hAlgorithmSearch(j-1, "-", bs, amount, seatsArray);
 
                 if (bs.seats.size() == amount) {
                     bs.score += 10;
                 }
+                else
+                {
+                    bs.score -= (amount - bs.seats.size())*2;
+                }
 
                 bs.tempSeats.clear();
-                tempSeatsSecond.clear();
                 list.add(bs);
 
             }
@@ -444,10 +298,6 @@ public class CurrentBooking {
             }
         });
 
-        /*for(int i : list.get(0).seats)
-         {
-         System.out.println(i + "");
-         }*/
         addSeats(list.get(0).seats);
 
         if (list.get(0).seats.isEmpty()) {
@@ -457,5 +307,88 @@ public class CurrentBooking {
             JOptionPane.showMessageDialog(null, list.get(0).seats.size() + " seats were found!");
         }
 
+    }
+    
+    private static void vAlgorithmSearch(int i, int j, bestSeats bs, int amount, int[][] seatsArray)
+    {
+        for (int ii = i + 1; ii < EseatGroups * ErowSeats; ii++) {
+            if (bs.seats.size() >= amount) {
+                break;
+            }
+
+            if (blockedSeats.contains(seatsArray[ii][j])) {
+                //System.out.println("blocked 2");
+                //stopped = true;
+                bs.score--;
+                break;
+            }
+
+            bs.score++;
+            bs.tempSeats.add(ii); //System.out.println("2. saved " + ii + " and seat " + seatsArray[ii][j]);
+            bs.seats.add(seatsArray[ii][j]);
+        }
+    }
+    
+    private static void hAlgorithmSearch(int j, String a, bestSeats bs, int amount, int[][] seatsArray) 
+    {
+        ArrayList<Integer> tempSeatsFirst = bs.tempSeats;
+        ArrayList<Integer> tempSeatsSecond = new ArrayList<>();
+        
+        switch(a)
+        {
+            case "+":
+                    for (int jj = j; jj < EseatLength; j++) {
+                        tempSeatsFirst = hAlgorithmSearchDo(jj, bs, amount, seatsArray, tempSeatsFirst, tempSeatsSecond);
+                        
+                        if (tempSeatsFirst.isEmpty()) {
+                            break;
+                        }
+                        
+                        if (bs.seats.size() >= amount) {
+                            break;
+                        }
+                        
+                        tempSeatsSecond.clear();
+                    }
+                break;
+            case "-":
+                    for (int jj = j; jj >= 0; jj--) {
+                        
+                        if (bs.seats.size() >= amount) {
+                            break;
+                        }
+                        
+                        tempSeatsFirst = hAlgorithmSearchDo(jj, bs, amount, seatsArray, tempSeatsFirst, tempSeatsSecond);
+                        
+                        if (tempSeatsFirst.isEmpty()) {
+                            break;
+                        }
+                        
+                        tempSeatsSecond.clear();
+                    }
+                break;
+        }
+    }
+    
+    private static ArrayList<Integer> hAlgorithmSearchDo(int jj, bestSeats bs, int amount, int[][] seatsArray, ArrayList<Integer> tempSeatsFirst, ArrayList<Integer> tempSeatsSecond)
+    {
+        for (int ii : tempSeatsFirst) {
+            //System.out.println(jj + ":" + ii);
+
+            if (bs.seats.size() >= amount) {
+                break;
+            }
+
+            if (!blockedSeats.contains(seatsArray[ii][jj])) {
+                bs.score++;
+
+                tempSeatsSecond.add(ii);
+                //System.out.println("3. saved " + ii + " and seat " + seatsArray[ii][jj]);
+                bs.seats.add(seatsArray[ii][jj]);
+            } else {
+                bs.score--;
+            }
+        }
+        return tempSeatsSecond;
     }
 }

@@ -145,7 +145,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         
         if (bookable == true)
         {
-            CurrentBooking.addListener(this);
+            addToBookingListeners();
             addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -164,14 +164,14 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                             {
                                 // Blue
                                 // Remove booking
-                                //seats[i][1] = 1;
+                                // seats[i][1] = 1;
                                 CurrentBooking.removeSeat(i+1);
                             }
                             else
                             {
                                 // Green    
                                 // Add booking
-                                //seats[i][1] = 2;
+                                // seats[i][1] = 2;
                                 CurrentBooking.addSeat(i+1);
                             }
                         }
@@ -181,6 +181,11 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                 }
             });
         }
+    }
+    
+    private void addToBookingListeners()
+    {
+        CurrentBooking.addListener(this);
     }
     
     public void clickSeat(int i)

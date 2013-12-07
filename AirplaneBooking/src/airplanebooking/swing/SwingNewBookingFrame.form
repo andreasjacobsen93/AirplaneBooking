@@ -80,7 +80,11 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="labelAirplaneName" alignment="0" pref="738" max="32767" attributes="0"/>
                           <Component id="AirplaneCanvasPanel" alignment="1" pref="738" max="32767" attributes="0"/>
-                          <Component id="buttonNewReservation" alignment="0" pref="738" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="buttonNewReservation" min="-2" pref="551" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="buttonResetBookedSeats" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -94,7 +98,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="AirplaneCanvasPanel" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="buttonNewReservation" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="buttonNewReservation" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="buttonResetBookedSeats" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -141,6 +148,15 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonNewReservationMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="java.awt.Button" name="buttonResetBookedSeats">
+              <Properties>
+                <Property name="label" type="java.lang.String" value="Reset booked seats..."/>
+                <Property name="name" type="java.lang.String" value="" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonResetBookedSeatsMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>

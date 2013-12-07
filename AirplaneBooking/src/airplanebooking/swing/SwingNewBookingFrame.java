@@ -33,6 +33,7 @@ public class SwingNewBookingFrame extends javax.swing.JFrame implements GUI, Boo
         labelAirplaneName = new java.awt.Label();
         AirplaneCanvasPanel = new javax.swing.JPanel();
         buttonNewReservation = new java.awt.Button();
+        buttonResetBookedSeats = new java.awt.Button();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         buttonDeleteReservation = new java.awt.Button();
@@ -85,6 +86,14 @@ public class SwingNewBookingFrame extends javax.swing.JFrame implements GUI, Boo
             }
         });
 
+        buttonResetBookedSeats.setLabel("Reset booked seats...");
+        buttonResetBookedSeats.setName(""); // NOI18N
+        buttonResetBookedSeats.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonResetBookedSeatsMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -94,7 +103,10 @@ public class SwingNewBookingFrame extends javax.swing.JFrame implements GUI, Boo
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelAirplaneName, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
                     .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
-                    .addComponent(buttonNewReservation, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(buttonNewReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonResetBookedSeats, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -105,7 +117,9 @@ public class SwingNewBookingFrame extends javax.swing.JFrame implements GUI, Boo
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(AirplaneCanvasPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonNewReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonNewReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonResetBookedSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
@@ -296,6 +310,10 @@ public class SwingNewBookingFrame extends javax.swing.JFrame implements GUI, Boo
     private void buttonNewReservationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonNewReservationMouseClicked
 
     }//GEN-LAST:event_buttonNewReservationMouseClicked
+
+    private void buttonResetBookedSeatsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetBookedSeatsMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonResetBookedSeatsMouseClicked
     
     @Override
     public void run() 
@@ -308,6 +326,7 @@ public class SwingNewBookingFrame extends javax.swing.JFrame implements GUI, Boo
     private java.awt.Button buttonDeleteReservation;
     private java.awt.Button buttonNewReservation;
     private java.awt.Button buttonNewReservation1;
+    private java.awt.Button buttonResetBookedSeats;
     private java.awt.Checkbox checkboxLunchOnboard;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

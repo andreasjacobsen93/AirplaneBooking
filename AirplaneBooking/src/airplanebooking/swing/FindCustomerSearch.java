@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
 
-    private String nextStep;
+    private final String nextStep;
     
     /**
      * Creates new form FindCustomerSearch
@@ -115,16 +115,16 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
         String email = null;
         Integer phone = null;
         
-        if (!textFirstName.getText().isEmpty() && !"customerFirstName".equals(textFirstName.getText())) 
+        if (!textFirstName.getText().isEmpty() && !textFirstName.getText().equals("customerFirstName")) 
             firstname = textFirstName.getText();
         
-        if (!textLastName3.getText().isEmpty() && !"customerLastName".equals(textLastName3.getText())) 
+        if (!textLastName3.getText().isEmpty() && !textLastName3.getText().equals("customerLastName")) 
             lastname = textLastName3.getText();
         
-        if (!textEmail.getText().isEmpty() && !"customerEmail".equals(textEmail.getText())) 
+        if (!textEmail.getText().isEmpty() && !textEmail.getText().equals("customerEmail")) 
             email = textEmail.getText();
         
-        if (!textPhone.getText().isEmpty() && !"customerPhone".equals(textPhone.getText())) 
+        if (!textPhone.getText().isEmpty() && !textPhone.getText().equals("customerPhone")) 
             phone = Integer.parseInt(textPhone.getText());
         
         if (firstname == null && lastname == null && email == null && phone == null)
@@ -139,12 +139,12 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
         switch(nextStep)
         {
             case "reservations":
-                    FindCustomerReservations fcrForm = new FindCustomerReservations(list);
+                    GUI fcrForm = new FindCustomerReservations(list);
                     fcrForm.run();
                     this.dispose();
                 break;
             case "customers":
-                    FindCustomerList fclForm = new FindCustomerList(list);
+                    GUI fclForm = new FindCustomerList(list);
                     fclForm.run();
                     this.dispose();
                 break;

@@ -333,16 +333,17 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         // TODO add your handling code here:
         SwingNewReservation SNR = new SwingNewReservation();
         SNR.run();
+        CurrentBooking.reset();
         CurrentBooking.addListener(SNR);
     } 
     
     private void buttonFindCustomerMouseClicked(){
-        FindCustomerSearch fcsForm = new FindCustomerSearch("reservations");
+        GUI fcsForm = new FindCustomerSearch("reservations");
         fcsForm.run();
     } 
     
     private void buttonFilterMouseClicked(){
-        FlightSearchFilter fsfForm = new FlightSearchFilter();
+        GUI fsfForm = new FlightSearchFilter();
         fsfForm.run();
     }
     
