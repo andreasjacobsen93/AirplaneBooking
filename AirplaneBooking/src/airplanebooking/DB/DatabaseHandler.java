@@ -7,7 +7,6 @@ package airplanebooking.DB;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,17 +20,30 @@ import java.util.logging.Logger;
  * @author Alex
  */
 public class DatabaseHandler implements DatabaseInterface {
-
+    //DB fields
     Connection con = null;
     Statement statement = null;
     ResultSet results = null;
+    ComboPooledDataSource cpds = new ComboPooledDataSource();    
+    
+    //Customer field
     Customer customer = null;
+    ArrayList<Customer> customers = new ArrayList();    
+    
+    //Booking field
     Booking reservation = null;
-    Flight flight = null;
     ArrayList<Booking> reservations = new ArrayList();
+    
+    //Flight field
+    Flight flight = null;
+
+    //Seat field
     ArrayList<Seat> seats = new ArrayList();
-    ArrayList<Customer> customers = new ArrayList();
-    ComboPooledDataSource cpds = new ComboPooledDataSource();
+
+    //Airplane field
+    Airplane airplane = null;
+
+
 
     public DatabaseHandler() {
         //contructor method to initiate (combo)DataSource for pooled connections on spawning an object.
@@ -308,6 +320,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    @Override
     public boolean customerExists(Customer customer) {
 
         String firstname = customer.getFirstName();
@@ -334,6 +347,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    @Override
     public boolean seatsExist(ArrayList<Seat> seats, Flight flight) {
         boolean exists = false;
         for (Seat currentSeat : seats) {
@@ -375,7 +389,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     rs.first();
                     int reservationID = rs.getInt(1);
                     System.out.println(reservationID);
-                //System.out.println(reservationID);
+                    //System.out.println(reservationID);
 
                     for (Seat seat : seats) {
                         System.out.println(seat.getIndex());
@@ -502,7 +516,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
-
     @Override
     public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
         String sql = "INSERT INTO flights "
@@ -519,9 +532,9 @@ public class DatabaseHandler implements DatabaseInterface {
         executeUpdate(sql);
 
     }
-    
+
     @Override
- public Flight getFlight(int flightID) {
+    public Flight getFlight(int flightID) {
         try {
             String sql = "SELECT * FROM flights WHERE id = " + flightID;
             //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
@@ -537,7 +550,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 Timestamp departureTime = results.getTimestamp("departuretime");
                 String arrivalPlace = results.getString("arrivalplace");
                 Timestamp arrivalTime = results.getTimestamp("arrivaltime");
-               
+
                 flight = new Flight(id, airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
 
             }
@@ -579,6 +592,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
+    @Override
     public ArrayList<Seat> getFlightBookedSeats(int flightID) {
         try {
             String sql = "SELECT s.seat_id FROM reservation2seat s, reservations r WHERE flightid =" + flightID + " AND  r.id = s.reservation_id";
@@ -595,11 +609,11 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /*
-    *   Below are unimplemented methods.
-    *   Below are unimplemented methods.
-    *   Below are unimplemented methods.
-    *   Below are unimplemented methods.
-    */
+     *   Below are unimplemented methods.
+     *   Below are unimplemented methods.
+     *   Below are unimplemented methods.
+     *   Below are unimplemented methods.
+     */
     @Override
     public void editFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
 
@@ -610,6 +624,27 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
- 
-
+    @Override
+    public Airplane getAirplane(int airplaneID) {
+        try {
+            String sql = "SELECT * FROM airplanes WHERE id =" + airplaneID;
+            executeQuery(sql);
+            results.first();
+            int id = results.getInt("id");
+            int firstSeats = results.getInt("firstseats");
+            int businessSeats = results.getInt("businessseats");
+            int economySeats = results.getInt("economyseats");
+            String fcSeatFormation = results.getString("fcseatformation");
+            String bcSeatFormation = results.getString("bcseatformation");
+            String ecSeatFormation = results.getString("ecseatformation");
+            
+            airplane = new Airplane(id, firstSeats, businessSeats, economySeats, fcSeatFormation, bcSeatFormation, ecSeatFormation);
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return airplane;
+    }
 }

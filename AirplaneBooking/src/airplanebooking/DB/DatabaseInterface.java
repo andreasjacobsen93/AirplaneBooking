@@ -13,8 +13,11 @@ import java.util.ArrayList;
  * @author Alex
  */
 public interface DatabaseInterface {
-
+    
+    /*
     //Below are all customer related DB method declarations.
+    */
+    
     public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber);
 
     public void editCustomer(int customerID, String maritalstatus,  String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber);
@@ -28,9 +31,13 @@ public interface DatabaseInterface {
     public ArrayList<Customer> getCustomers(int q);
     
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone);
-
     
+    public boolean customerExists(Customer customer);
+
+    /*
     //Below are all reservation related DB method declarations.
+    */
+    
     public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, int food);
 
     public void editReservation(int reservationID, int customerID, String flightID, ArrayList<Seat> seats, int food);
@@ -41,7 +48,11 @@ public interface DatabaseInterface {
     
     public ArrayList<Booking> getCustomerReservations(int customerID);
     
+    public boolean seatsExist(ArrayList<Seat> seats, Flight flight);
+    
+    /*
     //Below are all flight related DB method declarations.
+    */
     
     public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime); 
     
@@ -51,5 +62,9 @@ public interface DatabaseInterface {
     
     public Flight getFlight(int flightID);
     
+    public ArrayList<Seat> getFlightBookedSeats(int flightID);
     
+    //Below are all airplane related DB method declarations.
+    
+    public Airplane getAirplane(int airplaneID);
 }
