@@ -529,10 +529,10 @@ public class DatabaseHandler implements DatabaseInterface {
             executeQuery(sql);
             while (results.next()) {
                 int id = results.getInt("id");
-                int airplaneID = results.getInt("airplaneid");
-                int firstCost = results.getInt("firstseats");
-                int businessCost = results.getInt("businessseats");
-                int economyCost = results.getInt("economyseats");
+                int airplaneID = results.getInt("airplane_id");
+                int firstCost = results.getInt("firstcost");
+                int businessCost = results.getInt("businesscost");
+                int economyCost = results.getInt("economycost");
                 String departurePlace = results.getString("departureplace");
                 Timestamp departureTime = results.getTimestamp("departuretime");
                 String arrivalPlace = results.getString("arrivalplace");
