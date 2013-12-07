@@ -16,7 +16,7 @@ public class Booking {
     private final Integer food;
     private final ArrayList<Seat> seats;
     
-    public Booking(int id, int customerID, Integer flightID, ArrayList<Seat> seats, int food)
+    public Booking(int id, int customerID, int flightID, ArrayList<Seat> seats, int food)
     {
         this.id = id;
         this.customerID = customerID;
@@ -44,7 +44,7 @@ public class Booking {
         return customerID;
     }
     
-    public Integer getFlightID(){
+    public int getFlightID(){
         return flightID;
     }
     
