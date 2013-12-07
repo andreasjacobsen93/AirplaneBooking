@@ -21,7 +21,7 @@ public class Booking {
         this.id = id;
         this.customerID = customerID;
         this.flightID = flightID;
-        this.seats = new ArrayList();
+        this.seats = seats;
         this.food = food;
 
     }

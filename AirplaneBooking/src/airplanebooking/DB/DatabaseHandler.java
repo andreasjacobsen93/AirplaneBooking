@@ -557,14 +557,15 @@ public class DatabaseHandler implements DatabaseInterface {
     
      public Booking getReservation(int seatID, int flightID) {
 
-        String sql = "SELECT * FROM reservation2seat WHERE seat_id = "+seatID+" AND flight_id="+flightID;
+        String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id ="+seatID+" AND flight_id="+flightID;
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
         executeQuery(sql);
         try {
-            
+            results.first();
             int reservationID = results.getInt(1);
             sql = "SELECT * FROM reservations WHERE id = " + reservationID;
             executeQuery(sql);
+           // results.first();
             while (results.next()) {
                 int id = results.getInt("id");
                 int customerid = results.getInt("customer_id");
@@ -578,9 +579,11 @@ public class DatabaseHandler implements DatabaseInterface {
                         + "WHERE r2s.reservation_id = rs.id ";
 
                 ResultSet seatResults = executeQuery(getSeats);
+                
                 while (seatResults.next()) {
                     Seat seat = new Seat(seatResults.getInt("seat_id"));
                     seats.add(seat);
+                    System.out.println(seat.getIndex());
                 }
 
                 reservation = new Booking(id, customerid, flightid, seats, food);
