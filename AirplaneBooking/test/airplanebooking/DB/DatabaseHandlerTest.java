@@ -6,6 +6,7 @@
 
 package airplanebooking.DB;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -57,7 +58,7 @@ public class DatabaseHandlerTest {
         DatabaseHandler instance = new DatabaseHandler();
         instance.createCustomer(maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, email, phonenumber);
         // TODO review the generated test code and remove the default call to fail.
-        
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -96,18 +97,37 @@ public class DatabaseHandlerTest {
     }
 
     /**
+     * En test på int!
+     * Test of getCustomer method, of class DatabaseHandler.
+     */
+    @Test
+    public void testGetCustomer1() {
+        System.out.println("getCustomer");
+        int customerID = 1;
+        DatabaseHandler instance = new DatabaseHandler();
+        Customer myCostumer = instance.getCustomer(customerID);
+        int expResult = 1;
+        int result = myCostumer.getID();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
+    }
+    
+    /**
+     * revideret version.
      * Test of getCustomer method, of class DatabaseHandler.
      */
     @Test
     public void testGetCustomer() {
         System.out.println("getCustomer");
-        int customerID = 0;
-        DatabaseHandler instance = new DatabaseHandler();
-        Customer expResult = null;
-        Customer result = instance.getCustomer(customerID);
+        int customerID = 1;
+        DatabaseHandler db = new DatabaseHandler();
+        Customer cs = new Customer(1);
+        Customer expResult = cs;
+        Customer result = db.getCustomer(1);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -256,47 +276,17 @@ public class DatabaseHandlerTest {
     @Test
     public void testCreateFlight() {
         System.out.println("createFlight");
-        int flightID = 0;
-        int firstSeats = 0;
-        int businessSeats = 0;
-        int economySeats = 0;
-        int totalSeats = 0;
-        String departureTime = "";
-        String arrivalTime = "";
+        int id = 0;
+        int airplaneID = 0;
+        int firstCost = 0;
+        int businessCost = 0;
+        int economyCost = 0;
+        String departurePlace = "";
+        Timestamp departureTime = null;
+        String arrivalPlace = "";
+        Timestamp arrivalTime = null;
         DatabaseHandler instance = new DatabaseHandler();
-        instance.createFlight(flightID, firstSeats, businessSeats, economySeats, totalSeats, departureTime, arrivalTime);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of editFlight method, of class DatabaseHandler.
-     */
-    @Test
-    public void testEditFlight() {
-        System.out.println("editFlight");
-        int flightID = 0;
-        int firstSeats = 0;
-        int businessSeats = 0;
-        int economySeats = 0;
-        int totalSeats = 0;
-        String departureTime = "";
-        String arrivalTime = "";
-        DatabaseHandler instance = new DatabaseHandler();
-        instance.editFlight(flightID, firstSeats, businessSeats, economySeats, totalSeats, departureTime, arrivalTime);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of deleteFlight method, of class DatabaseHandler.
-     */
-    @Test
-    public void testDeleteFlight() {
-        System.out.println("deleteFlight");
-        int flightID = 0;
-        DatabaseHandler instance = new DatabaseHandler();
-        instance.deleteFlight(flightID);
+        instance.createFlight(id, airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -347,14 +337,33 @@ public class DatabaseHandlerTest {
     }
 
     /**
-     * Test of deleteSeats method, of class DatabaseHandler.
+     * Test of editFlight method, of class DatabaseHandler.
      */
     @Test
-    public void testDeleteSeats() {
-        System.out.println("deleteSeats");
-        int i = 0;
+    public void testEditFlight() {
+        System.out.println("editFlight");
+        int flightID = 0;
+        int firstSeats = 0;
+        int businessSeats = 0;
+        int economySeats = 0;
+        int totalSeats = 0;
+        String departureTime = "";
+        String arrivalTime = "";
         DatabaseHandler instance = new DatabaseHandler();
-        instance.deleteSeats(i);
+        instance.editFlight(flightID, firstSeats, businessSeats, economySeats, totalSeats, departureTime, arrivalTime);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of deleteFlight method, of class DatabaseHandler.
+     */
+    @Test
+    public void testDeleteFlight() {
+        System.out.println("deleteFlight");
+        int flightID = 0;
+        DatabaseHandler instance = new DatabaseHandler();
+        instance.deleteFlight(flightID);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
