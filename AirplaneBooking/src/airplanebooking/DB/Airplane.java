@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class Airplane {
 
     private final Integer id;
+    private final String name;
     private final Integer firstSeats;
     private final Integer businessSeats;
     private final Integer economySeats;
@@ -18,8 +19,9 @@ public class Airplane {
     private final String bcSeatFormation;
     private final String ecSeatFormation;
 
-    public Airplane(int id, int firstSeats, int businessSeats, int economySeats, String fcSeatFormation, String bcSeatFormation, String ecSeatFormation) {
+    public Airplane(int id, String name, int firstSeats, int businessSeats, int economySeats, String fcSeatFormation, String bcSeatFormation, String ecSeatFormation) {
         this.id = id;
+        this.name = name;
         this.firstSeats = firstSeats;
         this.businessSeats = businessSeats;
         this.economySeats = economySeats;
@@ -33,6 +35,7 @@ public class Airplane {
     public Airplane(int flightID) {
         // database get flight from database
         this.id = 0;
+        this.name = "";
         this.firstSeats = 0;
         this.businessSeats = 0;
         this.economySeats = 0;
@@ -44,6 +47,11 @@ public class Airplane {
 
     public int getID() {
         return id;
+    }
+    
+    public String getName()
+    {
+        return name;
     }
 
     public int getFirstSeats() {

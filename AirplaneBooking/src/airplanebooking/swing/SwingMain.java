@@ -1,18 +1,22 @@
 package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
+import airplanebooking.CurrentFlight;
+import airplanebooking.FlightListener;
 import airplanebooking.GUI;
+import airplanebooking.SeatListener;
 
 /**
  *
  * @author Andreas
  */
-public class SwingMain extends javax.swing.JFrame implements GUI {
+public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener, SeatListener {
 
     /**
      * Creates new form SwingMainFrame
      */
     public SwingMain() {
+        AirplaneCanvasPanel = new javax.swing.JPanel();
         initComponents();
         setTitle("Airplane Booking");
     }
@@ -28,7 +32,6 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         jPanel3 = new javax.swing.JPanel();
         buttonNewReservation = new java.awt.Button();
         labelAirplaneName = new java.awt.Label();
-        AirplaneCanvasPanel = new AirplaneCanvas(false);
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         buttonDeleteReservation = new java.awt.Button();
@@ -49,7 +52,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1100, 800));
 
-        listFlights.setMultipleMode(true);
+        listFlights.setMultipleMode(false);
 
         buttonFindCustomer.setLabel("Find customer...");
         buttonFindCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -331,10 +334,10 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
     
     private void buttonNewReservationMouseClicked() {                                                  
         // TODO add your handling code here:
-        SwingNewReservation SNR = new SwingNewReservation();
-        SNR.run();
+        SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
         CurrentBooking.reset();
         CurrentBooking.addListener(SNR);
+        SNR.run();
     } 
     
     private void buttonFindCustomerMouseClicked(){
@@ -347,9 +350,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
         fsfForm.run();
     }
     
-    
-
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify
     private javax.swing.JComponent AirplaneCanvasPanel;
     private java.awt.Button buttonDeleteReservation;
     private java.awt.Button buttonFilter;
@@ -377,4 +378,29 @@ public class SwingMain extends javax.swing.JFrame implements GUI {
     private java.awt.TextField textMaritialStatus;
     private java.awt.TextField textPhone;
     // End of variables declaration                   
+
+    @Override
+    public void flightChanged() {
+        AirplaneCanvasPanel = new AirplaneCanvas(false, CurrentFlight.getFlight());
+        initComponents();
+        labelAirplaneName.setText(CurrentFlight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + ":" + CurrentFlight.getFlight().getID());
+        labelRoute.setText(CurrentFlight.getFlight().getDeparturePlace() + " - " + CurrentFlight.getFlight().getArrivalPlace());
+        labelTime.setText(CurrentFlight.getFlight().getDepartureTime());
+    }
+
+    @Override
+    public void seatChanged() {
+        
+        textMaritialStatus.setText("Mr.");
+        textLastName.setText("customerLastname");
+        textAddress.setText("customerAddress");
+        textPhone.setText("customerPhone");
+        textEmail.setText("customerEmail");
+        textFirstName.setText("customerFirstName");
+        
+        labelSeats.setText("Seats: 47, 48, 49");
+        checkboxLunchOnboard.setState(true);
+        labelTravelClass.setText("Business class");
+        labelPrice.setText("Price: 300 USD");
+    }
 }

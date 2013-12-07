@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Component class="java.awt.Button" name="button2">
       <Properties>
@@ -36,7 +36,7 @@
                   <Group type="102" attributes="0">
                       <Component id="choice" min="-2" pref="149" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="textField" pref="221" max="32767" attributes="0"/>
+                      <Component id="textField" pref="141" max="32767" attributes="0"/>
                   </Group>
                   <Component id="listFilters" max="32767" attributes="0"/>
                   <Component id="buttonApplyFilters" alignment="1" max="32767" attributes="0"/>
@@ -74,12 +74,12 @@
               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
               <Component id="label2" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-              <Component id="listFilters" min="-2" pref="133" max="-2" attributes="0"/>
+              <Component id="listFilters" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="buttonDeleteFilter" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="buttonApplyFilters" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -91,13 +91,25 @@
       </Properties>
     </Component>
     <Component class="java.awt.Choice" name="choice">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="choiceItemStateChanged"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="choice.add(&quot;From&quot;);&#xa;choice.add(&quot;Destination&quot;);&#xa;choice.add(&quot;Airplane name&quot;);&#xa;choice.add(&quot;Today&quot;);&#xa;choice.add(&quot;Tomorrow&quot;);&#xa;choice.add(&quot;Date&quot;);&#xa;choice.add(&quot;First Class&quot;);&#xa;choice.add(&quot;Business Class&quot;);&#xa;choice.add(&quot;Economy Class&quot;);"/>
+      </AuxValues>
     </Component>
     <Component class="java.awt.TextField" name="textField">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="java.awt.Button" name="buttonCreateFilter">
       <Properties>
         <Property name="label" type="java.lang.String" value="Create filter"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonCreateFilterMouseClicked"/>
+      </Events>
     </Component>
     <Component class="java.awt.List" name="listFilters">
       <Events>
@@ -108,12 +120,18 @@
       <Properties>
         <Property name="label" type="java.lang.String" value="Apply filters..."/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonApplyFiltersMouseClicked"/>
+      </Events>
     </Component>
     <Component class="java.awt.Button" name="buttonDeleteFilter">
       <Properties>
         <Property name="enabled" type="boolean" value="false"/>
         <Property name="label" type="java.lang.String" value="Delete selected filter"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonDeleteFilterMouseClicked"/>
+      </Events>
     </Component>
     <Component class="java.awt.Label" name="label2">
       <Properties>

@@ -62,15 +62,15 @@ public class Flight {
         return airplaneID;
     }
 
-    public int getFirstCost() {
+    public int getFirstClassSeatCost() {
         return firstCost;
     }
 
-    public int getBusinessSeats() {
+    public int getBusinessClassSeatCost() {
         return businessCost;
     }
 
-    public int getEconomySeats() {
+    public int getEconomyClassSeatCost() {
         return economyCost;
     }
 

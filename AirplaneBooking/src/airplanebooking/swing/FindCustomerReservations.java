@@ -1,5 +1,6 @@
 package airplanebooking.swing;
 
+import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.DatabaseHandler;
@@ -13,14 +14,16 @@ import java.util.ArrayList;
  * @author Andreas
  */
 public class FindCustomerReservations extends javax.swing.JFrame implements GUI {
-
+    private ArrayList<Booking> bookingList;
     private final ArrayList<Customer> list;
+    private final DatabaseInterface db;
     /**
      * Creates new form FindCustomerReservations
      * @param list
      */
     public FindCustomerReservations(ArrayList<Customer> list) {
         this.list = list;
+        db = new DatabaseHandler();
         
         initComponents();
         
@@ -46,6 +49,11 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
         });
 
         button1.setLabel("Choose reservation...");
+        button1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                button1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,16 +85,20 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
     private void list1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_list1ItemStateChanged
         list2.removeAll();
         
-        DatabaseInterface db = new DatabaseHandler();
-        ArrayList<Booking> bookingList = db.getCustomerReservations(list.get(list1.getSelectedIndex()).getID());
         
+        bookingList = db.getCustomerReservations(list.get(list1.getSelectedIndex()).getID());
         
         for (int i = 0; i < bookingList.size(); i++)
         {
             Flight f = db.getFlight(bookingList.get(i).getFlightID());
-            list2.add(f.getDeparturePlace() + " - " + f.getDeparturePlace() + " @" + f.getDepartureTime());
+            list2.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " @" + f.getDepartureTime());
         }
     }//GEN-LAST:event_list1ItemStateChanged
+
+    private void button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MouseClicked
+        CurrentFlight.setFlight(db.getFlight(bookingList.get(list2.getSelectedIndex()).getFlightID()));
+        this.dispose();
+    }//GEN-LAST:event_button1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -2,14 +2,23 @@ package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
+import airplanebooking.DB.Airplane;
+import airplanebooking.DB.DatabaseHandler;
+import airplanebooking.DB.DatabaseInterface;
+import airplanebooking.DB.Flight;
+import airplanebooking.SeatListener;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 /**
  *
  * @author Andreas
  */
 public final class AirplaneCanvas extends javax.swing.JComponent implements BookingListener {
+    
+    private final Flight flight;
+    private final Airplane airplane;
     
     // Economy Class
     private final Boolean EClass;
@@ -42,39 +51,92 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     
     public int seatNumber;
     public String seatClass;
-    private int seatsCount;
+    private final int seatsCount;
     private final Boolean bookable;
     
     public int x;
     public int y;
     
-    //private Boolean bookable;
+    // List of event subscribers
+    private static final ArrayList<SeatListener> listeners = new ArrayList<>();
     
-    public AirplaneCanvas(Boolean bookable)
+    public AirplaneCanvas()
     {
-        
         //CurrentBooking.reset();
-        this.bookable = bookable;
+        bookable = false;
+        
+        flight = null;
+        airplane = null;
         
         // Economy Class
-        EseatGroups = 2;
-        EseatLength = 20;
-        ErowSeats = 4;
+        EseatGroups = 0;
+        EseatLength = 0;
+        ErowSeats = 0;
+        EseatSize = 0;
+        EClass = EseatGroups > 0 && EseatLength > 0 && ErowSeats > 0;
+        
+        // Business Class
+        BseatGroups = 0;
+        BseatLength = 0;
+        BrowSeats = 0;
+        BseatSize = 0;
+        BClass = BseatGroups > 0 && BseatLength > 0 && BrowSeats > 0;
+        BtotalSeats = BseatGroups*BseatLength*BrowSeats;
+        
+        // First Class
+        FseatGroups = 0;
+        FseatLength = 0;
+        FrowSeats = 0;
+        FseatSize = 0;
+        FClass = FseatGroups > 0 && FseatLength > 0 && FrowSeats > 0;
+        FtotalSeats = FseatGroups*FseatLength*FrowSeats;
+        
+        // Reset current seat values
+        seatNumber = 0;
+        seatClass = "";
+        
+        // Drawing start offset
+        iniX = 0;
+        iniY = 0;
+        
+        // All seats available
+        seatsCount = 0;
+        seats = new int[0][0];
+        seat = 0;
+    }
+    
+    public AirplaneCanvas(Boolean bookable, Flight flight)
+    {
+        CurrentBooking.reset();
+        this.bookable = bookable;
+        
+        this.flight = flight;
+        DatabaseInterface db = new DatabaseHandler();
+        airplane = db.getAirplane(flight.getAirplaneID());
+        
+        String[] ec = airplane.getECSeatFormation().split(":");
+        String[] bc = airplane.getBCSeatFormation().split(":");
+        String[] fc = airplane.getFCSeatFormation().split(":");
+        
+        // Economy Class
+        EseatGroups = Integer.parseInt(ec[1]);
+        EseatLength = Integer.parseInt(ec[0]);
+        ErowSeats = Integer.parseInt(ec[2]);
         EseatSize = 10;
         EClass = EseatGroups > 0 && EseatLength > 0 && ErowSeats > 0;
         
         // Business Class
-        BseatGroups = 2;
-        BseatLength = 5;
-        BrowSeats = 2;
+        BseatGroups = Integer.parseInt(bc[1]);
+        BseatLength = Integer.parseInt(bc[0]);
+        BrowSeats = Integer.parseInt(bc[2]);
         BseatSize = 12;
         BClass = BseatGroups > 0 && BseatLength > 0 && BrowSeats > 0;
         BtotalSeats = BseatGroups*BseatLength*BrowSeats;
         
         // First Class
-        FseatGroups = 2;
-        FseatLength = 2;
-        FrowSeats = 2;
+        FseatGroups = Integer.parseInt(fc[1]);
+        FseatLength = Integer.parseInt(fc[0]);
+        FrowSeats = Integer.parseInt(fc[2]);
         FseatSize = 15;
         FClass = FseatGroups > 0 && FseatLength > 0 && FrowSeats > 0;
         FtotalSeats = FseatGroups*FseatLength*FrowSeats;
@@ -180,6 +242,13 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                     repaint();
                 }
             });
+        }
+    }
+    
+    public static void updated() {
+        // Notify everybody that may be interested.
+        for (SeatListener sl : listeners) {
+            sl.seatChanged();
         }
     }
     
@@ -433,5 +502,9 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         }
 
         repaint();
+    }
+    
+    public static void addListener(SeatListener listener) {
+        listeners.add(listener);
     }
 }
