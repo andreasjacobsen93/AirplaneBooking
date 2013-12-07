@@ -14,7 +14,6 @@ public class Seat
 {
     // instance variables - replace the example below with your own
     private final int index;
-   
 
     /**
      * Constructor for objects of class Seat
@@ -25,8 +24,6 @@ public class Seat
         // initialise instance variables
         // The index of the seat
         index = i;
-        // The reservation status of the seat.
-        
     }
 
     public int getIndex()

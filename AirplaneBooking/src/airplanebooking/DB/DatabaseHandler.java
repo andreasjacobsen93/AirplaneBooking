@@ -371,12 +371,7 @@ public class DatabaseHandler implements DatabaseInterface {
         Boolean exists = false;
         try {
         results.first();
-        if (results.wasNull()){
-            exists = false;
-        } else {
-            exists = true;
-
-        }
+        exists = !results.wasNull();
         
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -393,11 +388,7 @@ public class DatabaseHandler implements DatabaseInterface {
             try {
                 String sql = "SELECT f.id, r2s.seat_id FROM flights f, reservation2seat r2s WHERE f.id =" + flight.getID() + " AND r2s.seat_id =" + currentSeat;
                 executeQuery(sql);
-                if (results.getRow() == 0) {
-                    exists = false;
-                } else {
-                    exists = true;
-                }
+                exists = results.getRow() != 0;
             } catch (SQLException ex) {
                 Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -732,11 +723,12 @@ public class DatabaseHandler implements DatabaseInterface {
             int firstSeats = results.getInt("firstseats");
             int businessSeats = results.getInt("businessseats");
             int economySeats = results.getInt("economyseats");
+            String name = results.getString("name");
             String fcSeatFormation = results.getString("fcseatformation");
             String bcSeatFormation = results.getString("bcseatformation");
             String ecSeatFormation = results.getString("ecseatformation");
 
-            airplane = new Airplane(id, firstSeats, businessSeats, economySeats, fcSeatFormation, bcSeatFormation, ecSeatFormation);
+            airplane = new Airplane(id, name, firstSeats, businessSeats, economySeats, fcSeatFormation, bcSeatFormation, ecSeatFormation);
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);

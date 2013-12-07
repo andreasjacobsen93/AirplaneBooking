@@ -26,16 +26,6 @@ public class Booking {
 
     }
     
-    public Booking(int customerID)
-    {
-        // database get reservation from database
-        this.id = 0;
-        this.customerID = 0;
-        this.flightID = 0;
-        this.food = 0;
-        this.seats = new ArrayList();
-    }
-    
     public int getID(){
         return id;
     }

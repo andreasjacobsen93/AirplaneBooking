@@ -36,21 +36,6 @@ public class Customer {
         this.mail = mail;
     }
     
-    public Customer(int customerID)
-    {
-        // database get customer from database
-        this.id = 0;
-        this.maritialStatus = "";
-        this.firstName = "";
-        this.lastName = "";
-        this.addressStreet = "";
-        this.addressZip = 0;
-        this.addressCity = "";
-        this.addressCountry = "";
-        this.phone = 0;
-        this.mail = "";
-    }
-    
     public int getID(){
         return id;
     }

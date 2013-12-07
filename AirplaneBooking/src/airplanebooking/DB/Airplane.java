@@ -32,19 +32,6 @@ public class Airplane {
 
     }
 
-    public Airplane(int flightID) {
-        // database get flight from database
-        this.id = 0;
-        this.name = "";
-        this.firstSeats = 0;
-        this.businessSeats = 0;
-        this.economySeats = 0;
-        this.totalSeats = 0;
-        this.fcSeatFormation = "";
-        this.bcSeatFormation = "";
-        this.ecSeatFormation = "";
-    }
-
     public int getID() {
         return id;
     }

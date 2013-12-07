@@ -39,20 +39,6 @@ public class Flight {
         this.arrivalTime = arrivalTime;
     }
 
-    public Flight(int flightID) {
-        // database get flight from database
-        this.id = 0;
-        this.airplaneID = 0;
-        this.firstCost = 0;
-        this.businessCost = 0;
-        this.economyCost = 0;
-        this.bookedSeats = new ArrayList();
-        this.departurePlace = "";
-        this.departureTime = null;
-        this.arrivalPlace = "";
-        this.arrivalTime = null;
-    }
-
     public int getID() {
         return id;
     }
