@@ -5,6 +5,7 @@
  */
 package airplanebooking.DB;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -42,7 +43,7 @@ public interface DatabaseInterface {
     
     //Below are all flight related DB method declarations.
     
-    public void createFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime); 
+    public void createFlight(int id, int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime); 
     
     public void editFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime);
     

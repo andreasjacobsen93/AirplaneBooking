@@ -501,34 +501,26 @@ public class DatabaseHandler implements DatabaseInterface {
         }
 
     }
-    //Below are unimplemented methods.
+
 
     @Override
-    public void createFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime) {
+    public void createFlight(int id, int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
         String sql = "INSERT INTO flights "
                 + "VALUES (null, "
-                + "" + firstSeats + ", "
-                + "" + businessSeats + ", "
-                + "" + economySeats + ", "
-                + "" + totalSeats + ", "
+                + "" + airplaneID + ", "
+                + "" + firstCost + ", "
+                + "" + businessCost + ", "
+                + "" + economyCost + ", "
+                + "'" + departurePlace + "', "
                 + "'" + departureTime + "', "
+                + "'" + arrivalPlace + "', "
                 + "'" + arrivalTime + "')";
 
         executeUpdate(sql);
 
     }
-
+    
     @Override
-    public void editFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime) {
-
-    }
-
-    @Override
-    public void deleteFlight(int flightID) {
-
-    }
-
- @Override
  public Flight getFlight(int flightID) {
         try {
             String sql = "SELECT * FROM flights WHERE id = " + flightID;
@@ -537,15 +529,16 @@ public class DatabaseHandler implements DatabaseInterface {
             executeQuery(sql);
             while (results.next()) {
                 int id = results.getInt("id");
-                int firstseats = results.getInt("firstseats");
-                int businessseats = results.getInt("businessseats");
-                int economyseats = results.getInt("economyseats");
+                int airplaneID = results.getInt("airplaneid");
+                int firstCost = results.getInt("firstseats");
+                int businessCost = results.getInt("businessseats");
+                int economyCost = results.getInt("economyseats");
                 String departurePlace = results.getString("departureplace");
                 Timestamp departureTime = results.getTimestamp("departuretime");
                 String arrivalPlace = results.getString("arrivalplace");
                 Timestamp arrivalTime = results.getTimestamp("arrivaltime");
                
-                flight = new Flight(id, firstseats, businessseats, economyseats, departurePlace, departureTime, arrivalPlace, arrivalTime);
+                flight = new Flight(id, airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
 
             }
 
@@ -601,8 +594,22 @@ public class DatabaseHandler implements DatabaseInterface {
         return seats;
     }
 
-    public void deleteSeats(int i) {
+    /*
+    *   Below are unimplemented methods.
+    *   Below are unimplemented methods.
+    *   Below are unimplemented methods.
+    *   Below are unimplemented methods.
+    */
+    @Override
+    public void editFlight(int flightID, int firstSeats, int businessSeats, int economySeats, int totalSeats, String departureTime, String arrivalTime) {
 
     }
+
+    @Override
+    public void deleteFlight(int flightID) {
+
+    }
+
+ 
 
 }
