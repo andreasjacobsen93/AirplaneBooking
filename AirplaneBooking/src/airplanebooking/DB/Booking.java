@@ -1,6 +1,5 @@
 package airplanebooking.DB;
 
-import airplanebooking.DB.Seat;
 import java.sql.Array;
 import java.util.ArrayList;
 
@@ -49,16 +48,5 @@ public class Booking {
     
     public ArrayList<Seat> getSeats(){
         return seats;
-    }
-        
-    public Object[] getBookingDataList()
-    {
-        Object [] list = new Array[5];
-        list[0] = id;
-        list[1] = customerID;
-        list[2] = flightID;
-        list[3] = food;
-        list[4] = seats;
-        return list;
     }
 }

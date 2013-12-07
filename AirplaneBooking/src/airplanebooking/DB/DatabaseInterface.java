@@ -70,6 +70,8 @@ public interface DatabaseInterface {
     
     public Flight getFlight(int flightID);
     
+    public ArrayList<Flight> getFlights(Boolean freeSeatsOnly);
+    
     public ArrayList<Seat> getFlightBookedSeats(int flightID);
     
     //Below are all airplane related DB method declarations.

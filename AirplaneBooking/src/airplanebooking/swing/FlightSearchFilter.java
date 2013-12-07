@@ -8,10 +8,13 @@ import airplanebooking.GUI;
  */
 public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
 
+    private SwingMain swingMain;
+    
     /**
      * Creates new form FlightSearchFilter
      */
-    public FlightSearchFilter() {
+    public FlightSearchFilter(SwingMain sm) {
+        this.swingMain = sm;
         initComponents();
     }
 

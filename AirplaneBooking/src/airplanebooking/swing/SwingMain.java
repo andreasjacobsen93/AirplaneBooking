@@ -1,6 +1,6 @@
 package airplanebooking.swing;
 
-import airplanebooking.CurrentBooking; 
+import airplanebooking.CurrentBooking;
 import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
@@ -358,7 +358,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     } 
     
     private void buttonFilterMouseClicked(){
-        GUI fsfForm = new FlightSearchFilter();
+        GUI fsfForm = new FlightSearchFilter(this);
         fsfForm.run();
     }
     
@@ -389,7 +389,12 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     private java.awt.TextField textLastName;
     private java.awt.TextField textMaritialStatus;
     private java.awt.TextField textPhone;
-    // End of variables declaration                   
+    // End of variables declaration  
+    
+    public void updateSearch()
+    {
+        
+    }
 
     @Override
     public void flightChanged() {
@@ -455,6 +460,6 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         else
             checkboxLunchOnboard.setState(false);
 
-        labelPrice.setText("Price: 300 USD");
+        labelPrice.setText("Price: " + b.getPrice() + " USD");
     }
 }
