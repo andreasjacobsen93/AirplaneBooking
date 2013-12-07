@@ -48,7 +48,7 @@ public interface DatabaseInterface {
     
     public void deleteFlight(int flightID);
     
-    public void getFlight(int flightID);
+    public Flight getFlight(int flightID);
     
     
 }

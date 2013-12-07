@@ -7,9 +7,11 @@ package airplanebooking.DB;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +27,7 @@ public class DatabaseHandler implements DatabaseInterface {
     ResultSet results = null;
     Customer customer = null;
     Booking reservation = null;
+    Flight flight = null;
     ArrayList<Booking> reservations = new ArrayList();
     ArrayList<Seat> seats = new ArrayList();
     ArrayList<Customer> customers = new ArrayList();
@@ -525,9 +528,33 @@ public class DatabaseHandler implements DatabaseInterface {
 
     }
 
-    @Override
-    public void getFlight(int flightID) {
+ @Override
+ public Flight getFlight(int flightID) {
+        try {
+            String sql = "SELECT * FROM flights WHERE id = " + flightID;
+            //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
 
+            executeQuery(sql);
+            while (results.next()) {
+                int id = results.getInt("id");
+                int firstseats = results.getInt("firstseats");
+                int businessseats = results.getInt("businessseats");
+                int economyseats = results.getInt("economyseats");
+                String departurePlace = results.getString("departureplace");
+                Timestamp departureTime = results.getTimestamp("departuretime");
+                String arrivalPlace = results.getString("arrivalplace");
+                Timestamp arrivalTime = results.getTimestamp("arrivaltime");
+               
+                flight = new Flight(id, firstseats, businessseats, economyseats, departurePlace, departureTime, arrivalPlace, arrivalTime);
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        return flight;
     }
 
     @Override

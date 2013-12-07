@@ -1,5 +1,9 @@
 package airplanebooking.DB;
 import java.sql.Array;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -13,12 +17,13 @@ public class Flight {
     private final Integer economySeats;
     private final Integer totalSeats;
     private final Seat[] seats;
-    private final String departureTime;
-    private final String arrivalTime;
+    private final Timestamp departureTime;
+    private final Timestamp arrivalTime;
     private final String departurePlace;
     private final String arrivalPlace;
+    private final DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     
-    public Flight(int id, int firstSeats, int businessSeats, int economySeats, String departurePlace, String departureTime, String arrivalPlace, String arrivalTime)
+    public Flight(int id, int firstSeats, int businessSeats, int economySeats, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime)
     {
         this.id = id;
         this.firstSeats = firstSeats;
@@ -42,9 +47,9 @@ public class Flight {
         this.totalSeats = 0;
         this.seats = new Seat[totalSeats];
         this.departurePlace = "";
-        this.departureTime = "";
+        this.departureTime = null;
         this.arrivalPlace = "";
-        this.arrivalTime = "";  
+        this.arrivalTime = null;  
     }
     
     public int getID(){
@@ -71,20 +76,21 @@ public class Flight {
         return seats;
     }
     
+    public String getDepartureTime(){
+        String returnTime = df.format(departureTime);
+        return returnTime;
+    }
+    public String getArrivalTime(){
+        String returnTime = df.format(arrivalTime);
+        return returnTime;
+    }
+    
     public String getDeparturePlace(){
         return departurePlace;
     }
     
-    public String getDepartureTime(){
-        return departureTime;
-    }
-    
     public String getArrivalPlace(){
         return arrivalPlace;
-    }
-
-    public String getArrivalTime(){
-        return arrivalTime;
     }
     
     public Object[] getCustomerDataList()

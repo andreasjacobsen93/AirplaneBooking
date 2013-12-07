@@ -1,7 +1,8 @@
 package airplanebooking;
 
+import airplanebooking.DB.DatabaseHandler;
+import airplanebooking.DB.Flight;
 import airplanebooking.swing.SwingMain;
-import java.util.ArrayList;
 
 /**
  *
@@ -15,5 +16,12 @@ public class AirplaneBooking {
     public static void main(String[] args) {
         GUI mainFrame = new SwingMain();
         mainFrame.run();
+        
+        DatabaseHandler db = new DatabaseHandler();
+        Flight flight = db.getFlight(4);
+        
+        System.out.println(flight.getArrivalTime());
+        
+        
     }
 }
