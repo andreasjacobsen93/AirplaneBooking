@@ -13,11 +13,11 @@ package airplanebooking.DB;
 public class Seat
 {
     // instance variables - replace the example below with your own
-    private final int index;
-
+    private final Integer index;
     /**
      * Constructor for objects of class Seat
      * @param i
+     * 
      */
     public Seat(int i)
     {

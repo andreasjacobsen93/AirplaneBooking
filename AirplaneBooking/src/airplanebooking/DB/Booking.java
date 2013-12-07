@@ -16,6 +16,7 @@ public class Booking {
     private final ArrayList<Seat> seats;
     private final Integer price;
     
+    
     public Booking(int id, int customerID, int flightID, ArrayList<Seat> seats, int food, int price)
     {
         this.id = id;
@@ -48,5 +49,17 @@ public class Booking {
     
     public ArrayList<Seat> getSeats(){
         return seats;
+    }
+
+    public Object[] getBookingDataList()
+    {
+        Object [] list = new Array[6];
+        list[0] = id;
+        list[1] = customerID;
+        list[2] = flightID;
+        list[3] = food;
+        list[4] = seats;
+        list[5] = price;
+        return list;
     }
 }

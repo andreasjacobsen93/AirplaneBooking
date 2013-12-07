@@ -23,6 +23,9 @@ import java.util.logging.Logger;
 public class DatabaseHandler implements DatabaseInterface {
 
     //DB & SQL fields
+    private static final String user = "Aljon";
+    private static final String pass = "Jegeradministratorher123";
+    private static final String jdbcurl = "jdbc:mysql://mysql.itu.dk/Airplanebooking";
     Connection con = null;
     Statement statement = null;
     ResultSet results = null;
@@ -39,6 +42,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     //Flight field
     Flight flight = null;
+    ArrayList<Flight> flights = null;
 
     //Seat field
     ArrayList<Seat> seats = new ArrayList();
@@ -57,9 +61,9 @@ public class DatabaseHandler implements DatabaseInterface {
 
     private void initiateDataSource() {
 
-        cpds.setJdbcUrl("jdbc:mysql://mysql.itu.dk/Airplanebooking");
-        cpds.setUser("aljon");
-        cpds.setPassword("Jegeradministratorher123");
+        cpds.setJdbcUrl(jdbcurl);
+        cpds.setUser(user);
+        cpds.setPassword(pass);
         cpds.setMinPoolSize(1);
         cpds.setAcquireIncrement(3);
         cpds.setMaxPoolSize(10);
@@ -475,21 +479,24 @@ public class DatabaseHandler implements DatabaseInterface {
      * @param flight
      * @param seats
      * @param food
+     * @param cost
      */
     @Override
-    public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, int food) {
+    public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, int food, int cost) {
         try {
             if (customerExists(currentCustomer)) {
                 if (!seatsExist(seats, flight)) {
                     customer = currentCustomer;
                     int customerID = customer.getID();
                     int flightID = flight.getID();
+                   
                     System.out.println(flightID);
                     String sql = "INSERT INTO reservations "
                             + "VALUES (null, "
                             + "" + customerID + ", "
                             + "'" + flightID + "', "
-                            + "" + food + ")";
+                            + "" + food + ", "
+                            + "" + cost + ")";
 
                     int[] key = new int[1];
                     key[0] = 1;
@@ -539,7 +546,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
                 statement.executeUpdate(sql);
                 customer = getCustomer(statement.executeUpdate(sql, 1));
-                createReservation(customer, flight, seats, food);
+                createReservation(customer, flight, seats, food, cost);
 
             }
 
@@ -558,14 +565,16 @@ public class DatabaseHandler implements DatabaseInterface {
      * @param flightID
      * @param seats
      * @param food
+     * @param cost
      */
     @Override
-    public void editReservation(int reservationID, int customerID, String flightID, ArrayList<Seat> seats, int food) {
+    public void editReservation(int reservationID, int customerID, String flightID, ArrayList<Seat> seats, int food, int cost) {
 
         String sql = "UPDATE reservations SET "
                 + "customer_id = " + customerID + ", "
                 + "flightid = '" + flightID + "', "
                 + "food = " + food + " "
+                + "cost = " + cost + " "
                 + "WHERE id = " + reservationID;
 
         executeUpdate(sql);
@@ -649,6 +658,7 @@ public class DatabaseHandler implements DatabaseInterface {
      * @param flightID
      * @return
      */
+    @Override
     public Booking getReservation(int seatID, int flightID) {
 
         String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id ="+seatID+" AND flight_id="+flightID;
@@ -887,5 +897,9 @@ public class DatabaseHandler implements DatabaseInterface {
      *   Below are unimplemented methods.
      *   Below are unimplemented methods.
      */
-    
+    @Override
+    public ArrayList<Flight> getFlights(Boolean freeSeatsOnly){
+        
+        return flights;
+    }
 }
