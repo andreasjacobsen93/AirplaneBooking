@@ -4,6 +4,7 @@ import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.DatabaseHandler;
 import airplanebooking.DB.DatabaseInterface;
+import airplanebooking.DB.Flight;
 import airplanebooking.GUI;
 import java.util.ArrayList;
 
@@ -74,11 +75,16 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
     }// </editor-fold>//GEN-END:initComponents
 
     private void list1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_list1ItemStateChanged
+        list2.removeAll();
+        
         DatabaseInterface db = new DatabaseHandler();
         ArrayList<Booking> bookingList = db.getCustomerReservations(list.get(list1.getSelectedIndex()).getID());
+        
+        
         for (int i = 0; i < bookingList.size(); i++)
         {
-            
+            Flight f = db.getFlight(bookingList.get(i).getFlightID());
+            list2.add(f.getDeparturePlace() + " - " + f.getDeparturePlace() + " @" + f.getDepartureTime());
         }
     }//GEN-LAST:event_list1ItemStateChanged
 
