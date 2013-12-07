@@ -615,7 +615,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 int customerid = results.getInt("customer_id");
                 int flightid = results.getInt("flightid");
                 int food = results.getInt("food");
-
+                int price = results.getInt("price");
                 String getSeats = "SELECT r2s.seat_id "
                         + "FROM `reservation2seat` r2s "
                         + "INNER JOIN reservations rs "
@@ -628,7 +628,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     seats.add(seat);
                 }
 
-                reservation = new Booking(id, customerid, flightid, seats, food);
+                reservation = new Booking(id, customerid, flightid, seats, food, price);
 
             }
             //statement.close();
@@ -665,7 +665,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 int customerid = results.getInt("customer_id");
                 int flightid = results.getInt("flightid");
                 int food = results.getInt("food");
-
+                int price = results.getInt("price");
                 String getSeats = "SELECT r2s.seat_id "
                         + "FROM `reservation2seat` r2s "
                         + "INNER JOIN reservations rs "
@@ -680,7 +680,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     System.out.println(seat.getIndex());
                 }
 
-                reservation = new Booking(id, customerid, flightid, seats, food);
+                reservation = new Booking(id, customerid, flightid, seats, food, price);
 
             }
             //statement.close();
