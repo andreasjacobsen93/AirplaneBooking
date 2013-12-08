@@ -68,15 +68,4 @@ public class Airplane {
     public String getECSeatFormation() {
         return ecSeatFormation;
     }
-
-    public Object[] getCustomerDataList() {
-        Object[] list = new Array[5];
-        list[0] = id;
-        list[1] = firstSeats;
-        list[2] = businessSeats;
-        list[3] = economySeats;
-        list[4] = totalSeats;
-
-        return list;
-    }
 }

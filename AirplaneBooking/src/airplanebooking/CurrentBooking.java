@@ -9,7 +9,6 @@ import airplanebooking.DB.Seat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,6 +26,7 @@ public class CurrentBooking {
     private static Customer customer;
     // The flight to book on
     private static Flight flight;
+    // The airplane to fly with
     private static Airplane airplane;
 
     // Economy Class
@@ -58,11 +58,10 @@ public class CurrentBooking {
     // List of event subscribers
     private static final ArrayList<BookingListener> listeners = new ArrayList<>();
 
-    public CurrentBooking() {
+    public CurrentBooking() { }
 
-    }
-
-    public static void addCustomer(Customer c) {
+    public static void addCustomer(Customer c) 
+    {
         customer = c;
     }
     
@@ -71,7 +70,8 @@ public class CurrentBooking {
         return customer;
     }
 
-    public static void addFlight(Flight f) {
+    public static void addFlight(Flight f) 
+    {
         flight = f;
         
         EseatPrice = f.getEconomyClassSeatCost();
@@ -120,7 +120,8 @@ public class CurrentBooking {
         update();
     }
 
-    public static void reset() {
+    public static void reset() 
+    {
         bookedSeats = new ArrayList<>();
         blockedSeats = null;
         EconomyClass = false;
@@ -142,7 +143,8 @@ public class CurrentBooking {
         update();
     }
 
-    public static void update() {
+    public static void update() 
+    {
         EconomyClass = false;
         BusinessClass = false;
         FirstClass = false;
@@ -170,7 +172,8 @@ public class CurrentBooking {
         updated();
     }
 
-    public static void addSeat(int seat) {
+    public static void addSeat(int seat) 
+    {
         // Add seat to booking
         if (!bookedSeats.contains(seat)) {
             bookedSeats.add(seat);
@@ -180,7 +183,8 @@ public class CurrentBooking {
         update();
     }
 
-    public static void removeSeat(Integer seat) {
+    public static void removeSeat(Integer seat) 
+    {
         // Remove seat from booking
         if (bookedSeats.contains(seat)) {
             bookedSeats.remove(seat);
@@ -190,69 +194,85 @@ public class CurrentBooking {
         update();
     }
 
-    public static Boolean isBooked(Integer seat) {
+    public static Boolean isBooked(Integer seat) 
+    {
         return bookedSeats.contains(seat);
     }
 
-    public static Boolean isBlocked(Integer seat) {
+    public static Boolean isBlocked(Integer seat) 
+    {
         return blockedSeats.contains(seat);
     }
 
-    public static ArrayList<Integer> getSeats() {
+    public static ArrayList<Integer> getSeats() 
+    {
         Collections.sort(bookedSeats);
         return bookedSeats;
     }
 
-    public static ArrayList<Integer> getBookedSeats() {
+    public static ArrayList<Integer> getBookedSeats() 
+    {
         Collections.sort(blockedSeats);
         return blockedSeats;
     }
 
-    public static Boolean isFirstClass() {
+    public static Boolean isFirstClass() 
+    {
         return FirstClass;
     }
 
-    public static Boolean isBusinessClass() {
+    public static Boolean isBusinessClass() 
+    {
         return BusinessClass;
     }
 
-    public static Boolean isEconomyClass() {
+    public static Boolean isEconomyClass() 
+    {
         return EconomyClass;
     }
 
-    public static int economySeatGroups() {
+    public static int economySeatGroups() 
+    {
         return EseatGroups;
     }
 
-    public static int economySeatLength() {
+    public static int economySeatLength() 
+    {
         return EseatLength;
     }
 
-    public static int economyRowSeats() {
+    public static int economyRowSeats() 
+    {
         return ErowSeats;
     }
 
-    public static int businessSeatGroups() {
+    public static int businessSeatGroups() 
+    {
         return BseatGroups;
     }
 
-    public static int businessSeatLength() {
+    public static int businessSeatLength() 
+    {
         return BseatLength;
     }
 
-    public static int businessRowSeats() {
+    public static int businessRowSeats() 
+    {
         return BrowSeats;
     }
 
-    public static int firstSeatGroups() {
+    public static int firstSeatGroups() 
+    {
         return FseatGroups;
     }
 
-    public static int firstSeatLength() {
+    public static int firstSeatLength() 
+    {
         return FseatLength;
     }
 
-    public static int firstRowSeats() {
+    public static int firstRowSeats()
+    {
         return FrowSeats;
     }
     
@@ -261,20 +281,22 @@ public class CurrentBooking {
         return totalCost;
     }
 
-    public static void updated() {
+    public static void updated()
+    {
         // Notify everybody that may be interested.
         for (BookingListener bl : listeners) {
             bl.bookingChanged();
         }
     }
 
-    public static void addListener(BookingListener listener) {
+    public static void addListener(BookingListener listener)
+    {
         listeners.add(listener);
     }
 
-    public static void findBestSeats(int amount) {
+    public static void findBestSeats(int amount)
+    {
         bookedSeats.clear();
-        //update();
         
         // ECONOMY CLASS IS THE ONLY ONE WORKING!!
         findSeatsAlgorithm(amount);
@@ -363,9 +385,7 @@ public class CurrentBooking {
             }
 
             if (blockedSeats.contains(seatsArray[ii][j])) {
-                //System.out.println("blocked 2");
-                //stopped = true;
-                //bs.score--;
+                bs.score--;
                 break;
             }
 
@@ -375,7 +395,7 @@ public class CurrentBooking {
         }
     }
     
-    private static void hAlgorithmSearch(int j, String a, bestSeats bs, int amount, int[][] seatsArray) 
+    private static void hAlgorithmSearch(int j, String a, bestSeats bs, int amount, int[][] seatsArray)
     {
         ArrayList<Integer> tempSeatsFirst = bs.tempSeats;
         ArrayList<Integer> tempSeatsSecond = new ArrayList<>();
@@ -419,7 +439,6 @@ public class CurrentBooking {
     private static ArrayList<Integer> hAlgorithmSearchDo(int jj, bestSeats bs, int amount, int[][] seatsArray, ArrayList<Integer> tempSeatsFirst, ArrayList<Integer> tempSeatsSecond)
     {
         for (int ii : tempSeatsFirst) {
-            //System.out.println(jj + ":" + ii);
 
             if (bs.seats.size() >= amount) {
                 break;
@@ -430,7 +449,6 @@ public class CurrentBooking {
             bs.score++;
 
             tempSeatsSecond.add(ii);
-            //System.out.println("3. saved " + ii + " and seat " + seatsArray[ii][jj]);
             bs.seats.add(seatsArray[ii][jj]);
         }
         return tempSeatsSecond;

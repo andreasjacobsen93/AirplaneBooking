@@ -81,19 +81,4 @@ public class Flight {
     public String getArrivalPlace() {
         return arrivalPlace;
     }
-
-    public Object[] getCustomerDataList() {
-        Object[] list = new Array[9];
-        list[0] = id;
-        list[1] = airplaneID;
-        list[1] = firstCost;
-        list[2] = businessCost;
-        list[3] = economyCost;
-        list[4] = bookedSeats;
-        list[5] = departurePlace;
-        list[6] = departureTime;
-        list[7] = arrivalPlace;
-        list[8] = arrivalTime;
-        return list;
-    }
 }

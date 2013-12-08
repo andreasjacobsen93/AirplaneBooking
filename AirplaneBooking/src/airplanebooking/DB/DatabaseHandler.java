@@ -95,9 +95,7 @@ public class DatabaseHandler implements DatabaseInterface {
             statement.getWarnings();
             //pass statement to statement handler -> db and save ResultSet.
             results = statement.executeQuery(sql);
-
         } catch (SQLException e) {
-
             System.out.println(e);
         }
         return results;

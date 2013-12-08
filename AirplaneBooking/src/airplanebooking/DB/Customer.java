@@ -68,26 +68,12 @@ public class Customer {
     public String getAddressCountry(){
         return addressCountry;
     }
+    
     public int getPhone(){
         return phone;
     }
+    
     public String getEmail(){
         return mail;
-    }
-    
-    public Object[] getCustomerDataList()
-    {
-        Object [] list = new Array[10];
-        list[0] = id;
-        list[1] = maritialStatus;
-        list[2] = firstName;
-        list[3] = lastName;
-        list[4] = addressStreet;
-        list[5] = addressZip;
-        list[6] = addressCity;
-        list[7] = addressCountry;
-        list[8] = phone;
-        list[9] = mail;
-        return list;
     }
 }

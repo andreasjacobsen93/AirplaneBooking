@@ -96,6 +96,11 @@ public class SwingMainFrame extends javax.swing.JFrame implements GUI {
         buttonFilter.setLabel("Filter...");
 
         checkboxFreeSeatsOnly.setLabel("Free seats only");
+        checkboxFreeSeatsOnly.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkboxFreeSeatsOnlyItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -374,6 +379,10 @@ public class SwingMainFrame extends javax.swing.JFrame implements GUI {
     private void AirplaneCanvasPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AirplaneCanvasPanelMouseMoved
         // TODO add your handling code here:
     }//GEN-LAST:event_AirplaneCanvasPanelMouseMoved
+
+    private void checkboxFreeSeatsOnlyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkboxFreeSeatsOnlyItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkboxFreeSeatsOnlyItemStateChanged
     
     @Override
     public void run() 

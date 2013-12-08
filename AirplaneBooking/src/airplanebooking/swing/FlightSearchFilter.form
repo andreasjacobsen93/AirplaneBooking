@@ -39,7 +39,6 @@
                       <Component id="textField" pref="141" max="32767" attributes="0"/>
                   </Group>
                   <Component id="listFilters" max="32767" attributes="0"/>
-                  <Component id="buttonApplyFilters" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="label1" min="-2" max="-2" attributes="0"/>
@@ -47,6 +46,8 @@
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="choiceComparer" alignment="1" max="32767" attributes="0"/>
+                  <Component id="buttonApplyFilters" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -73,12 +74,14 @@
               <Component id="buttonCreateFilter" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
               <Component id="label2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="listFilters" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="buttonDeleteFilter" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="buttonApplyFilters" min="-2" max="-2" attributes="0"/>
+              <Component id="choiceComparer" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="buttonApplyFilters" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -99,9 +102,6 @@
       </AuxValues>
     </Component>
     <Component class="java.awt.TextField" name="textField">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
     </Component>
     <Component class="java.awt.Button" name="buttonCreateFilter">
       <Properties>
@@ -137,6 +137,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Filters:"/>
       </Properties>
+    </Component>
+    <Component class="java.awt.Choice" name="choiceComparer">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="choiceComparerItemStateChanged"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="choiceComparer.add(&quot;All of the above&quot;);&#xa;choiceComparer.add(&quot;Some of the above&quot;);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

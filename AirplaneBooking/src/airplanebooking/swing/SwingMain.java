@@ -6,9 +6,11 @@ import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.DatabaseHandler;
 import airplanebooking.DB.DatabaseInterface;
+import airplanebooking.DB.Flight;
 import airplanebooking.FlightListener;
 import airplanebooking.GUI;
 import airplanebooking.SeatListener;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,6 +19,7 @@ import airplanebooking.SeatListener;
 public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener, SeatListener {
 
     private Boolean ready;
+    private ArrayList<Flight> flights;
     
     /**
      * Creates new form SwingMainFrame
@@ -29,6 +32,14 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel3.setVisible(false); // Airplane
         jPanel5.setVisible(false); // Options
         jPanel6.setVisible(false); // Customer
+        
+        DatabaseInterface db = new DatabaseHandler();
+        flights = db.getFlights(false);
+        
+        for (Flight f : flights)
+        {
+            listFlights.add(f.getDeparturePlace() + "-" + f.getArrivalPlace() + "@" + f.getDepartureTime());
+        }
     }
         
     private void initComponents() {
@@ -81,6 +92,12 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         });
 
         checkboxFreeSeatsOnly.setLabel("Free seats only");
+        checkboxFreeSeatsOnly.addItemListener(new java.awt.event.ItemListener() {
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkboxFreeSeatsOnlyItemStateChanged();
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -361,6 +378,16 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         GUI fsfForm = new FlightSearchFilter(this);
         fsfForm.run();
     }
+    
+    private void checkboxFreeSeatsOnlyItemStateChanged() {                                                       
+        DatabaseInterface db = new DatabaseHandler();
+        flights = db.getFlights(checkboxFreeSeatsOnly.getState());
+        
+        for (Flight f : flights)
+        {
+            listFlights.add(f.getDeparturePlace() + "-" + f.getArrivalPlace() + "@" + f.getDepartureTime());
+        }
+    }   
     
     // Variables declaration - do not modify
     private AirplaneCanvas AirplaneCanvasPanel;
