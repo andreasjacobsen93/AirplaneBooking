@@ -1,7 +1,5 @@
 package airplanebooking.DB;
 
-import java.sql.Array;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,20 +21,22 @@ public class Flight {
     private final Timestamp arrivalTime;
     private final String departurePlace;
     private final String arrivalPlace;
+    private final Boolean isFull;
 
     private final DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    public Flight(int id, int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
+    public Flight(int id, int airplaneID, int firstCost, int businessCost, int economyCost, ArrayList<Seat> seats, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime, Boolean isFull) {
         this.id = id;
         this.airplaneID = airplaneID;
         this.firstCost = firstCost;
         this.businessCost = businessCost;
         this.economyCost = economyCost;
-        this.bookedSeats = new ArrayList();
+        this.bookedSeats = seats;
         this.departurePlace = departurePlace;
         this.departureTime = departureTime;
         this.arrivalPlace = arrivalPlace;
         this.arrivalTime = arrivalTime;
+        this.isFull = isFull;
     }
 
     public int getID() {
@@ -80,5 +80,9 @@ public class Flight {
 
     public String getArrivalPlace() {
         return arrivalPlace;
+    }
+    
+    public Boolean isFull() {
+        return isFull;
     }
 }

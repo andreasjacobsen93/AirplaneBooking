@@ -45,6 +45,7 @@ public class DatabaseHandler implements DatabaseInterface {
     ArrayList<Flight> flights = null;
 
     //Seat field
+    Seat seat = null;
     ArrayList<Seat> seats = new ArrayList();
 
     //Airplane field
@@ -115,14 +116,14 @@ public class DatabaseHandler implements DatabaseInterface {
 
     private void closeConnection() {
         try {
-            
-            if (con != null){
-            statement.close();
-            //
-            results.close();
-            // results = null;
-            con.close();
-            // con = null;
+
+            if (con != null) {
+                statement.close();
+                //
+                results.close();
+                // results = null;
+                con.close();
+                // con = null;
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,18 +131,28 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
-     * This method creates a row in the database, containing the parameters that match the input, and thus creates and stores a new Customer.
+     * This method creates a row in the database, containing the parameters that
+     * match the input, and thus creates and stores a new Customer.
      *
-     * @param maritalstatus String value for Marital Status. <br><b>Max 10 characters.</b><br>
-     * @param firstname String value for First Name of the Customer. <br><b> Max 20 characters.</b><br>
-     * @param lastname String value for Last Name of the Customer. <br><b>Max 20 characters.</b><br>
-     * @param addressStreet String value for the Address Street of the Customer. <br><b>Max 40 characters.</b><br>
-     * @param addressZip Integer value for the Zip code of the Customers City. <br><b>Ranges from 0 - 4294967295.</b><br>
-     * @param addressCity  String value for the Address City of the Customer. <br><b>Max 30 characters.</b><br>
-     * @param addressCountry String value for the Address Country of the Customer. <br><b>Max 30 characters.</b><br>
-     * @param email String value for the Email of the Customer. <br><b>Max 30 characters.</b><br>
-     * @param phonenumber Integer value for the Phone Number of the customer. <br><b>Ranges from 0 - 4294967295<b>.
-     * 
+     * @param maritalstatus String value for Marital Status. <br><b>Max 10
+     * characters.</b><br>
+     * @param firstname String value for First Name of the Customer. <br><b> Max
+     * 20 characters.</b><br>
+     * @param lastname String value for Last Name of the Customer. <br><b>Max 20
+     * characters.</b><br>
+     * @param addressStreet String value for the Address Street of the Customer.
+     * <br><b>Max 40 characters.</b><br>
+     * @param addressZip Integer value for the Zip code of the Customers City.
+     * <br><b>Ranges from 0 - 4294967295.</b><br>
+     * @param addressCity String value for the Address City of the Customer.
+     * <br><b>Max 30 characters.</b><br>
+     * @param addressCountry String value for the Address Country of the
+     * Customer. <br><b>Max 30 characters.</b><br>
+     * @param email String value for the Email of the Customer. <br><b>Max 30
+     * characters.</b><br>
+     * @param phonenumber Integer value for the Phone Number of the customer.
+     * <br><b>Ranges from 0 - 4294967295<b>.
+     *
      */
     @Override
     public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
@@ -243,11 +254,11 @@ public class DatabaseHandler implements DatabaseInterface {
 
                     customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
                     System.out.println(getWarnings());
-                 
+
                 }
             } else {
-                                  
-                }
+
+            }
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -435,18 +446,18 @@ public class DatabaseHandler implements DatabaseInterface {
      * @return
      */
     public boolean customerExists(int customerID) {
-        String sql = "SELECT * FROM customers WHERE id="+customerID;
+        String sql = "SELECT * FROM customers WHERE id=" + customerID;
         executeQuery(sql);
         Boolean exists = false;
         try {
-        results.first();
-        exists = !results.wasNull();
-        
+            results.first();
+            exists = !results.wasNull();
+
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
         }
-      return exists;
+        return exists;
 
     }
 
@@ -487,7 +498,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     customer = currentCustomer;
                     int customerID = customer.getID();
                     int flightID = flight.getID();
-                   
+
                     System.out.println(flightID);
                     String sql = "INSERT INTO reservations "
                             + "VALUES (null, "
@@ -506,9 +517,9 @@ public class DatabaseHandler implements DatabaseInterface {
                     System.out.println(reservationID);
                     //System.out.println(reservationID);
 
-                    for (Seat seat : seats) {
-                        System.out.println(seat.getIndex());
-                        sql = "INSERT INTO reservation2seat VALUES (" + reservationID + ", " + seat.getIndex() + ")";
+                    for (Seat currentSeat : seats) {
+                        System.out.println(currentSeat.getIndex());
+                        sql = "INSERT INTO reservation2seat VALUES (" + reservationID + ", " + currentSeat.getIndex() + ")";
 
                         executeUpdate(sql);
 
@@ -580,10 +591,10 @@ public class DatabaseHandler implements DatabaseInterface {
             sql = "DELETE FROM reservation2seat WHERE reservation_id=" + reservationID;
             executeUpdate(sql);
         } else {
-            for (Seat seat : seats) {
+            for (Seat currentSeat : seats) {
                 sql = "UPDATE reservation2seat SET "
                         + "reservation_id = " + reservationID + ", "
-                        + "seat_id= " + seat.getIndex();
+                        + "seat_id= " + currentSeat.getIndex();
 
                 executeUpdate(sql);
             }
@@ -631,8 +642,9 @@ public class DatabaseHandler implements DatabaseInterface {
 
                 ResultSet seatResults = executeQuery(getSeats);
                 while (seatResults.next()) {
-                    Seat seat = new Seat(seatResults.getInt("seat_id"));
+                    seat = new Seat(seatResults.getInt("seat_id"));
                     seats.add(seat);
+                    seat = null;
                 }
 
                 reservation = new Booking(id, customerid, flightid, seats, food, price);
@@ -659,7 +671,7 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public Booking getReservation(int seatID, int flightID) {
 
-        String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id ="+seatID+" AND flight_id="+flightID;
+        String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id =" + seatID + " AND flight_id=" + flightID;
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
         executeQuery(sql);
         try {
@@ -667,7 +679,7 @@ public class DatabaseHandler implements DatabaseInterface {
             int reservationID = results.getInt(1);
             sql = "SELECT * FROM reservations WHERE id = " + reservationID;
             executeQuery(sql);
-           // results.first();
+            // results.first();
             while (results.next()) {
                 int id = results.getInt("id");
                 int customerid = results.getInt("customer_id");
@@ -681,11 +693,12 @@ public class DatabaseHandler implements DatabaseInterface {
                         + "WHERE r2s.reservation_id = rs.id ";
 
                 ResultSet seatResults = executeQuery(getSeats);
-                
+
                 while (seatResults.next()) {
-                    Seat seat = new Seat(seatResults.getInt("seat_id"));
+                    seat = new Seat(seatResults.getInt("seat_id"));
                     seats.add(seat);
                     System.out.println(seat.getIndex());
+                    seat = null;
                 }
 
                 reservation = new Booking(id, customerid, flightid, seats, food, price);
@@ -744,17 +757,31 @@ public class DatabaseHandler implements DatabaseInterface {
 
             executeQuery(sql);
             while (results.next()) {
-                int id = results.getInt("id");
-                int airplaneID = results.getInt("airplane_id");
-                int firstCost = results.getInt("firstcost");
-                int businessCost = results.getInt("businesscost");
-                int economyCost = results.getInt("economycost");
-                String departurePlace = results.getString("departureplace");
-                Timestamp departureTime = results.getTimestamp("departuretime");
-                String arrivalPlace = results.getString("arrivalplace");
-                Timestamp arrivalTime = results.getTimestamp("arrivaltime");
+                int id = results.getInt(1);
+                int airplane_id = results.getInt(2);
+                int firstcost = results.getInt(3);
+                int businesscost = results.getInt(4);
+                int economycost = results.getInt(5);
+                Timestamp dTime = results.getTimestamp(6);
+                String dPlace = results.getString(7);
+                Timestamp aTime = results.getTimestamp(8);
+                String aPlace = results.getString(9);
+                boolean isFull = results.getBoolean(10);
+                
+                String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
 
-                flight = new Flight(id, airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
+                ResultSet rs = statement.executeQuery(sqlGetSeats);
+                //ArrayList<Seat> seats = new ArrayList();
+                while (rs.next()) {
+
+                    int seatIndex = rs.getInt(1);
+
+                    seat = new Seat(seatIndex);
+                    seats.add(seat);
+                    seat = null;
+                }
+
+                flight = new Flight(id, airplane_id, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
 
             }
 
@@ -811,8 +838,9 @@ public class DatabaseHandler implements DatabaseInterface {
             String sql = "SELECT s.seat_id FROM reservation2seat s, reservations r WHERE flightid =" + flightID + " AND  r.id = s.reservation_id";
             executeQuery(sql);
             while (results.next()) {
-                Seat seat = new Seat(results.getInt(1));
+                seat = new Seat(results.getInt(1));
                 seats.add(seat);
+                seat = null;
             }
 
         } catch (SQLException ex) {
@@ -820,7 +848,7 @@ public class DatabaseHandler implements DatabaseInterface {
         }
         return seats;
     }
-    
+
     /**
      *
      * @param flightID
@@ -896,8 +924,50 @@ public class DatabaseHandler implements DatabaseInterface {
      *   Below are unimplemented methods.
      */
     @Override
-    public ArrayList<Flight> getFlights(Boolean freeSeatsOnly){
-        
+    public ArrayList<Flight> getFlights(Boolean freeSeatsOnly) {
+        String sql;
+        if (freeSeatsOnly = true) {
+            sql = "SELECT * FROM flights WHERE isfull = 0";
+        } else {
+            sql = "SELECT * FROM flights where isfull = 1";
+        }
+        executeQuery(sql);
+
+        for (Flight currentFlight : flights) {
+            try {
+                int id = results.getInt(1);
+                int airplane_id = results.getInt(2);
+                int firstcost = results.getInt(3);
+                int businesscost = results.getInt(4);
+                int economycost = results.getInt(5);
+                Timestamp dTime = results.getTimestamp(6);
+                String dPlace = results.getString(7);
+                Timestamp aTime = results.getTimestamp(8);
+                String aPlace = results.getString(9);
+                boolean isFull = results.getBoolean(10);
+
+                String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
+
+                ResultSet rs = statement.executeQuery(sqlGetSeats);
+                //ArrayList<Seat> seats = new ArrayList();
+                while (rs.next()) {
+
+                    int seatIndex = rs.getInt(1);
+
+                    seat = new Seat(seatIndex);
+                    seats.add(seat);
+                    seat = null;
+                }
+
+                currentFlight = new Flight(id, airplane_id, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
+                flights.add(currentFlight);
+                
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         return flights;
     }
 }
