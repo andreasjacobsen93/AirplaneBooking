@@ -3,32 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package airplanebooking.DB;
 
 /**
  *
  * @author Christian
  */
-public class Seat
-{
+public class Seat {
+
     // instance variables - replace the example below with your own
     private final Integer index;
+    private Boolean isFinalSeat;
+
     /**
      * Constructor for objects of class Seat
+     *
      * @param i
-     * 
      */
-    public Seat(int i)
-    {
+    public Seat(int i) {
+        this.isFinalSeat = false;
         // initialise instance variables
         // The index of the seat
         index = i;
     }
-
-    public int getIndex()
-    {
+    public int getIndex() {
         return index;
+    }
+
+    public void setFinalSeat() {
+        isFinalSeat = true;
+    }
+    
+    protected boolean isFinalSeat(){
+        return isFinalSeat;
     }
     
 }
