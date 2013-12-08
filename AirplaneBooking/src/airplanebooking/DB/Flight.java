@@ -78,6 +78,13 @@ public class Flight {
         String returnTime = df.format(arrivalTime);
         return returnTime;
     }
+    public Timestamp getArrivalTimestamp(){
+        return arrivalTime;
+    }
+    
+    public Timestamp getDepartureTimestamp(){
+        return departureTime;
+    }
 
     public String getDeparturePlace() {
         return departurePlace;
