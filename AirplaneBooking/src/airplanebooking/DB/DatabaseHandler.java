@@ -928,47 +928,42 @@ public class DatabaseHandler implements DatabaseInterface {
 
         try {
             String sql;
-            if (freeSeatsOnly = true) {
+            if (freeSeatsOnly == true) {
                 sql = "SELECT * FROM flights WHERE isfull = 0";
             } else {
                 sql = "SELECT * FROM flights where isfull = 1";
             }
-
+            System.out.println(freeSeatsOnly);
             executeQuery(sql);
 
             while (results.next()) {
-                try {
 
-                    int id = results.getInt(1);
-                    int airplane_id = results.getInt(2);
-                    int firstcost = results.getInt(3);
-                    int businesscost = results.getInt(4);
-                    int economycost = results.getInt(5);
-                    Timestamp dTime = results.getTimestamp(6);
-                    String dPlace = results.getString(7);
-                    Timestamp aTime = results.getTimestamp(8);
-                    String aPlace = results.getString(9);
-                    boolean isFull = results.getBoolean(10);
+                int id = results.getInt(1);
+                int airplane_id = results.getInt(2);
+                int firstcost = results.getInt(3);
+                int businesscost = results.getInt(4);
+                int economycost = results.getInt(5);
+                Timestamp dTime = results.getTimestamp(6);
+                String dPlace = results.getString(7);
+                Timestamp aTime = results.getTimestamp(8);
+                String aPlace = results.getString(9);
+                boolean isFull = results.getBoolean(10);
 
-                    sql = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
+                sql = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
 
-                    Statement s = con.createStatement();
-                    ResultSet rs = s.executeQuery(sql);
+                Statement s = con.createStatement();
+                ResultSet rs = s.executeQuery(sql);
 
-                    while (rs.next()) {
+                while (rs.next()) {
 
-                        int seatIndex = rs.getInt(1);
-                        seat = new Seat(seatIndex);
-                        seats.add(seat);
+                    int seatIndex = rs.getInt(1);
+                    seat = new Seat(seatIndex);
+                    seats.add(seat);
 
-                    }
-
-                    flight = new Flight(id, airplane_id, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
-                    flights.add(flight);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
+                flight = new Flight(id, airplane_id, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
+                flights.add(flight);
             }
 
         } catch (SQLException ex) {
