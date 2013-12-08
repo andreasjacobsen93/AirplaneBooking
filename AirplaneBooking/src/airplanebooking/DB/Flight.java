@@ -43,8 +43,8 @@ public class Flight {
         return id;
     }
 
-    public int getAirplaneID() {
-
+    public int getAirplaneID() 
+    {
         return airplaneID;
     }
 

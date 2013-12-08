@@ -18,13 +18,15 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
      */
     public SwingNewReservation(Flight flight) {
         CurrentBooking.reset();
+        CurrentBooking.addFlight(flight);
         initComponents(flight);
+        AirplaneCan.setAirplaneCanvas(true, flight);
         setTitle("Airplane Booking - New Reservation...");
     }
                        
     private void initComponents(Flight flight) {
         
-        AirplaneCan = new AirplaneCanvas(true, flight);
+        AirplaneCan = new AirplaneCanvas();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         labelAirplaneName = new java.awt.Label();

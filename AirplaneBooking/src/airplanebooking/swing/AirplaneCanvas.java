@@ -17,42 +17,42 @@ import java.util.ArrayList;
  */
 public final class AirplaneCanvas extends javax.swing.JComponent implements BookingListener {
     
-    private final Flight flight;
-    private final Airplane airplane;
+    private Flight flight;
+    private Airplane airplane;
     
     // Economy Class
-    private final Boolean EClass;
-    private final int EseatGroups;
-    private final int EseatLength;
-    private final int ErowSeats;
-    private final int EseatSize;
+    private Boolean EClass;
+    private int EseatGroups;
+    private int EseatLength;
+    private int ErowSeats;
+    private int EseatSize;
     
     // Business Class
-    private final Boolean BClass;
-    private final int BseatGroups;
-    private final int BseatLength;
-    private final int BrowSeats;
-    private final int BtotalSeats;
-    private final int BseatSize;
+    private Boolean BClass;
+    private int BseatGroups;
+    private int BseatLength;
+    private int BrowSeats;
+    private int BtotalSeats;
+    private int BseatSize;
     
     // First Class
-    private final Boolean FClass;
-    private final int FseatGroups;
-    private final int FseatLength;
-    private final int FrowSeats;
-    private final int FtotalSeats;
-    private final int FseatSize;
+    private Boolean FClass;
+    private int FseatGroups;
+    private int FseatLength;
+    private int FrowSeats;
+    private int FtotalSeats;
+    private int FseatSize;
     
     private int iniX;
     private int iniY;
     
-    private final int[][] seats;
+    private int[][] seats;
     private int seat;
     
     public int seatNumber;
     public String seatClass;
-    private final int seatsCount;
-    private final Boolean bookable;
+    private int seatsCount;
+    private Boolean bookable;
     
     public int x;
     public int y;
@@ -62,7 +62,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     
     public AirplaneCanvas()
     {
-        //CurrentBooking.reset();
+        CurrentBooking.reset();
         bookable = false;
         
         flight = null;
@@ -105,7 +105,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         seat = 0;
     }
     
-    public AirplaneCanvas(Boolean bookable, Flight flight)
+    public void setAirplaneCanvas(Boolean bookable, Flight flight)
     {
         CurrentBooking.reset();
         this.bookable = bookable;
@@ -154,14 +154,18 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         seats = new int[seatsCount][6];
         seat = 0;
         
-        CurrentBooking.reset();
         // Create data for seats
         for (int i = 0; i < seatsCount; i++)
         {
             seats[i][0] = i+1;
         }
-        this.bookingChanged();
-
+        
+        CurrentBooking.addFlight(flight);
+        
+        for(int s : CurrentBooking.getBookedSeats())
+        {
+            System.out.print(s + ",");
+        }
         
         // Event for mouse movement
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -243,6 +247,8 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                 }
             });
         }
+        
+        repaint();
     }
     
     public static void updated() {
@@ -495,10 +501,10 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     public void bookingChanged() {
 
         for (int i = 0; i < seatsCount; i++)
-        {
-            seats[i][1] = 1;
+        { 
             if (CurrentBooking.isBlocked(i+1)) seats[i][1] = 0;
-            if (CurrentBooking.isBooked(i+1) && bookable) seats[i][1] = 2;
+            if (CurrentBooking.isBooked(i+1) && bookable == true) seats[i][1] = 2;
+            else seats[i][1] = 1;
         }
 
         repaint();

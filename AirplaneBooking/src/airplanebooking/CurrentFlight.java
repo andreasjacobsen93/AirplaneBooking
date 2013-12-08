@@ -31,6 +31,11 @@ public class CurrentFlight {
         updated();
     }
     
+    public static void addListener(FlightListener listener)
+    {
+        listeners.add(listener);
+    }
+    
     public static Flight getFlight()
     {
         return flight;

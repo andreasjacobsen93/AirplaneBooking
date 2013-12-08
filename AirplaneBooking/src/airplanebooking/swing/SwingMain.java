@@ -11,6 +11,7 @@ import airplanebooking.FlightListener;
 import airplanebooking.GUI;
 import airplanebooking.SeatListener;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,6 +33,10 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel3.setVisible(false); // Airplane
         jPanel5.setVisible(false); // Options
         jPanel6.setVisible(false); // Customer
+        checkboxLunchOnboard.setVisible(false);
+        labelPrice.setVisible(false);
+        labelTravelClass.setVisible(false);
+        labelSeats.setVisible(false);
         
         DatabaseInterface db = new DatabaseHandler();
         flights = db.getFlights(false);
@@ -44,6 +49,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         
     private void initComponents() {
 
+        CurrentFlight.addListener(this);
+        
         jPanel1 = new javax.swing.JPanel();
         listFlights = new java.awt.List();
         buttonFindCustomer = new java.awt.Button();
@@ -74,6 +81,12 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         setMinimumSize(new java.awt.Dimension(1100, 800));
 
         listFlights.setMultipleMode(false);
+        listFlights.addItemListener(new java.awt.event.ItemListener() {
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listFlightsItemStateChanged();
+            }
+        });
 
         buttonFindCustomer.setLabel("Find customer...");
         buttonFindCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -361,6 +374,12 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     
     private void buttonNewReservationMouseClicked() {                                                  
         // TODO add your handling code here:
+        if (CurrentFlight.getFlight().isFull())
+        {
+            JOptionPane.showMessageDialog(null, "All seats on flight is booked.");
+            return;
+        }
+        
         if(ready == true) {
             SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
             CurrentBooking.reset();
@@ -379,7 +398,9 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         fsfForm.run();
     }
     
-    private void checkboxFreeSeatsOnlyItemStateChanged() {                                                       
+    private void checkboxFreeSeatsOnlyItemStateChanged() {      
+        listFlights.removeAll();
+        
         DatabaseInterface db = new DatabaseHandler();
         flights = db.getFlights(checkboxFreeSeatsOnly.getState());
         
@@ -390,6 +411,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     }   
     
     // Variables declaration - do not modify
+    //private AirplaneCanvas AirplaneCanvasPanel;
     private AirplaneCanvas AirplaneCanvasPanel;
     private java.awt.Button buttonDeleteReservation;
     private java.awt.Button buttonFilter;
@@ -422,6 +444,11 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     {
         
     }
+    
+    public void listFlightsItemStateChanged()
+    {
+        CurrentFlight.setFlight(flights.get(listFlights.getSelectedIndex()));
+    }
 
     @Override
     public void flightChanged() {
@@ -429,8 +456,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel5.setVisible(true); // Options
         
         ready = true;
-        AirplaneCanvasPanel = new AirplaneCanvas(false, CurrentFlight.getFlight());
-        initComponents();
+        AirplaneCanvasPanel.setAirplaneCanvas(false, CurrentFlight.getFlight());
         labelAirplaneName.setText(CurrentFlight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + ":" + CurrentFlight.getFlight().getID());
         labelRoute.setText(CurrentFlight.getFlight().getDeparturePlace() + " - " + CurrentFlight.getFlight().getArrivalPlace());
         labelTime.setText(CurrentFlight.getFlight().getDepartureTime());
@@ -439,6 +465,10 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     @Override
     public void seatChanged() {
         jPanel6.setVisible(true); // Customer
+        checkboxLunchOnboard.setVisible(true);
+        labelPrice.setVisible(true);
+        labelTravelClass.setVisible(true);
+        labelSeats.setVisible(true);
         
         DatabaseInterface db = new DatabaseHandler();
         Booking b = db.getReservation(CurrentFlight.getSeat(), CurrentFlight.getFlight().getID());
