@@ -14,9 +14,9 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-
 /**
- * If you are spawning more than one of these objects, you are most likely doing it wrong.
+ * If you are spawning more than one of these objects, you are most likely doing
+ * it wrong.
  *
  * @author Alex
  */
@@ -57,22 +57,20 @@ public class DatabaseHandler implements DatabaseInterface {
     public DatabaseHandler() {
         //contructor method to initiate (combo)DataSource for pooled connections on spawning an object.
         initiateDataSource();
-
     }
 
     private void initiateDataSource() {
-
+        // initiates the connection to the database, and sets the basic parameters for the connection pooling.
         cpds.setJdbcUrl(jdbcurl);
         cpds.setUser(user);
         cpds.setPassword(pass);
         cpds.setMinPoolSize(1);
         cpds.setAcquireIncrement(3);
         cpds.setMaxPoolSize(10);
-
     }
 
     private void executeUpdate(String sql) {
-
+        //SET method, for putting data into the database.
         try {
             //Query DataSource for connection, and establish statement handler
             con = cpds.getConnection();
@@ -82,19 +80,21 @@ public class DatabaseHandler implements DatabaseInterface {
             statement.getWarnings();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            throw new RuntimeException("Something went wrong while executing the update", e);
         }
     }
 
     private ResultSet executeQuery(String sql) {
-        //first we establish DB connection.
+        //GET method for getting data from the database.
 
-        //establish statement handler.
         try {
+            //first we establish DB connection.
             con = cpds.getConnection();
+            //establish statement handler.
             statement = con.createStatement();
-            //statement.getWarnings();
-            //pass statement to statement handler -> db and save ResultSet.
+            //Get potential warnings from the statement handler.
+            statement.getWarnings();
+            //pass results from statement handler to ResultSet and save the it.
             results = statement.executeQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException("Something went wrong while executing the query.", e);
@@ -103,15 +103,16 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     private String getWarnings() {
+
         String status = warning.getMessage();
-        return status;
-        /*        if (!status.isEmpty()) {
-         return status;
-         } else {
-         status = "Completed without error.";
-         return status;
-         }
-         */
+        //return status;
+        if (status != null) {
+            return status;
+        } else {
+            status = "Completed without error.";
+            return status;
+        }
+
     }
 
     private void closeConnection() {
@@ -126,7 +127,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 // con = null;
             }
         } catch (SQLException ex) {
-            throw new RuntimeException ("Something went wrong with closing the connection", ex);
+            throw new RuntimeException("Something went wrong with closing the connection", ex);
         }
     }
 
@@ -169,7 +170,6 @@ public class DatabaseHandler implements DatabaseInterface {
                 + "'" + addressCountry + "', "
                 + "'" + email + "', "
                 + "" + phonenumber + ")";
-        System.out.println("Customer " + firstname + " " + lastname + " created.");
         //execute the statement
         executeUpdate(sql);
 
@@ -204,8 +204,6 @@ public class DatabaseHandler implements DatabaseInterface {
                 + "phonenumber = " + phonenumber
                 + "WHERE id = " + customerID;
 
-        System.out.println("Customer " + firstname + " " + lastname + " edited.");
-
         //execute statement
         executeUpdate(sql);
     }
@@ -219,9 +217,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
         //create string (sql statement), which we'd like to pass to the statement handler.
         String sql = "DELETE FROM customers WHERE id = " + customerID;
-
-        System.out.println("Customer with customerID:" + customerID + " deleted.");
-
         //execute statement
         executeUpdate(sql);
 
@@ -253,11 +248,8 @@ public class DatabaseHandler implements DatabaseInterface {
                     String email = results.getString("email");
 
                     customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
-                    System.out.println(getWarnings());
 
                 }
-            } else {
-
             }
 
         } catch (SQLException ex) {
@@ -431,7 +423,7 @@ public class DatabaseHandler implements DatabaseInterface {
             //  results.close();
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while checking if the customer exists",ex);
+            throw new RuntimeException("Something went wrong while checking if the customer exists", ex);
         } finally {
             // closeConnection();
         }
@@ -454,7 +446,7 @@ public class DatabaseHandler implements DatabaseInterface {
             exists = !results.wasNull();
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while checking if the customer exists",ex);
+            throw new RuntimeException("Something went wrong while checking if the customer exists", ex);
         } finally {
         }
         return exists;
@@ -476,7 +468,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 executeQuery(sql);
                 exists = results.getRow() != 0;
             } catch (SQLException ex) {
-                throw new RuntimeException("Something went wrong while checking if the seat exists",ex);
+                throw new RuntimeException("Something went wrong while checking if the seat exists", ex);
             }
         }
         return exists;
@@ -499,7 +491,6 @@ public class DatabaseHandler implements DatabaseInterface {
                     int customerID = customer.getID();
                     int flightID = flight.getID();
 
-                    System.out.println(flightID);
                     String sql = "INSERT INTO reservations "
                             + "VALUES (null, "
                             + "" + customerID + ", "
@@ -514,18 +505,14 @@ public class DatabaseHandler implements DatabaseInterface {
                     ResultSet rs = statement.getGeneratedKeys();
                     rs.first();
                     int reservationID = rs.getInt(1);
-                    System.out.println(reservationID);
-                    //System.out.println(reservationID);
 
                     for (Seat currentSeat : seats) {
-                        System.out.println(currentSeat.getIndex());
+
                         sql = "INSERT INTO reservation2seat VALUES (" + reservationID + ", " + currentSeat.getIndex() + ")";
 
                         executeUpdate(sql);
 
                     }
-                } else {
-                    System.out.println("YOUR SEATS ALREADY EXIST, RESERVATION CREATION ABORTED!");
                 }
 
             } else {
@@ -551,8 +538,6 @@ public class DatabaseHandler implements DatabaseInterface {
                         + "'" + addressCountry + "', "
                         + "'" + email + "', "
                         + "" + phonenumber + ")";
-                System.out.println("Customer " + firstname + " " + lastname + " created.");
-
                 statement.executeUpdate(sql);
                 customer = getCustomer(statement.executeUpdate(sql, 1));
                 createReservation(customer, flight, seats, food, cost);
@@ -697,7 +682,6 @@ public class DatabaseHandler implements DatabaseInterface {
                 while (seatResults.next()) {
                     seat = new Seat(seatResults.getInt("seat_id"));
                     seats.add(seat);
-                    System.out.println(seat.getIndex());
                     seat = null;
                 }
 
@@ -756,7 +740,7 @@ public class DatabaseHandler implements DatabaseInterface {
             //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
 
             executeQuery(sql);
-            
+
             while (results.next()) {
                 int id = results.getInt(1);
                 int airplane_id = results.getInt(2);
@@ -787,7 +771,7 @@ public class DatabaseHandler implements DatabaseInterface {
             }
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while getting the flight.",ex);
+            throw new RuntimeException("Something went wrong while getting the flight.", ex);
         } finally {
             closeConnection();
         }
@@ -845,7 +829,7 @@ public class DatabaseHandler implements DatabaseInterface {
             }
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while getting the booked seats on this flight",ex);
+            throw new RuntimeException("Something went wrong while getting the booked seats on this flight", ex);
         }
         return seats;
     }
@@ -912,7 +896,7 @@ public class DatabaseHandler implements DatabaseInterface {
             airplane = new Airplane(id, name, firstSeats, businessSeats, economySeats, fcSeatFormation, bcSeatFormation, ecSeatFormation);
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while getting the airplane",ex);
+            throw new RuntimeException("Something went wrong while getting the airplane", ex);
         }
         return airplane;
     }
@@ -932,9 +916,9 @@ public class DatabaseHandler implements DatabaseInterface {
             if (freeSeatsOnly == true) {
                 sql = "SELECT * FROM flights WHERE isfull = 0";
             } else {
-                sql = "SELECT * FROM flights where isfull = 1";
+                sql = "SELECT * FROM flights";
             }
-            System.out.println(freeSeatsOnly);
+
             executeQuery(sql);
 
             while (results.next()) {
@@ -969,6 +953,8 @@ public class DatabaseHandler implements DatabaseInterface {
 
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong while getting the flights", ex);
+        } finally {
+            // System.out.println(getWarnings());
         }
         return flights;
     }
