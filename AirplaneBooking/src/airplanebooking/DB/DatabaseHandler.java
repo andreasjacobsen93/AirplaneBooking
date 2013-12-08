@@ -14,6 +14,8 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * If you are spawning more than one of these objects, you are most likely doing
@@ -29,7 +31,7 @@ public class DatabaseHandler implements DatabaseInterface {
     private static final String jdbcurl = "jdbc:mysql://mysql.itu.dk/Airplanebooking";
     Connection con = null;
     PreparedStatement pstatement = null;
-    
+
     ResultSet results = null;
     SQLWarning warning = new SQLWarning();
     ComboPooledDataSource cpds = new ComboPooledDataSource();
@@ -74,14 +76,13 @@ public class DatabaseHandler implements DatabaseInterface {
     private void executeUpdate(String sql) {
         //SET method, for putting data into the database.
         try {
-            //Query DataSource for connection, and establish statement handler
-            con = cpds.getConnection();
-            pstatement = con.prepareStatement(sql);
-            //pass statement to statement handler -> db.
-            pstatement.getWarnings();
+            //Execute the prepared statement.
+            pstatement.executeUpdate(sql);
 
         } catch (SQLException e) {
             throw new RuntimeException("Something went wrong while executing the update", e);
+        } finally {
+            //  closeConnection();
         }
     }
 
@@ -89,20 +90,24 @@ public class DatabaseHandler implements DatabaseInterface {
         //GET method for getting data from the database.
 
         try {
-            //first we establish DB connection.
-            con = cpds.getConnection();
-            //establish statement handler.
-            pstatement = con.prepareStatement(sql);
-            //Get potential warnings from the statement handler.
-            pstatement.getWarnings();
+
             //pass results from statement handler to ResultSet and save the it.
             results = pstatement.executeQuery(sql);
+
         } catch (SQLException e) {
             throw new RuntimeException("Something went wrong while executing the query.", e);
+        } finally {
+            // closeConnection();
         }
         return results;
     }
 
+    /*
+     *
+     *
+     * Still testing this sucker. Not yet implemented.
+     *
+     */
     private String getWarnings() {
 
         String status = warning.getMessage();
@@ -137,11 +142,10 @@ public class DatabaseHandler implements DatabaseInterface {
      * match the input, and thus creates and stores a new Customer.
      *
      * @param customer This parameter is a
-     * 
-     * String value for Marital Status. <br><b>Max 10
+     *
+     * String value for Marital Status. <br><b>Max 10 characters.</b><br>
+     * firstname String value for First Name of the Customer. <br><b> Max 20
      * characters.</b><br>
-     * firstname String value for First Name of the Customer. <br><b> Max
-     * 20 characters.</b><br>
      * lastname String value for Last Name of the Customer. <br><b>Max 20
      * characters.</b><br>
      * addressStreet String value for the Address Street of the Customer.
@@ -150,8 +154,8 @@ public class DatabaseHandler implements DatabaseInterface {
      * <br><b>Ranges from 0 - 4294967295.</b><br>
      * addressCity String value for the Address City of the Customer.
      * <br><b>Max 30 characters.</b><br>
-     * addressCountry String value for the Address Country of the
-     * Customer. <br><b>Max 30 characters.</b><br>
+     * addressCountry String value for the Address Country of the Customer.
+     * <br><b>Max 30 characters.</b><br>
      * email String value for the Email of the Customer. <br><b>Max 30
      * characters.</b><br>
      * <i>phonenumber</i> Integer value for the Phone Number of the customer.
@@ -160,49 +164,55 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void createCustomer(Customer customer) {
-        
-        //create sql statement, which we'd like to pass to the statement handler.
-        //unpacks the Customer object, and inserts values at the correct columns in the database.
-        String sql = "INSERT INTO customers "
-                + "VALUES (null, "
-                + "'" + customer.getMaritalStatus() + "', "
-                + "'" + customer.getFirstName() + "', "
-                + "'" + customer.getLastName() + "', "
-                + "'" + customer.getAddressStreet() + "', "
-                + "" + customer.getAddressZip() + ", "
-                + "'" + customer.getAddressCity() + "', "
-                + "'" + customer.getAddressCountry() + "', "
-                + "'" + customer.getEmail() + "', "
-                + "" + customer.getPhone() + ")";
-        
-        //execute the statement
-        executeUpdate(sql);
+        try {
+            //create sql statement, which we'd like to pass to the statement handler.
+            //unpacks the Customer object, and inserts values at the correct columns in the database.
+            String sql = "INSERT INTO customers VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setString(1, customer.getMaritalStatus());
+            pstatement.setString(3, customer.getLastName());
+            pstatement.setString(4, customer.getAddressStreet());
+            pstatement.setInt(5, customer.getAddressZip());
+            pstatement.setString(6, customer.getAddressCity());
+            pstatement.setString(7, customer.getAddressCountry());
+            pstatement.setString(8, customer.getEmail());
+            pstatement.setInt(9, customer.getPhone());
+
+            //execute the statement
+            executeUpdate(sql);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while creating the customer", ex);
+        }
 
     }
 
     /**
      *
      * @param customer
-     * 
+     *
      */
     @Override
     public void editCustomer(Customer customer) {
+        try {
+            //create string (sql statement), which we'd like to pass to the statement handler.
+            String sql = "UPDATE customers SET maritalstatus = '?', firstname = '?', lastname = '?', addressstreet = '?', addresszip = ?, addresscity = '?', "
+                    + "addresscountry = '?', email = '?', phonenumber = ? WHERE id = ?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setString(1, customer.getMaritalStatus());
+            pstatement.setString(3, customer.getLastName());
+            pstatement.setString(4, customer.getAddressStreet());
+            pstatement.setInt(5, customer.getAddressZip());
+            pstatement.setString(6, customer.getAddressCity());
+            pstatement.setString(7, customer.getAddressCountry());
+            pstatement.setString(8, customer.getEmail());
+            pstatement.setInt(9, customer.getPhone());
+            pstatement.setInt(10, customer.getID());
 
-        //create string (sql statement), which we'd like to pass to the statement handler.
-        String sql = "UPDATE customers SET "
-                + "maritalstatus = '" + customer.getMaritalStatus() + "', "
-                + "firstname = '" + customer.getFirstName() + "', "
-                + "lastname = '" + customer.getLastName() + "', "
-                + "addressstreet = '" + customer.getAddressStreet() + "', "
-                + "addresszip = " + customer.getAddressZip() + ", "
-                + "addresscity = '" + customer.getAddressCity() + "', "
-                + "addresscountry = '" + customer.getAddressCountry() + "', "
-                + "email = '" + customer.getEmail() + "', "
-                + "phonenumber = " + customer.getEmail()
-                + "WHERE id = " + customer.getID();
-
-        //execute statement
-        executeUpdate(sql);
+            //execute statement
+            executeUpdate(sql);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while editing the customer.", ex);
+        }
     }
 
     /**
@@ -211,11 +221,16 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void deleteCustomer(Customer customer) {
-
-        //create string (sql statement), which we'd like to pass to the statement handler.
-        String sql = "DELETE FROM customers WHERE id = " + customer.getID();
-        //execute statement
-        executeUpdate(sql);
+        try {
+            //create string (sql statement), which we'd like to pass to the statement handler.
+            String sql = "DELETE FROM customers WHERE id = ?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, customer.getID());
+            //execute statement
+            executeUpdate(sql);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while deleting the customer", ex);
+        }
 
     }
 
@@ -228,7 +243,10 @@ public class DatabaseHandler implements DatabaseInterface {
     public Customer getCustomer(int customerID) {
         try {
             if (customerExists(customerID)) {
-                String sql = "SELECT * FROM customers WHERE id = " + customerID;
+                String sql = "SELECT * FROM customers WHERE id = ?";
+
+                pstatement = con.prepareStatement(sql);
+                pstatement.setInt(1, customerID);
                 //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
 
                 executeQuery(sql);
@@ -265,9 +283,12 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public ArrayList<Customer> getCustomers(int q) {
 
-        String sql = "SELECT * FROM customers WHERE addresszip =" + q + " OR phonenumber =" + q;
-
+        String sql = "SELECT * FROM customers WHERE addresszip = ? OR phonenumber = ?";
         try {
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, q);
+            pstatement.setInt(2, q);
+
             executeQuery(sql);
             results.beforeFirst();
 
@@ -301,9 +322,15 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Customer> getCustomers(String q) {
-        String sql = "SELECT * FROM customers WHERE firstname =\"" + q + "\" OR lastname =\"" + q + "\" OR addressstreet =\"" + q + "\" OR email =\"" + q + "\"";
+        String sql = "SELECT * FROM customers WHERE firstname = \"?\" OR lastname =\"?\" OR addressstreet =\"?\" OR email =\"?\"";
 
         try {
+            pstatement = con.prepareStatement(sql);
+            pstatement.setString(1, q);
+            pstatement.setString(2, q);
+            pstatement.setString(3, q);
+            pstatement.setString(4, q);
+
             executeQuery(sql);
             results.beforeFirst();
             while (results.next()) {
@@ -333,45 +360,55 @@ public class DatabaseHandler implements DatabaseInterface {
      *
      * @param firstName
      * @param lastName
-     * @param Email
+     * @param email
      * @param Phone
      * @return
      */
     @Override
-    public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone) {
-
-        String sql = "SELECT * FROM customers WHERE ";
-
-        int i = 0;
-        if (firstName != null) {
-            sql += "firstname = \"" + firstName + "\"";
-            i++;
+    public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone) {
+        String recieverMatrix = "1:1:1:1";
+        String[] parts = recieverMatrix.split(":");
+        String[] columns = new String[4];
+        if (firstName == null) {
+            parts[0] = "0";
+            columns[0] = firstName;
+        }
+        if (lastName == null) {
+            parts[1] = "0";
+            columns[1] = lastName;
+        }
+        if (email == null) {
+            parts[2] = "0";
+            columns[2] = email;
+        }
+        if (firstName == null) {
+            parts[3] = "0";
+            columns[3] = Phone.toString();
         }
 
-        if (lastName != null) {
-            if (i > 0) {
-                sql += " AND ";
-            }
-            sql += "lastname = \"" + lastName + "\"";
-            i++;
-        }
-
-        if (Email != null) {
-            if (i > 0) {
-                sql += " AND ";
-            }
-            sql += "email = \"" + Email + "\"";
-            i++;
-        }
-
-        if (Phone != null) {
-            if (i > 0) {
-                sql += " AND ";
-            }
-            sql += "phonenumber = \"" + Phone + "\"";
-        }
+        String sql = "SELECT * FROM customers WHERE";
+        
+        String[] sqlArr = new String[4];
+        sqlArr[0] = "firstname = \"?\" AND ";
+        sqlArr[1] = "lastname = \"?\" AND ";
+        sqlArr[2] = "AND email= \"?\" AND ";
+        sqlArr[3] = "AND phone = ?";
 
         try {
+
+            int k = 0;
+            PreparedStatement[] pstatementArr = new PreparedStatement[4];
+            for (int i = 0; i < parts.length; i++) {
+                if (parts[i].matches("1")) {
+                    sql += sqlArr[i];
+                    k++;
+                    pstatementArr[k].setString(k, columns[i]);
+                }
+            }
+
+            System.out.println(sql);
+            pstatement = con.prepareStatement(sql);
+
             executeQuery(sql);
             results.beforeFirst();
             while (results.next()) {
@@ -384,8 +421,8 @@ public class DatabaseHandler implements DatabaseInterface {
                 String addressCity = results.getString("addresscity");
                 String addressCountry = results.getString("addresscountry");
                 int phonenumber = results.getInt("phonenumber");
-                String email = results.getString("email");
-                customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
+                String eMail = results.getString("email");
+                customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, eMail);
                 customers.add(customer);
             }
             return customers;
@@ -710,18 +747,24 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
-        String sql = "INSERT INTO flights "
-                + "VALUES (null, "
-                + "" + airplaneID + ", "
-                + "" + firstCost + ", "
-                + "" + businessCost + ", "
-                + "" + economyCost + ", "
-                + "'" + departurePlace + "', "
-                + "'" + departureTime + "', "
-                + "'" + arrivalPlace + "', "
-                + "'" + arrivalTime + "')";
+        try {
+            String sql = "INSERT INTO flights "
+                    + "VALUES (null, ?, ?, ?, ?, ?, ?, ? ,?)";
 
-        executeUpdate(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, airplaneID);
+            pstatement.setInt(2, firstCost);
+            pstatement.setInt(3, businessCost);
+            pstatement.setInt(4, economyCost);
+            pstatement.setString(5, departurePlace);
+            pstatement.setTimestamp(6, departureTime);
+            pstatement.setString(7, arrivalPlace);
+            pstatement.setTimestamp(8, arrivalTime);
+
+            executeUpdate(sql);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while creating the flight.", ex);
+        }
 
     }
 
@@ -897,8 +940,6 @@ public class DatabaseHandler implements DatabaseInterface {
         }
         return airplane;
     }
-
-
 
     /*
      *   Below are unimplemented methods.

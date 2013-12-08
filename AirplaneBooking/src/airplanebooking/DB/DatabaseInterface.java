@@ -30,7 +30,7 @@ public interface DatabaseInterface {
     
     public ArrayList<Customer> getCustomers(int q);
     
-    public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone);
+    public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone);
     
     public boolean customerExists(Customer customer);
 
