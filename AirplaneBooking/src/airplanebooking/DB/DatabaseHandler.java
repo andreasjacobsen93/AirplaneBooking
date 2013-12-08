@@ -756,6 +756,7 @@ public class DatabaseHandler implements DatabaseInterface {
             //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
 
             executeQuery(sql);
+            
             while (results.next()) {
                 int id = results.getInt(1);
                 int airplane_id = results.getInt(2);
@@ -769,8 +770,8 @@ public class DatabaseHandler implements DatabaseInterface {
                 boolean isFull = results.getBoolean(10);
 
                 String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
-
-                ResultSet rs = statement.executeQuery(sqlGetSeats);
+                Statement s = con.createStatement();
+                ResultSet rs = s.executeQuery(sqlGetSeats);
                 //ArrayList<Seat> seats = new ArrayList();
                 while (rs.next()) {
 
