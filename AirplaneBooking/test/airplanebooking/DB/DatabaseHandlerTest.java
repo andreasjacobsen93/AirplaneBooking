@@ -46,39 +46,14 @@ public class DatabaseHandlerTest {
     @Test
     public void testCreateCustomer() {
         System.out.println("createCustomer");
-        String maritalstatus = "";
-        String firstname = "";
-        String lastname = "";
-        String addressStreet = "";
-        int addressZip = 0;
-        String addressCity = "";
-        String addressCountry = "";
-        String email = "";
-        int phonenumber = 0;
+        Customer customer = new Customer(1, "Mr", "Lars", "Larsen", "JyskStreet", 2300, "JyskCity", "JyskCountry", 70808182, "Lars@hotmail.com");
         DatabaseHandler instance = new DatabaseHandler();
-        instance.createCustomer(maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, email, phonenumber);
+        instance.createCustomer(customer);
+        int expResult = 1;
+        int result = customer.getID();
+        assertEquals(expResult ,result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    /**
-     * Test of createCustomer method, of class DatabaseHandler.
-     */
-    @Test
-    public void testCreateCustomer1() {
-        System.out.println("createCustomer");
-        String maritalstatus = "Mr";
-        String firstname = "Bob";
-        String lastname = "Andersen";
-        String addressStreet = "Bobs gade";
-        int addressZip = 2300;
-        String addressCity = "Bobs by";
-        String addressCountry = "Bobs land";
-        String email = "BobsMail@gmail.com";
-        int phonenumber = 12345678;
-        DatabaseHandler instance = new DatabaseHandler();
-        instance.createCustomer(maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, email, phonenumber);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -87,18 +62,9 @@ public class DatabaseHandlerTest {
     @Test
     public void testEditCustomer() {
         System.out.println("editCustomer");
-        int customerID = 0;
-        String maritalstatus = "";
-        String firstname = "";
-        String lastname = "";
-        String addressStreet = "";
-        int addressZip = 0;
-        String addressCity = "";
-        String addressCountry = "";
-        String email = "";
-        int phonenumber = 0;
+        Customer customer = null;
         DatabaseHandler instance = new DatabaseHandler();
-        instance.editCustomer(customerID, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, email, phonenumber);
+        instance.editCustomer(customer);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -109,9 +75,9 @@ public class DatabaseHandlerTest {
     @Test
     public void testDeleteCustomer() {
         System.out.println("deleteCustomer");
-        int customerID = 0;
+        Customer customer = null;
         DatabaseHandler instance = new DatabaseHandler();
-        instance.deleteCustomer(customerID);
+        instance.deleteCustomer(customer);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -128,11 +94,12 @@ public class DatabaseHandlerTest {
         Customer result = instance.getCustomer(customerID);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");      
+        fail("The test case is a prototype.");
     }
-
-    /**
-     * This method tests if the ID of the returned customer matches the value of the parameter of the getCustomer method.
+    
+      /**
+     * This method tests if the ID of the returned customer matches the value 
+of the parameter of the getCustomer method.
      * Test of getCustomer method, of class DatabaseHandler.
      */
     @Test
@@ -147,7 +114,7 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-     /**
+ /**
      * revideret version.
      * Test of getCustomer method, of class DatabaseHandler.
      */
@@ -163,7 +130,7 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
    // }
-
+    
     /**
      * Test of getCustomers method, of class DatabaseHandler.
      */
@@ -320,6 +287,7 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
     
     /**
      * Test of getReservation method, of class DatabaseHandler.
@@ -336,7 +304,6 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-
     /**
      * Test of getReservation method, of class DatabaseHandler.
      */
@@ -372,8 +339,9 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
     
-     /**
+    /**
      * Test of createFlight method, of class DatabaseHandler.
      */
     //@Test
@@ -409,8 +377,9 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
     
-    /**
+     /**
      * Test of getFlight method, of class DatabaseHandler.
      */
     @Test
@@ -425,7 +394,8 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+    
+    
     /**
      * Test of getCustomerReservations method, of class DatabaseHandler.
      */
@@ -472,7 +442,7 @@ public class DatabaseHandlerTest {
         String arrivalPlace = "";
         Timestamp arrivalTime = null;
         DatabaseHandler instance = new DatabaseHandler();
-    //////    instance.editFlight(flightID, airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
+        instance.editFlight(flightID, airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -489,8 +459,9 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
-    /**
+    
+    
+        /**
      * Test of deleteFlight method, of class DatabaseHandler.
      */
   //  @Test
@@ -503,7 +474,8 @@ public class DatabaseHandlerTest {
   //      // TODO review the generated test code and remove the default call to fail.
   //      fail("The test case is a prototype.");
   //  }
-    
+
+
     /**
      * Test of getAirplane method, of class DatabaseHandler.
      */
