@@ -135,41 +135,43 @@ public class DatabaseHandler implements DatabaseInterface {
      * This method creates a row in the database, containing the parameters that
      * match the input, and thus creates and stores a new Customer.
      *
-     * @param maritalstatus String value for Marital Status. <br><b>Max 10
+     * @param customer String value for Marital Status. <br><b>Max 10
      * characters.</b><br>
-     * @param firstname String value for First Name of the Customer. <br><b> Max
+     * firstname String value for First Name of the Customer. <br><b> Max
      * 20 characters.</b><br>
-     * @param lastname String value for Last Name of the Customer. <br><b>Max 20
+     * lastname String value for Last Name of the Customer. <br><b>Max 20
      * characters.</b><br>
-     * @param addressStreet String value for the Address Street of the Customer.
+     * addressStreet String value for the Address Street of the Customer.
      * <br><b>Max 40 characters.</b><br>
-     * @param addressZip Integer value for the Zip code of the Customers City.
+     * addressZip Integer value for the Zip code of the Customers City.
      * <br><b>Ranges from 0 - 4294967295.</b><br>
-     * @param addressCity String value for the Address City of the Customer.
+     * addressCity String value for the Address City of the Customer.
      * <br><b>Max 30 characters.</b><br>
-     * @param addressCountry String value for the Address Country of the
+     * addressCountry String value for the Address Country of the
      * Customer. <br><b>Max 30 characters.</b><br>
-     * @param email String value for the Email of the Customer. <br><b>Max 30
+     * email String value for the Email of the Customer. <br><b>Max 30
      * characters.</b><br>
-     * @param phonenumber Integer value for the Phone Number of the customer.
+     * <i>phonenumber</i> Integer value for the Phone Number of the customer.
      * <br><b>Ranges from 0 - 4294967295<b>.
      *
      */
     @Override
-    public void createCustomer(String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
-
-        //create string (sql statement), which we'd like to pass to the statement handler.
+    public void createCustomer(Customer customer) {
+        
+        //create sql statement, which we'd like to pass to the statement handler.
+        //unpacks the Customer object, and inserts values at the correct columns in the database.
         String sql = "INSERT INTO customers "
                 + "VALUES (null, "
-                + "'" + maritalstatus + "', "
-                + "'" + firstname + "', "
-                + "'" + lastname + "', "
-                + "'" + addressStreet + "', "
-                + "" + addressZip + ", "
-                + "'" + addressCity + "', "
-                + "'" + addressCountry + "', "
-                + "'" + email + "', "
-                + "" + phonenumber + ")";
+                + "'" + customer.getMaritalStatus() + "', "
+                + "'" + customer.getFirstName() + "', "
+                + "'" + customer.getLastName() + "', "
+                + "'" + customer.getAddressStreet() + "', "
+                + "" + customer.getAddressZip() + ", "
+                + "'" + customer.getAddressCity() + "', "
+                + "'" + customer.getAddressCountry() + "', "
+                + "'" + customer.getEmail() + "', "
+                + "" + customer.getPhone() + ")";
+        
         //execute the statement
         executeUpdate(sql);
 

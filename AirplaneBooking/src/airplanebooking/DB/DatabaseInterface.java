@@ -18,9 +18,7 @@ public interface DatabaseInterface {
     //Below are all customer related DB method declarations.
     */
     
-    public void createCustomer(String maritalstatus, String firstname, 
-            String lastname, String addressStreet, int addressZip, 
-            String addressCity, String addressCountry, String email, int phonenumber);
+    public void createCustomer(Customer customer);
 
     public void editCustomer(int customerID, String maritalstatus,  String firstname, 
             String lastname, String addressStreet, int addressZip, String addressCity, 
