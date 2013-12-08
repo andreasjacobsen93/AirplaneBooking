@@ -7,6 +7,7 @@ package airplanebooking.DB;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
@@ -27,7 +28,8 @@ public class DatabaseHandler implements DatabaseInterface {
     private static final String pass = "Jegeradministratorher123";
     private static final String jdbcurl = "jdbc:mysql://mysql.itu.dk/Airplanebooking";
     Connection con = null;
-    Statement statement = null;
+    PreparedStatement pstatement = null;
+    
     ResultSet results = null;
     SQLWarning warning = new SQLWarning();
     ComboPooledDataSource cpds = new ComboPooledDataSource();
@@ -74,10 +76,9 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
             //Query DataSource for connection, and establish statement handler
             con = cpds.getConnection();
-            statement = con.createStatement();
+            pstatement = con.prepareStatement(sql);
             //pass statement to statement handler -> db.
-            statement.executeUpdate(sql);
-            statement.getWarnings();
+            pstatement.getWarnings();
 
         } catch (SQLException e) {
             throw new RuntimeException("Something went wrong while executing the update", e);
@@ -91,11 +92,11 @@ public class DatabaseHandler implements DatabaseInterface {
             //first we establish DB connection.
             con = cpds.getConnection();
             //establish statement handler.
-            statement = con.createStatement();
+            pstatement = con.prepareStatement(sql);
             //Get potential warnings from the statement handler.
-            statement.getWarnings();
+            pstatement.getWarnings();
             //pass results from statement handler to ResultSet and save the it.
-            results = statement.executeQuery(sql);
+            results = pstatement.executeQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException("Something went wrong while executing the query.", e);
         }
@@ -119,7 +120,7 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
 
             if (con != null) {
-                statement.close();
+                pstatement.close();
                 //
                 results.close();
                 // results = null;
@@ -135,7 +136,9 @@ public class DatabaseHandler implements DatabaseInterface {
      * This method creates a row in the database, containing the parameters that
      * match the input, and thus creates and stores a new Customer.
      *
-     * @param customer String value for Marital Status. <br><b>Max 10
+     * @param customer This parameter is a
+     * 
+     * String value for Marital Status. <br><b>Max 10
      * characters.</b><br>
      * firstname String value for First Name of the Customer. <br><b> Max
      * 20 characters.</b><br>
@@ -179,32 +182,24 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      *
-     * @param customerID
-     * @param maritalstatus
-     * @param firstname
-     * @param lastname
-     * @param addressStreet
-     * @param addressZip
-     * @param addressCity
-     * @param addressCountry
-     * @param email
-     * @param phonenumber
+     * @param customer
+     * 
      */
     @Override
-    public void editCustomer(int customerID, String maritalstatus, String firstname, String lastname, String addressStreet, int addressZip, String addressCity, String addressCountry, String email, int phonenumber) {
+    public void editCustomer(Customer customer) {
 
         //create string (sql statement), which we'd like to pass to the statement handler.
         String sql = "UPDATE customers SET "
-                + "maritalstatus = '" + maritalstatus + "', "
-                + "firstname = '" + firstname + "', "
-                + "lastname = '" + lastname + "', "
-                + "addressstreet = '" + addressStreet + "', "
-                + "addresszip = " + addressZip + ", "
-                + "addresscity = '" + addressCity + "', "
-                + "addresscountry = '" + addressCountry + "', "
-                + "email = '" + email + "', "
-                + "phonenumber = " + phonenumber
-                + "WHERE id = " + customerID;
+                + "maritalstatus = '" + customer.getMaritalStatus() + "', "
+                + "firstname = '" + customer.getFirstName() + "', "
+                + "lastname = '" + customer.getLastName() + "', "
+                + "addressstreet = '" + customer.getAddressStreet() + "', "
+                + "addresszip = " + customer.getAddressZip() + ", "
+                + "addresscity = '" + customer.getAddressCity() + "', "
+                + "addresscountry = '" + customer.getAddressCountry() + "', "
+                + "email = '" + customer.getEmail() + "', "
+                + "phonenumber = " + customer.getEmail()
+                + "WHERE id = " + customer.getID();
 
         //execute statement
         executeUpdate(sql);
@@ -212,13 +207,13 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      *
-     * @param customerID
+     * @param customer
      */
     @Override
-    public void deleteCustomer(int customerID) {
+    public void deleteCustomer(Customer customer) {
 
         //create string (sql statement), which we'd like to pass to the statement handler.
-        String sql = "DELETE FROM customers WHERE id = " + customerID;
+        String sql = "DELETE FROM customers WHERE id = " + customer.getID();
         //execute statement
         executeUpdate(sql);
 
@@ -502,9 +497,9 @@ public class DatabaseHandler implements DatabaseInterface {
 
                     int[] key = new int[1];
                     key[0] = 1;
-                    statement.executeUpdate(sql, key[0]);
+                    pstatement.executeUpdate(sql, key[0]);
 
-                    ResultSet rs = statement.getGeneratedKeys();
+                    ResultSet rs = pstatement.getGeneratedKeys();
                     rs.first();
                     int reservationID = rs.getInt(1);
 
@@ -540,8 +535,8 @@ public class DatabaseHandler implements DatabaseInterface {
                         + "'" + addressCountry + "', "
                         + "'" + email + "', "
                         + "" + phonenumber + ")";
-                statement.executeUpdate(sql);
-                customer = getCustomer(statement.executeUpdate(sql, 1));
+                pstatement.executeUpdate(sql);
+                customer = getCustomer(pstatement.executeUpdate(sql, 1));
                 createReservation(customer, flight, seats, food, cost);
 
             }
@@ -634,7 +629,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     seat = null;
                 }
 
-                reservation = new Booking(id, customerid, getFlight(flightid), seats, food, price);
+                reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), seats, food, price);
 
             }
             //statement.close();
@@ -687,7 +682,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     seat = null;
                 }
 
-                reservation = new Booking(id, customerid, getFlight(flightid), seats, food, price);
+                reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), seats, food, price);
 
             }
             //statement.close();
@@ -745,7 +740,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
             while (results.next()) {
                 int id = results.getInt(1);
-                int airplaneID = results.getInt(2);
+                airplane = getAirplane(results.getInt(2));
                 int firstcost = results.getInt(3);
                 int businesscost = results.getInt(4);
                 int economycost = results.getInt(5);
@@ -768,7 +763,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     seat = null;
                 }
 
-                flight = new Flight(id, getAirplane(airplaneID), firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
+                flight = new Flight(id, airplane, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
 
             }
 
@@ -904,6 +899,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
 
+
     /*
      *   Below are unimplemented methods.
      *   Below are unimplemented methods.
@@ -926,7 +922,7 @@ public class DatabaseHandler implements DatabaseInterface {
             while (results.next()) {
 
                 int id = results.getInt(1);
-                int airplaneID = results.getInt(2);
+                airplane = getAirplane(results.getInt(2));
                 int firstcost = results.getInt(3);
                 int businesscost = results.getInt(4);
                 int economycost = results.getInt(5);
@@ -949,7 +945,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
                 }
 
-                flight = new Flight(id, getAirplane(airplaneID), firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
+                flight = new Flight(id, airplane, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
                 flights.add(flight);
             }
 

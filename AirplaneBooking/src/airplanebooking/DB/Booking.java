@@ -1,6 +1,5 @@
 package airplanebooking.DB;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 /**
@@ -10,17 +9,17 @@ import java.util.ArrayList;
 public class Booking {
     
     private final Integer id;
-    private final Integer customerID;
+    private final Customer customer;
     private final Flight flight;
     private final Integer food;
     private final ArrayList<Seat> seats;
     private final Integer price;
     
     
-    public Booking(int id, int customerID, Flight flight, ArrayList<Seat> seats, int food, int price)
+    public Booking(int id, Customer customer, Flight flight, ArrayList<Seat> seats, int food, int price)
     {
         this.id = id;
-        this.customerID = customerID;
+        this.customer = customer;
         this.flight = flight;
         this.seats = seats;
         this.food = food;
@@ -36,11 +35,13 @@ public class Booking {
     }
     
     public int getCustomerID(){
+        int customerID = customer.getID();
         return customerID;
     }
     
-    public Flight getFlight(){
-        return flight;
+    public int getFlightID(){
+        int flightID = flight.getID();
+        return flightID;
     }
     
     public int getFood(){

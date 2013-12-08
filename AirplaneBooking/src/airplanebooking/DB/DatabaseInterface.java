@@ -20,11 +20,9 @@ public interface DatabaseInterface {
     
     public void createCustomer(Customer customer);
 
-    public void editCustomer(int customerID, String maritalstatus,  String firstname, 
-            String lastname, String addressStreet, int addressZip, String addressCity, 
-            String addressCountry, String email, int phonenumber);
+    public void editCustomer(Customer customer);
 
-    public void deleteCustomer(int customerID);
+    public void deleteCustomer(Customer customer);
 
     public Customer getCustomer(int customerID);
     
