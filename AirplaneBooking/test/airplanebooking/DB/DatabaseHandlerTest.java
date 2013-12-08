@@ -46,6 +46,26 @@ public class DatabaseHandlerTest {
     @Test
     public void testCreateCustomer() {
         System.out.println("createCustomer");
+        String maritalstatus = "";
+        String firstname = "";
+        String lastname = "";
+        String addressStreet = "";
+        int addressZip = 0;
+        String addressCity = "";
+        String addressCountry = "";
+        String email = "";
+        int phonenumber = 0;
+        DatabaseHandler instance = new DatabaseHandler();
+        instance.createCustomer(maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, email, phonenumber);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+    /**
+     * Test of createCustomer method, of class DatabaseHandler.
+     */
+    @Test
+    public void testCreateCustomer1() {
+        System.out.println("createCustomer");
         String maritalstatus = "Mr";
         String firstname = "Bob";
         String lastname = "Andersen";
@@ -97,7 +117,22 @@ public class DatabaseHandlerTest {
     }
 
     /**
-     * En test på int!
+     * Test of getCustomer method, of class DatabaseHandler.
+     */
+    @Test
+    public void testGetCustomer() {
+        System.out.println("getCustomer");
+        int customerID = 0;
+        DatabaseHandler instance = new DatabaseHandler();
+        Customer expResult = null;
+        Customer result = instance.getCustomer(customerID);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");      
+    }
+
+    /**
+     * This method tests if the ID of the returned customer matches the value of the parameter of the getCustomer method.
      * Test of getCustomer method, of class DatabaseHandler.
      */
     @Test
@@ -112,23 +147,22 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    
-    /**
+     /**
      * revideret version.
      * Test of getCustomer method, of class DatabaseHandler.
      */
-    @Test
-    public void testGetCustomer() {
-        System.out.println("getCustomer");
-        int customerID = 1;
-        DatabaseHandler db = new DatabaseHandler();
-        Customer cs = new Customer(1);
-        Customer expResult = cs;
-        Customer result = db.getCustomer(1);
-        assertEquals(expResult, result);
+   // @Test
+   // public void testGetCustomer() {
+   //     System.out.println("getCustomer");
+   //    
+   //     DatabaseHandler db = new DatabaseHandler();
+   //     Customer cs = new Customer(db.getCustomer(1));
+   //     Customer expResult = cs;
+   //     Customer result = new Customer(db.getCustomer(1));
+   //     assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
-    }
+   // }
 
     /**
      * Test of getCustomers method, of class DatabaseHandler.
@@ -182,12 +216,27 @@ public class DatabaseHandlerTest {
      * Test of customerExists method, of class DatabaseHandler.
      */
     @Test
-    public void testCustomerExists() {
+    public void testCustomerExists_Customer() {
         System.out.println("customerExists");
         Customer customer = null;
         DatabaseHandler instance = new DatabaseHandler();
         boolean expResult = false;
         boolean result = instance.customerExists(customer);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of customerExists method, of class DatabaseHandler.
+     */
+    @Test
+    public void testCustomerExists_int() {
+        System.out.println("customerExists");
+        int customerID = 0;
+        DatabaseHandler instance = new DatabaseHandler();
+        boolean expResult = false;
+        boolean result = instance.customerExists(customerID);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -219,8 +268,9 @@ public class DatabaseHandlerTest {
         Flight flight = null;
         ArrayList<Seat> seats = null;
         int food = 0;
+        int cost = 0;
         DatabaseHandler instance = new DatabaseHandler();
-        instance.createReservation(currentCustomer, flight, seats, food);
+        instance.createReservation(currentCustomer, flight, seats, food, cost);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -236,8 +286,9 @@ public class DatabaseHandlerTest {
         String flightID = "";
         ArrayList<Seat> seats = null;
         int food = 0;
+        int cost = 0;
         DatabaseHandler instance = new DatabaseHandler();
-        instance.editReservation(reservationID, customerID, flightID, seats, food);
+        instance.editReservation(reservationID, customerID, flightID, seats, food, cost);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -259,12 +310,44 @@ public class DatabaseHandlerTest {
      * Test of getReservation method, of class DatabaseHandler.
      */
     @Test
-    public void testGetReservation() {
+    public void testGetReservation_int() {
         System.out.println("getReservation");
         int reservationID = 0;
         DatabaseHandler instance = new DatabaseHandler();
         Booking expResult = null;
         Booking result = instance.getReservation(reservationID);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+    
+    /**
+     * Test of getReservation method, of class DatabaseHandler.
+     */
+    @Test
+    public void testGetReservation_int1() {
+        System.out.println("getReservation");
+        int reservationID = 1;
+        DatabaseHandler instance = new DatabaseHandler();
+        Booking myBooking = instance.getReservation(reservationID);
+        int expResult = 1;
+        int result = myBooking.getID();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getReservation method, of class DatabaseHandler.
+     */
+    @Test
+    public void testGetReservation_int_int() {
+        System.out.println("getReservation");
+        int seatID = 0;
+        int flightID = 0;
+        DatabaseHandler instance = new DatabaseHandler();
+        Booking expResult = null;
+        Booking result = instance.getReservation(seatID, flightID);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -276,7 +359,6 @@ public class DatabaseHandlerTest {
     @Test
     public void testCreateFlight() {
         System.out.println("createFlight");
-        int id = 0;
         int airplaneID = 0;
         int firstCost = 0;
         int businessCost = 0;
@@ -286,7 +368,7 @@ public class DatabaseHandlerTest {
         String arrivalPlace = "";
         Timestamp arrivalTime = null;
         DatabaseHandler instance = new DatabaseHandler();
-        instance.createFlight(id, airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
+        instance.createFlight(airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -343,14 +425,16 @@ public class DatabaseHandlerTest {
     public void testEditFlight() {
         System.out.println("editFlight");
         int flightID = 0;
-        int firstSeats = 0;
-        int businessSeats = 0;
-        int economySeats = 0;
-        int totalSeats = 0;
-        String departureTime = "";
-        String arrivalTime = "";
+        int airplaneID = 0;
+        int firstCost = 0;
+        int businessCost = 0;
+        int economyCost = 0;
+        String departurePlace = "";
+        Timestamp departureTime = null;
+        String arrivalPlace = "";
+        Timestamp arrivalTime = null;
         DatabaseHandler instance = new DatabaseHandler();
-        instance.editFlight(flightID, firstSeats, businessSeats, economySeats, totalSeats, departureTime, arrivalTime);
+        instance.editFlight(flightID, airplaneID, firstCost, businessCost, economyCost, departurePlace, departureTime, arrivalPlace, arrivalTime);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -364,6 +448,36 @@ public class DatabaseHandlerTest {
         int flightID = 0;
         DatabaseHandler instance = new DatabaseHandler();
         instance.deleteFlight(flightID);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getAirplane method, of class DatabaseHandler.
+     */
+    @Test
+    public void testGetAirplane() {
+        System.out.println("getAirplane");
+        int airplaneID = 0;
+        DatabaseHandler instance = new DatabaseHandler();
+        Airplane expResult = null;
+        Airplane result = instance.getAirplane(airplaneID);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getFlights method, of class DatabaseHandler.
+     */
+    @Test
+    public void testGetFlights() {
+        System.out.println("getFlights");
+        Boolean freeSeatsOnly = null;
+        DatabaseHandler instance = new DatabaseHandler();
+        ArrayList<Flight> expResult = null;
+        ArrayList<Flight> result = instance.getFlights(freeSeatsOnly);
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
