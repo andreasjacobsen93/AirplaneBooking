@@ -84,7 +84,7 @@ public class CurrentBooking {
         FseatPrice = f.getFirstClassSeatCost();
         
         DatabaseInterface db = new DatabaseHandler();
-        airplane = db.getAirplane(flight.getAirplaneID());
+        airplane = flight.getAirplane();
         
         String[] ec = airplane.getECSeatFormation().split(":");
         String[] bc = airplane.getBCSeatFormation().split(":");

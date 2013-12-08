@@ -634,7 +634,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     seat = null;
                 }
 
-                reservation = new Booking(id, customerid, flightid, seats, food, price);
+                reservation = new Booking(id, customerid, getFlight(flightid), seats, food, price);
 
             }
             //statement.close();
@@ -687,7 +687,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     seat = null;
                 }
 
-                reservation = new Booking(id, customerid, flightid, seats, food, price);
+                reservation = new Booking(id, customerid, getFlight(flightid), seats, food, price);
 
             }
             //statement.close();
@@ -745,7 +745,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
             while (results.next()) {
                 int id = results.getInt(1);
-                Airplane airplane = getAirplane(results.getInt(2));
+                int airplaneID = results.getInt(2);
                 int firstcost = results.getInt(3);
                 int businesscost = results.getInt(4);
                 int economycost = results.getInt(5);
@@ -768,7 +768,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     seat = null;
                 }
 
-                flight = new Flight(id, airplane, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
+                flight = new Flight(id, getAirplane(airplaneID), firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
 
             }
 
@@ -926,7 +926,7 @@ public class DatabaseHandler implements DatabaseInterface {
             while (results.next()) {
 
                 int id = results.getInt(1);
-                Airplane airplane = getAirplane(results.getInt(2));
+                int airplaneID = results.getInt(2);
                 int firstcost = results.getInt(3);
                 int businesscost = results.getInt(4);
                 int economycost = results.getInt(5);
@@ -949,7 +949,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
                 }
 
-                flight = new Flight(id, airplane, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
+                flight = new Flight(id, getAirplane(airplaneID), firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
                 flights.add(flight);
             }
 

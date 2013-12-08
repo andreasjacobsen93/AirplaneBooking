@@ -11,17 +11,17 @@ public class Booking {
     
     private final Integer id;
     private final Integer customerID;
-    private final Integer flightID;
+    private final Flight flight;
     private final Integer food;
     private final ArrayList<Seat> seats;
     private final Integer price;
     
     
-    public Booking(int id, int customerID, int flightID, ArrayList<Seat> seats, int food, int price)
+    public Booking(int id, int customerID, Flight flight, ArrayList<Seat> seats, int food, int price)
     {
         this.id = id;
         this.customerID = customerID;
-        this.flightID = flightID;
+        this.flight = flight;
         this.seats = seats;
         this.food = food;
         this.price = price;
@@ -39,8 +39,8 @@ public class Booking {
         return customerID;
     }
     
-    public int getFlightID(){
-        return flightID;
+    public Flight getFlight(){
+        return flight;
     }
     
     public int getFood(){

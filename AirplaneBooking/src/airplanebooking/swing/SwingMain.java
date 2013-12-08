@@ -7,6 +7,7 @@ import airplanebooking.DB.Customer;
 import airplanebooking.DB.DatabaseHandler;
 import airplanebooking.DB.DatabaseInterface;
 import airplanebooking.DB.Flight;
+import airplanebooking.DB.Seat;
 import airplanebooking.FlightListener;
 import airplanebooking.GUI;
 import airplanebooking.SeatListener;
@@ -50,6 +51,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     private void initComponents() {
 
         CurrentFlight.addListener(this);
+        AirplaneCanvasPanel.addListener(this);
         
         jPanel1 = new javax.swing.JPanel();
         listFlights = new java.awt.List();
@@ -372,19 +374,21 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         setVisible(true);
     }
     
-    private void buttonNewReservationMouseClicked() {                                                  
+    private void buttonNewReservationMouseClicked() {
         // TODO add your handling code here:
         if (CurrentFlight.getFlight().isFull())
         {
             JOptionPane.showMessageDialog(null, "All seats on flight is booked.");
-            return;
         }
-        
-        if(ready == true) {
-            SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
-            CurrentBooking.reset();
-            CurrentBooking.addListener(SNR);
-            SNR.run();
+        else
+        {
+            System.out.println("doing it anyway, fuck you");
+            if(ready == true) {
+                SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
+                CurrentBooking.reset();
+                CurrentBooking.addListener(SNR);
+                SNR.run();
+            }
         }
     } 
     
@@ -412,7 +416,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     
     // Variables declaration - do not modify
     //private AirplaneCanvas AirplaneCanvasPanel;
-    private AirplaneCanvas AirplaneCanvasPanel;
+    private final AirplaneCanvas AirplaneCanvasPanel;
     private java.awt.Button buttonDeleteReservation;
     private java.awt.Button buttonFilter;
     private java.awt.Button buttonFindCustomer;
@@ -457,6 +461,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         
         ready = true;
         AirplaneCanvasPanel.setAirplaneCanvas(false, CurrentFlight.getFlight());
+        
         labelAirplaneName.setText(CurrentFlight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + ":" + CurrentFlight.getFlight().getID());
         labelRoute.setText(CurrentFlight.getFlight().getDeparturePlace() + " - " + CurrentFlight.getFlight().getArrivalPlace());
         labelTime.setText(CurrentFlight.getFlight().getDepartureTime());
@@ -471,7 +476,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelSeats.setVisible(true);
         
         DatabaseInterface db = new DatabaseHandler();
-        Booking b = db.getReservation(CurrentFlight.getSeat(), CurrentFlight.getFlight().getID());
+        Booking b = db.getReservation(CurrentFlight.getSeat(), CurrentFlight.getFlight().getID()); System.out.println("getting seat");
         Customer c = db.getCustomer(b.getCustomerID());
         
         textMaritialStatus.setText(c.getMaritalStatus());
@@ -482,11 +487,11 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         textEmail.setText(c.getEmail());
         
         int i = 0;
-        String seats = "Seats: ";      
-        for (int s : CurrentBooking.getSeats())
+        String seats = "Seats: ";
+        for (Seat s : b.getSeats())
         {
-            if (i == 0) seats += ""+s;
-            else seats += ", "+s;
+            if (i == 0) seats += ""+s.getIndex();
+            else seats += ", "+s.getIndex();
             i++;
         }
         if (i > 0) labelSeats.setText(seats);

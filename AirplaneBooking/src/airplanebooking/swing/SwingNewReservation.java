@@ -5,6 +5,7 @@ import airplanebooking.BookingListener;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.Flight;
 import airplanebooking.GUI;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,7 +19,11 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
      */
     public SwingNewReservation(Flight flight) {
         
-        if (flight.getSeats().size() >= )
+        if (flight.getAirplane().getTotalSeats() >= flight.getSeats().size())
+        {
+            JOptionPane.showMessageDialog(null, "All seats on flight is booked.");
+            this.dispose();
+        }
         
         CurrentBooking.reset();
         CurrentBooking.addFlight(flight);

@@ -2,6 +2,7 @@ package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
+import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Airplane;
 import airplanebooking.DB.DatabaseHandler;
 import airplanebooking.DB.DatabaseInterface;
@@ -52,7 +53,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     public int seatNumber;
     public String seatClass;
     private int seatsCount;
-    private Boolean bookable;
+    public Boolean bookable;
     
     public int x;
     public int y;
@@ -104,14 +105,14 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         seat = 0;
     }
     
-    public void setAirplaneCanvas(Boolean bookable, Flight flight)
+    public void setAirplaneCanvas(final Boolean bookable, Flight flight)
     {
         CurrentBooking.reset();
         this.bookable = bookable;
         
         this.flight = flight;
         DatabaseInterface db = new DatabaseHandler();
-        airplane = db.getAirplane(flight.getAirplaneID());
+        airplane = flight.getAirplane();
         
         String[] ec = airplane.getECSeatFormation().split(":");
         String[] bc = airplane.getBCSeatFormation().split(":");
@@ -202,25 +203,27 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                 repaint();
             }
         });
-        
-        if (bookable == true)
-        {
-            addToBookingListeners();
-            addMouseListener(new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseClicked(java.awt.event.MouseEvent e) {
-                    x = e.getX(); y = e.getY();
 
-                    for (int i = 0; i < seatsCount; i++)
+        addToBookingListeners();
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                x = e.getX(); y = e.getY();
+
+                for (int i = 0; i < seatsCount; i++)
+                {
+                    if (x > seats[i][2] && y > seats[i][3] && x < seats[i][4] && y < seats[i][5])
                     {
-                        if (x > seats[i][2] && y > seats[i][3] && x < seats[i][4] && y < seats[i][5])
+                        if (seats[i][1] == 0)
                         {
-                            if (seats[i][1] == 0)
-                            {
-                                // Red
-                                // Do nothing
-                            }
-                            else if (seats[i][1] == 2)
+                            // Red
+                            CurrentFlight.setSeat(i);
+                            updated();
+                        }
+                        
+                        if (bookable == true)
+                        {
+                            if (seats[i][1] == 2)
                             {
                                 // Blue
                                 // Remove booking
@@ -235,12 +238,13 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                                 CurrentBooking.addSeat(i+1);
                             }
                         }
+                        
                     }
-
-                    repaint();
                 }
-            });
-        }
+
+                repaint();
+            }
+        });
         
         repaint();
     }
@@ -262,7 +266,8 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         if (seats[i][1] == 0)
         {
             // Red
-            // Do nothing
+            CurrentFlight.setSeat(i);
+            updated();
         }
         else if (seats[i][1] == 2)
         {
