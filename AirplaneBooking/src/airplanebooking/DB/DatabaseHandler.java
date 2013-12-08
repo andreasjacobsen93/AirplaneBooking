@@ -13,10 +13,10 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
+ * If you are spawning more than one of these objects, you are most likely doing it wrong.
  *
  * @author Alex
  */
@@ -126,7 +126,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 // con = null;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException ("Something went wrong with closing the connection", ex);
         }
     }
 
@@ -261,7 +261,7 @@ public class DatabaseHandler implements DatabaseInterface {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Somethng went wrong while getting the customer", ex);
         } finally {
             closeConnection();
         }
@@ -431,7 +431,7 @@ public class DatabaseHandler implements DatabaseInterface {
             //  results.close();
 
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Something went wrong while checking if the customer exists",ex);
         } finally {
             // closeConnection();
         }
@@ -454,7 +454,7 @@ public class DatabaseHandler implements DatabaseInterface {
             exists = !results.wasNull();
 
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Something went wrong while checking if the customer exists",ex);
         } finally {
         }
         return exists;
@@ -476,7 +476,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 executeQuery(sql);
                 exists = results.getRow() != 0;
             } catch (SQLException ex) {
-                Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+                throw new RuntimeException("Something went wrong while checking if the seat exists",ex);
             }
         }
         return exists;
@@ -787,7 +787,7 @@ public class DatabaseHandler implements DatabaseInterface {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Something went wrong while getting the flight.",ex);
         } finally {
             closeConnection();
         }
@@ -845,7 +845,7 @@ public class DatabaseHandler implements DatabaseInterface {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Something went wrong while getting the booked seats on this flight",ex);
         }
         return seats;
     }
@@ -912,7 +912,7 @@ public class DatabaseHandler implements DatabaseInterface {
             airplane = new Airplane(id, name, firstSeats, businessSeats, economySeats, fcSeatFormation, bcSeatFormation, ecSeatFormation);
 
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Something went wrong while getting the airplane",ex);
         }
         return airplane;
     }
