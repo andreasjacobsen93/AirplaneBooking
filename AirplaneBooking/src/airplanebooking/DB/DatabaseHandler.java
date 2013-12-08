@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class DatabaseHandler implements DatabaseInterface {
 
     //DB & SQL fields
-    private static final String user = "Aljon";
+    private static final String user = "aljon";
     private static final String pass = "Jegeradministratorher123";
     private static final String jdbcurl = "jdbc:mysql://mysql.itu.dk/Airplanebooking";
     Connection con = null;
@@ -42,7 +42,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     //Flight field
     Flight flight = null;
-    ArrayList<Flight> flights = null;
+    ArrayList<Flight> flights = new ArrayList();
 
     //Seat field
     Seat seat = null;
@@ -93,7 +93,7 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
             con = cpds.getConnection();
             statement = con.createStatement();
-            statement.getWarnings();
+            //statement.getWarnings();
             //pass statement to statement handler -> db and save ResultSet.
             results = statement.executeQuery(sql);
         } catch (SQLException e) {
@@ -925,49 +925,56 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly) {
-        String sql;
-        if (freeSeatsOnly = true) {
-            sql = "SELECT * FROM flights WHERE isfull = 0";
-        } else {
-            sql = "SELECT * FROM flights where isfull = 1";
-        }
-        executeQuery(sql);
-
-        for (Flight currentFlight : flights) {
-            try {
-                int id = results.getInt(1);
-                int airplane_id = results.getInt(2);
-                int firstcost = results.getInt(3);
-                int businesscost = results.getInt(4);
-                int economycost = results.getInt(5);
-                Timestamp dTime = results.getTimestamp(6);
-                String dPlace = results.getString(7);
-                Timestamp aTime = results.getTimestamp(8);
-                String aPlace = results.getString(9);
-                boolean isFull = results.getBoolean(10);
-
-                String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
-
-                ResultSet rs = statement.executeQuery(sqlGetSeats);
-                //ArrayList<Seat> seats = new ArrayList();
-                while (rs.next()) {
-
-                    int seatIndex = rs.getInt(1);
-
-                    seat = new Seat(seatIndex);
-                    seats.add(seat);
-                    seat = null;
-                }
-
-                currentFlight = new Flight(id, airplane_id, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
-                flights.add(currentFlight);
-                
-
-            } catch (SQLException ex) {
-                Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        
+        try {
+            String sql;
+            if (freeSeatsOnly = true) {
+                sql = "SELECT * FROM flights WHERE isfull = 0";
+            } else {
+                sql = "SELECT * FROM flights where isfull = 1";
             }
-        }
 
-        return flights;
+            executeQuery(sql);
+            results.first();
+            while (results.next()) {
+                try {
+                    int id = results.getInt(1);
+                    int airplane_id = results.getInt(2);
+                    int firstcost = results.getInt(3);
+                    int businesscost = results.getInt(4);
+                    int economycost = results.getInt(5);
+                    Timestamp dTime = results.getTimestamp(6);
+                    String dPlace = results.getString(7);
+                    Timestamp aTime = results.getTimestamp(8);
+                    String aPlace = results.getString(9);
+                    boolean isFull = results.getBoolean(10);
+
+                    
+                    String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
+                    Statement s = con.createStatement();
+                    ResultSet rs = s.executeQuery(sqlGetSeats);
+                    rs.first();
+                    while (rs.next()) {
+                        
+                        int seatIndex = rs.getInt(1);
+                        System.out.println(seatIndex);
+                        seat = new Seat(seatIndex);
+                        seats.add(seat);
+
+                    }
+                    
+                    flight = new Flight(id, airplane_id, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
+                    flights.add(flight);
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          return flights;
     }
 }
