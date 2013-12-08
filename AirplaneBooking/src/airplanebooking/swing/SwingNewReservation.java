@@ -17,6 +17,9 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
      * @param flight
      */
     public SwingNewReservation(Flight flight) {
+        
+        if (flight.getSeats().size() >= )
+        
         CurrentBooking.reset();
         CurrentBooking.addFlight(flight);
         initComponents(flight);

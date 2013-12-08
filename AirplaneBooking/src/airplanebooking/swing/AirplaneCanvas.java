@@ -62,7 +62,6 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     
     public AirplaneCanvas()
     {
-        CurrentBooking.reset();
         bookable = false;
         
         flight = null;
@@ -161,11 +160,6 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         }
         
         CurrentBooking.addFlight(flight);
-        
-        for(int s : CurrentBooking.getBookedSeats())
-        {
-            System.out.print(s + ",");
-        }
         
         // Event for mouse movement
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {

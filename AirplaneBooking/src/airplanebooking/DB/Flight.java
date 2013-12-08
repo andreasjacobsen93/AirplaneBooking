@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Flight {
 
     private final Integer id;
-    private final Integer airplaneID;
+    private final Airplane airplane;
     private final Integer firstCost;
     private final Integer businessCost;
     private final Integer economyCost;
@@ -25,9 +25,9 @@ public class Flight {
 
     private final DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    public Flight(int id, int airplaneID, int firstCost, int businessCost, int economyCost, ArrayList<Seat> seats, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime, Boolean isFull) {
+    public Flight(int id, Airplane airplane, int firstCost, int businessCost, int economyCost, ArrayList<Seat> seats, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime, Boolean isFull) {
         this.id = id;
-        this.airplaneID = airplaneID;
+        this.airplane = airplane;
         this.firstCost = firstCost;
         this.businessCost = businessCost;
         this.economyCost = economyCost;
@@ -43,9 +43,9 @@ public class Flight {
         return id;
     }
 
-    public int getAirplaneID() 
+    public Airplane getAirplane() 
     {
-        return airplaneID;
+        return airplane;
     }
 
     public int getFirstClassSeatCost() {
