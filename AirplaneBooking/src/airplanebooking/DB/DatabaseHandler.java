@@ -97,7 +97,7 @@ public class DatabaseHandler implements DatabaseInterface {
             //pass statement to statement handler -> db and save ResultSet.
             results = statement.executeQuery(sql);
         } catch (SQLException e) {
-            System.out.println(e);
+            throw new RuntimeException("Something went wrong while executing the query.", e);
         }
         return results;
     }
@@ -767,7 +767,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 Timestamp aTime = results.getTimestamp(8);
                 String aPlace = results.getString(9);
                 boolean isFull = results.getBoolean(10);
-                
+
                 String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
 
                 ResultSet rs = statement.executeQuery(sqlGetSeats);
@@ -925,7 +925,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly) {
-        
+
         try {
             String sql;
             if (freeSeatsOnly = true) {
@@ -935,9 +935,10 @@ public class DatabaseHandler implements DatabaseInterface {
             }
 
             executeQuery(sql);
-            results.first();
+
             while (results.next()) {
                 try {
+
                     int id = results.getInt(1);
                     int airplane_id = results.getInt(2);
                     int firstcost = results.getInt(3);
@@ -949,32 +950,30 @@ public class DatabaseHandler implements DatabaseInterface {
                     String aPlace = results.getString(9);
                     boolean isFull = results.getBoolean(10);
 
-                    
-                    String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
+                    sql = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
+
                     Statement s = con.createStatement();
-                    ResultSet rs = s.executeQuery(sqlGetSeats);
-                    rs.first();
+                    ResultSet rs = s.executeQuery(sql);
+
                     while (rs.next()) {
-                        
+
                         int seatIndex = rs.getInt(1);
-                        System.out.println(seatIndex);
                         seat = new Seat(seatIndex);
                         seats.add(seat);
 
                     }
-                    
+
                     flight = new Flight(id, airplane_id, firstcost, businesscost, economycost, seats, dPlace, dTime, aPlace, aTime, isFull);
                     flights.add(flight);
-                    
+
                 } catch (SQLException ex) {
                     Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
-          
+
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Something went wrong while getting the flights", ex);
         }
-          return flights;
+        return flights;
     }
 }
