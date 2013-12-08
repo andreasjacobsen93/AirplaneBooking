@@ -5,7 +5,6 @@ import airplanebooking.BookingListener;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.Flight;
 import airplanebooking.GUI;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,23 +17,14 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
      * @param flight
      */
     public SwingNewReservation(Flight flight) {
-        
-        if (flight.getAirplane().getTotalSeats() >= flight.getSeats().size())
-        {
-            JOptionPane.showMessageDialog(null, "All seats on flight is booked.");
-            this.dispose();
-        }
-        
         CurrentBooking.reset();
-        CurrentBooking.addFlight(flight);
         initComponents(flight);
-        AirplaneCan.setAirplaneCanvas(true, flight);
         setTitle("Airplane Booking - New Reservation...");
     }
                        
     private void initComponents(Flight flight) {
         
-        AirplaneCan = new AirplaneCanvas();
+        AirplaneCan = new AirplaneCanvas(true, flight);
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         labelAirplaneName = new java.awt.Label();

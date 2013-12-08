@@ -59,11 +59,6 @@ public class CurrentBooking {
     private static final ArrayList<BookingListener> listeners = new ArrayList<>();
 
     public CurrentBooking() { }
-    
-    public static void saveBooking()
-    {
-        
-    }
 
     public static void addCustomer(Customer c) 
     {
@@ -84,7 +79,7 @@ public class CurrentBooking {
         FseatPrice = f.getFirstClassSeatCost();
         
         DatabaseInterface db = new DatabaseHandler();
-        airplane = flight.getAirplane();
+        airplane = db.getAirplane(flight.getAirplaneID());
         
         String[] ec = airplane.getECSeatFormation().split(":");
         String[] bc = airplane.getBCSeatFormation().split(":");
@@ -128,7 +123,7 @@ public class CurrentBooking {
     public static void reset() 
     {
         bookedSeats = new ArrayList<>();
-        blockedSeats = new ArrayList<>();
+        blockedSeats = null;
         EconomyClass = false;
         BusinessClass = false;
         FirstClass = false;
@@ -145,6 +140,7 @@ public class CurrentBooking {
         FseatLength = 0;
         FrowSeats = 0;
         blockedSeats = null;
+        update();
     }
 
     public static void update() 
