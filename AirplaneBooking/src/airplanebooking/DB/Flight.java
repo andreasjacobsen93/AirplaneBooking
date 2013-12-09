@@ -13,6 +13,7 @@ public class Flight {
 
     private final Integer id;
     private final Airplane airplane;
+    private final Integer airplaneID;
     private final Integer firstCost;
     private final Integer businessCost;
     private final Integer economyCost;
@@ -28,6 +29,7 @@ public class Flight {
     public Flight(int id, Airplane airplane, int firstCost, int businessCost, int economyCost, ArrayList<Seat> seats, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime, Boolean isFull) {
         this.id = id;
         this.airplane = airplane;
+        this.airplaneID = airplane.getID();
         this.firstCost = firstCost;
         this.businessCost = businessCost;
         this.economyCost = economyCost;
@@ -44,8 +46,11 @@ public class Flight {
     }
 
     public Airplane getAirplane() {
-
         return airplane;
+    }
+
+    public int getAirplaneID() {
+        return airplaneID;
     }
 
     public int getFirstClassSeatCost() {
@@ -73,6 +78,13 @@ public class Flight {
         String returnTime = df.format(arrivalTime);
         return returnTime;
     }
+    public Timestamp getArrivalTimestamp(){
+        return arrivalTime;
+    }
+    
+    public Timestamp getDepartureTimestamp(){
+        return departureTime;
+    }
 
     public String getDeparturePlace() {
         return departurePlace;
@@ -81,7 +93,7 @@ public class Flight {
     public String getArrivalPlace() {
         return arrivalPlace;
     }
-    
+
     public Boolean isFull() {
         return isFull;
     }

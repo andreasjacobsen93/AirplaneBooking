@@ -30,7 +30,7 @@ public interface DatabaseInterface {
     
     public ArrayList<Customer> getCustomers(int q);
     
-    public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone);
+    public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone);
     
     public boolean customerExists(Customer customer);
 
@@ -40,9 +40,9 @@ public interface DatabaseInterface {
     
     public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, int food, int cost);
 
-    public void editReservation(int reservationID, int customerID, String flightID, ArrayList<Seat> seats, int food, int cost);
+    public void editReservation(Booking booking);
 
-    public void deleteReservation(int reservationID);
+    public void deleteReservation(Booking booking);
 
     public Booking getReservation(int reservationID);
     
@@ -56,13 +56,11 @@ public interface DatabaseInterface {
     //Below are all flight related DB method declarations.
     */
     
-    public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, 
-            String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime); 
+    public void createFlight(Flight flight); 
     
-   public void editFlight(int flightID, int airplaneID, int firstCost, int businessCost, int economyCost, 
-           String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime);
+   public void editFlight(Flight flight);
     
-    public void deleteFlight(int flightID);
+    public void deleteFlight(Flight flight);
     
     public Flight getFlight(int flightID);
     

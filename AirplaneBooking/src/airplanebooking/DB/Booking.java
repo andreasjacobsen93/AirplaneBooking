@@ -49,4 +49,12 @@ public class Booking {
     public ArrayList<Seat> getSeats(){
         return seats;
     }
+    
+    public Customer getCustomer(){
+        return customer;
+    }
+    
+    public Flight getFlight(){
+        return flight;
+    }
 }

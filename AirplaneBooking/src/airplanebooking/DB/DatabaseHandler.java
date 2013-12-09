@@ -11,9 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * If you are spawning more than one of these objects, you are most likely doing
@@ -27,10 +28,10 @@ public class DatabaseHandler implements DatabaseInterface {
     private static final String user = "aljon";
     private static final String pass = "Jegeradministratorher123";
     private static final String jdbcurl = "jdbc:mysql://mysql.itu.dk/Airplanebooking";
-    Connection con = null;
-    PreparedStatement pstatement = null;
-    
-    ResultSet results = null;
+    Connection con;
+    PreparedStatement pstatement;
+
+    ResultSet results;
     SQLWarning warning = new SQLWarning();
     ComboPooledDataSource cpds = new ComboPooledDataSource();
 
@@ -39,19 +40,19 @@ public class DatabaseHandler implements DatabaseInterface {
     ArrayList<Customer> customers = new ArrayList();
 
     //Booking field
-    Booking reservation = null;
+    Booking reservation;
     ArrayList<Booking> reservations = new ArrayList();
 
     //Flight field
-    Flight flight = null;
+    Flight flight;
     ArrayList<Flight> flights = new ArrayList();
 
     //Seat field
-    Seat seat = null;
+    Seat seat;
     ArrayList<Seat> seats = new ArrayList();
 
     //Airplane field
-    Airplane airplane = null;
+    Airplane airplane;
 
     /**
      *
@@ -59,6 +60,7 @@ public class DatabaseHandler implements DatabaseInterface {
     public DatabaseHandler() {
         //contructor method to initiate (combo)DataSource for pooled connections on spawning an object.
         initiateDataSource();
+
     }
 
     private void initiateDataSource() {
@@ -71,38 +73,51 @@ public class DatabaseHandler implements DatabaseInterface {
         cpds.setMaxPoolSize(10);
     }
 
-    private void executeUpdate(String sql) {
+    private void getConnection() {
+        try {
+            con = cpds.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void executeUpdate() {
         //SET method, for putting data into the database.
         try {
-            //Query DataSource for connection, and establish statement handler
+            //Execute the prepared statement.
             con = cpds.getConnection();
-            pstatement = con.prepareStatement(sql);
-            //pass statement to statement handler -> db.
-            pstatement.getWarnings();
+            pstatement.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException("Something went wrong while executing the update", e);
+        } finally {
+            //  closeConnection();
         }
     }
 
-    private ResultSet executeQuery(String sql) {
+    private ResultSet executeQuery() {
         //GET method for getting data from the database.
 
         try {
-            //first we establish DB connection.
             con = cpds.getConnection();
-            //establish statement handler.
-            pstatement = con.prepareStatement(sql);
-            //Get potential warnings from the statement handler.
-            pstatement.getWarnings();
             //pass results from statement handler to ResultSet and save the it.
-            results = pstatement.executeQuery(sql);
+            results = pstatement.executeQuery();
+
         } catch (SQLException e) {
             throw new RuntimeException("Something went wrong while executing the query.", e);
+        } finally {
+            // closeConnection();
         }
         return results;
     }
 
+    /*
+     *
+     *
+     * Still testing this sucker. Not yet implemented.
+     *
+     */
     private String getWarnings() {
 
         String status = warning.getMessage();
@@ -137,11 +152,10 @@ public class DatabaseHandler implements DatabaseInterface {
      * match the input, and thus creates and stores a new Customer.
      *
      * @param customer This parameter is a
-     * 
-     * String value for Marital Status. <br><b>Max 10
+     *
+     * String value for Marital Status. <br><b>Max 10 characters.</b><br>
+     * firstname String value for First Name of the Customer. <br><b> Max 20
      * characters.</b><br>
-     * firstname String value for First Name of the Customer. <br><b> Max
-     * 20 characters.</b><br>
      * lastname String value for Last Name of the Customer. <br><b>Max 20
      * characters.</b><br>
      * addressStreet String value for the Address Street of the Customer.
@@ -150,8 +164,8 @@ public class DatabaseHandler implements DatabaseInterface {
      * <br><b>Ranges from 0 - 4294967295.</b><br>
      * addressCity String value for the Address City of the Customer.
      * <br><b>Max 30 characters.</b><br>
-     * addressCountry String value for the Address Country of the
-     * Customer. <br><b>Max 30 characters.</b><br>
+     * addressCountry String value for the Address Country of the Customer.
+     * <br><b>Max 30 characters.</b><br>
      * email String value for the Email of the Customer. <br><b>Max 30
      * characters.</b><br>
      * <i>phonenumber</i> Integer value for the Phone Number of the customer.
@@ -160,49 +174,55 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void createCustomer(Customer customer) {
-        
-        //create sql statement, which we'd like to pass to the statement handler.
-        //unpacks the Customer object, and inserts values at the correct columns in the database.
-        String sql = "INSERT INTO customers "
-                + "VALUES (null, "
-                + "'" + customer.getMaritalStatus() + "', "
-                + "'" + customer.getFirstName() + "', "
-                + "'" + customer.getLastName() + "', "
-                + "'" + customer.getAddressStreet() + "', "
-                + "" + customer.getAddressZip() + ", "
-                + "'" + customer.getAddressCity() + "', "
-                + "'" + customer.getAddressCountry() + "', "
-                + "'" + customer.getEmail() + "', "
-                + "" + customer.getPhone() + ")";
-        
-        //execute the statement
-        executeUpdate(sql);
+        try {
+            //create sql statement, which we'd like to pass to the statement handler.
+            //unpacks the Customer object, and inserts values at the correct columns in the database.
+            String sql = "INSERT INTO customers VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setString(1, customer.getMaritalStatus());
+            pstatement.setString(3, customer.getLastName());
+            pstatement.setString(4, customer.getAddressStreet());
+            pstatement.setInt(5, customer.getAddressZip());
+            pstatement.setString(6, customer.getAddressCity());
+            pstatement.setString(7, customer.getAddressCountry());
+            pstatement.setString(8, customer.getEmail());
+            pstatement.setInt(9, customer.getPhone());
+
+            //execute the statement
+            executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while creating the customer", ex);
+        }
 
     }
 
     /**
      *
      * @param customer
-     * 
+     *
      */
     @Override
     public void editCustomer(Customer customer) {
+        try {
+            //create string (sql statement), which we'd like to pass to the statement handler.
+            String sql = "UPDATE customers SET maritalstatus = '?', firstname = '?', lastname = '?', addressstreet = '?', addresszip = ?, addresscity = '?', "
+                    + "addresscountry = '?', email = '?', phonenumber = ? WHERE id = ?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setString(1, customer.getMaritalStatus());
+            pstatement.setString(3, customer.getLastName());
+            pstatement.setString(4, customer.getAddressStreet());
+            pstatement.setInt(5, customer.getAddressZip());
+            pstatement.setString(6, customer.getAddressCity());
+            pstatement.setString(7, customer.getAddressCountry());
+            pstatement.setString(8, customer.getEmail());
+            pstatement.setInt(9, customer.getPhone());
+            pstatement.setInt(10, customer.getID());
 
-        //create string (sql statement), which we'd like to pass to the statement handler.
-        String sql = "UPDATE customers SET "
-                + "maritalstatus = '" + customer.getMaritalStatus() + "', "
-                + "firstname = '" + customer.getFirstName() + "', "
-                + "lastname = '" + customer.getLastName() + "', "
-                + "addressstreet = '" + customer.getAddressStreet() + "', "
-                + "addresszip = " + customer.getAddressZip() + ", "
-                + "addresscity = '" + customer.getAddressCity() + "', "
-                + "addresscountry = '" + customer.getAddressCountry() + "', "
-                + "email = '" + customer.getEmail() + "', "
-                + "phonenumber = " + customer.getEmail()
-                + "WHERE id = " + customer.getID();
-
-        //execute statement
-        executeUpdate(sql);
+            //execute statement
+            executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while editing the customer.", ex);
+        }
     }
 
     /**
@@ -211,11 +231,16 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void deleteCustomer(Customer customer) {
-
-        //create string (sql statement), which we'd like to pass to the statement handler.
-        String sql = "DELETE FROM customers WHERE id = " + customer.getID();
-        //execute statement
-        executeUpdate(sql);
+        try {
+            //create string (sql statement), which we'd like to pass to the statement handler.
+            String sql = "DELETE FROM customers WHERE id = ?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, customer.getID());
+            //execute statement
+            executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while deleting the customer", ex);
+        }
 
     }
 
@@ -228,10 +253,13 @@ public class DatabaseHandler implements DatabaseInterface {
     public Customer getCustomer(int customerID) {
         try {
             if (customerExists(customerID)) {
-                String sql = "SELECT * FROM customers WHERE id = " + customerID;
+                String sql = "SELECT * FROM customers WHERE id = ?";
+
+                pstatement = con.prepareStatement(sql);
+                pstatement.setInt(1, customerID);
                 //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
 
-                executeQuery(sql);
+                executeQuery();
                 while (results.next()) {
                     int id = results.getInt("id");
                     String maritalstatus = results.getString("maritalstatus");
@@ -265,10 +293,13 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public ArrayList<Customer> getCustomers(int q) {
 
-        String sql = "SELECT * FROM customers WHERE addresszip =" + q + " OR phonenumber =" + q;
-
+        String sql = "SELECT * FROM customers WHERE addresszip = ? OR phonenumber = ?";
         try {
-            executeQuery(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, q);
+            pstatement.setInt(2, q);
+
+            executeQuery();
             results.beforeFirst();
 
             while (results.next()) {
@@ -301,10 +332,17 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Customer> getCustomers(String q) {
-        String sql = "SELECT * FROM customers WHERE firstname =\"" + q + "\" OR lastname =\"" + q + "\" OR addressstreet =\"" + q + "\" OR email =\"" + q + "\"";
+        String sql = "SELECT * FROM customers WHERE firstname = \"?\" OR lastname =\"?\" OR addressstreet =\"?\" OR email =\"?\"";
 
         try {
-            executeQuery(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.setString(1, q);
+            pstatement.setString(2, q);
+            pstatement.setString(3, q);
+            pstatement.setString(4, q);
+
+            executeQuery();
+
             results.beforeFirst();
             while (results.next()) {
                 int id = results.getInt("id");
@@ -333,46 +371,56 @@ public class DatabaseHandler implements DatabaseInterface {
      *
      * @param firstName
      * @param lastName
-     * @param Email
+     * @param email
      * @param Phone
      * @return
      */
     @Override
-    public ArrayList<Customer> getCustomers(String firstName, String lastName, String Email, Integer Phone) {
-
-        String sql = "SELECT * FROM customers WHERE ";
-
-        int i = 0;
-        if (firstName != null) {
-            sql += "firstname = \"" + firstName + "\"";
-            i++;
+    public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone) {
+        String recieverMatrix = "1:1:1:1";
+        String[] parts = recieverMatrix.split(":");
+        String[] columns = new String[4];
+        if (firstName == null) {
+            parts[0] = "0";
+            columns[0] = firstName;
+        }
+        if (lastName == null) {
+            parts[1] = "0";
+            columns[1] = lastName;
+        }
+        if (email == null) {
+            parts[2] = "0";
+            columns[2] = email;
+        }
+        if (firstName == null) {
+            parts[3] = "0";
+            columns[3] = Phone.toString();
         }
 
-        if (lastName != null) {
-            if (i > 0) {
-                sql += " AND ";
-            }
-            sql += "lastname = \"" + lastName + "\"";
-            i++;
-        }
+        String sql = "SELECT * FROM customers WHERE";
 
-        if (Email != null) {
-            if (i > 0) {
-                sql += " AND ";
-            }
-            sql += "email = \"" + Email + "\"";
-            i++;
-        }
-
-        if (Phone != null) {
-            if (i > 0) {
-                sql += " AND ";
-            }
-            sql += "phonenumber = \"" + Phone + "\"";
-        }
+        String[] sqlArr = new String[4];
+        sqlArr[0] = "firstname = \"?\" AND ";
+        sqlArr[1] = "lastname = \"?\" AND ";
+        sqlArr[2] = "AND email= \"?\" AND ";
+        sqlArr[3] = "AND phone = ?";
 
         try {
-            executeQuery(sql);
+
+            int k = 0;
+            PreparedStatement[] pstatementArr = new PreparedStatement[4];
+            for (int i = 0; i < parts.length; i++) {
+                if (parts[i].matches("1")) {
+                    sql += sqlArr[i];
+                    k++;
+                    pstatementArr[k].setString(k, columns[i]);
+                }
+            }
+
+            System.out.println(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.executeQuery();
+
             results.beforeFirst();
             while (results.next()) {
                 int id = results.getInt("id");
@@ -384,8 +432,8 @@ public class DatabaseHandler implements DatabaseInterface {
                 String addressCity = results.getString("addresscity");
                 String addressCountry = results.getString("addresscountry");
                 int phonenumber = results.getInt("phonenumber");
-                String email = results.getString("email");
-                customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, email);
+                String eMail = results.getString("email");
+                customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, eMail);
                 customers.add(customer);
             }
             return customers;
@@ -404,20 +452,22 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public boolean customerExists(Customer customer) {
-
         String firstname = customer.getFirstName();
         String lastname = customer.getLastName();
         String email = customer.getEmail();
-        boolean exists = false;
 
-        String sql = "SELECT COUNT(*) FROM customers WHERE firstname='" + firstname + "' AND lastname = '" + lastname + "' AND email = '" + email + "' OR email = '" + email + "'";
+        boolean exists = false;
         try {
-            executeQuery(sql);
+            String sql = "SELECT COUNT(*) FROM customers WHERE firstname='?' AND lastname = '?' AND email = '?' OR email = '?'";
+
+            pstatement = con.prepareStatement(sql);
+            pstatement.setString(1, firstname);
+            pstatement.setString(2, lastname);
+            pstatement.setString(3, email);
+            pstatement.executeQuery();
             results.first();
             exists = 0 != results.getInt(1);
             System.out.println(exists);
-            //statement.close();
-            //  results.close();
 
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong while checking if the customer exists", ex);
@@ -435,10 +485,13 @@ public class DatabaseHandler implements DatabaseInterface {
      * @return
      */
     public boolean customerExists(int customerID) {
-        String sql = "SELECT * FROM customers WHERE id=" + customerID;
-        executeQuery(sql);
+        String sql = "SELECT * FROM customers WHERE id= ?";
         Boolean exists = false;
         try {
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, customerID);
+            pstatement.executeQuery();
+
             results.first();
             exists = !results.wasNull();
 
@@ -452,6 +505,10 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      *
+     * THIS METHOD IS PARTIALLY BROKEN IN FUNKTIONALITY, IF --*ANY*-- OF THE
+     * SEATS EXISTS, IT WILL RETURN TRUE!
+     *
+     *
      * @param seats
      * @param flight
      * @return
@@ -461,8 +518,11 @@ public class DatabaseHandler implements DatabaseInterface {
         boolean exists = false;
         for (Seat currentSeat : seats) {
             try {
-                String sql = "SELECT f.id, r2s.seat_id FROM flights f, reservation2seat r2s WHERE f.id =" + flight.getID() + " AND r2s.seat_id =" + currentSeat;
-                executeQuery(sql);
+                String sql = "SELECT f.id, r2s.seat_id FROM flights f, reservation2seat r2s WHERE f.id = ? AND r2s.seat_id = ?";
+                pstatement = con.prepareStatement(sql);
+                pstatement.setInt(1, flight.getID());
+                pstatement.setInt(2, currentSeat.getIndex());
+                executeQuery();
                 exists = results.getRow() != 0;
             } catch (SQLException ex) {
                 throw new RuntimeException("Something went wrong while checking if the seat exists", ex);
@@ -489,15 +549,15 @@ public class DatabaseHandler implements DatabaseInterface {
                     int flightID = flight.getID();
 
                     String sql = "INSERT INTO reservations "
-                            + "VALUES (null, "
-                            + "" + customerID + ", "
-                            + "'" + flightID + "', "
-                            + "" + food + ", "
-                            + "" + cost + ")";
+                            + "VALUES (null, ?, ?, ?, ?)";
 
-                    int[] key = new int[1];
-                    key[0] = 1;
-                    pstatement.executeUpdate(sql, key[0]);
+                    pstatement = con.prepareStatement(sql);
+                    pstatement.setInt(1, customerID);
+                    pstatement.setInt(2, flightID);
+                    pstatement.setInt(3, food);
+                    pstatement.setInt(4, cost);
+
+                    pstatement.executeUpdate();
 
                     ResultSet rs = pstatement.getGeneratedKeys();
                     rs.first();
@@ -505,9 +565,12 @@ public class DatabaseHandler implements DatabaseInterface {
 
                     for (Seat currentSeat : seats) {
 
-                        sql = "INSERT INTO reservation2seat VALUES (" + reservationID + ", " + currentSeat.getIndex() + ")";
-
-                        executeUpdate(sql);
+                        sql = "INSERT INTO reservation2seat VALUES (?, ?, ?)";
+                        pstatement = con.prepareStatement(sql);
+                        pstatement.setInt(1, reservationID);
+                        pstatement.setInt(2, currentSeat.getIndex());
+                        pstatement.setInt(3, flight.getID());
+                        pstatement.executeUpdate();
 
                     }
                 }
@@ -551,49 +614,67 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      *
-     * @param reservationID
-     * @param customerID
-     * @param flightID
-     * @param seats
-     * @param food
-     * @param cost
+     * @param booking
      */
     @Override
-    public void editReservation(int reservationID, int customerID, String flightID, ArrayList<Seat> seats, int food, int cost) {
+    public void editReservation(Booking booking) {
+        try {
+            String sql = "UPDATE reservations SET "
+                    + "customer_id = ?, flightid = ?, food = ?, cost = ? WHERE id = ?";
+            customer = booking.getCustomer();
+            flight = booking.getFlight();
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, customer.getID());
+            pstatement.setInt(2, flight.getID());
+            pstatement.setInt(3, booking.getFood());
+            pstatement.setInt(4, booking.getPrice());
+            pstatement.setInt(5, booking.getID());
 
-        String sql = "UPDATE reservations SET "
-                + "customer_id = " + customerID + ", "
-                + "flightid = '" + flightID + "', "
-                + "food = " + food + " "
-                + "cost = " + cost + " "
-                + "WHERE id = " + reservationID;
+            executeUpdate();
+            seats = booking.getSeats();
+            if (seats.isEmpty()) {
+                sql = "DELETE FROM reservation2seat WHERE reservation_id=?";
+                pstatement = con.prepareStatement(sql);
+                pstatement.setInt(1, booking.getID());
+                executeUpdate();
+            } else {
+                for (Seat currentSeat : seats) {
+                    sql = "UPDATE reservation2seat SET reservation_id = ?, seat_id= ?";
+                    pstatement = con.prepareStatement(sql);
+                    pstatement.setInt(1, booking.getID());
+                    pstatement.setInt(2, currentSeat.getIndex());
 
-        executeUpdate(sql);
-        if (seats.isEmpty()) {
-            sql = "DELETE FROM reservation2seat WHERE reservation_id=" + reservationID;
-            executeUpdate(sql);
-        } else {
-            for (Seat currentSeat : seats) {
-                sql = "UPDATE reservation2seat SET "
-                        + "reservation_id = " + reservationID + ", "
-                        + "seat_id= " + currentSeat.getIndex();
-
-                executeUpdate(sql);
+                    executeUpdate();
+                }
             }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while editing your reservation", ex);
         }
 
     }
 
     /**
      *
-     * @param reservationID
+     * @param booking
      */
     @Override
-    public void deleteReservation(int reservationID) {
+    public void deleteReservation(Booking booking) {
+        try {
+            String sql = "DELETE FROM reservations WHERE id = ?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, booking.getID());
+            executeUpdate();
 
-        String sql = "DELETE FROM reservations WHERE id = " + reservationID;
+            seats = booking.getSeats();
 
-        executeUpdate(sql);
+            sql = "DELETE FROM reservation2seat WHERE reservation_id=?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, booking.getID());
+            executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while deleting your reservation.", ex);
+        }
 
     }
 
@@ -605,11 +686,13 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public Booking getReservation(int reservationID) {
 
-        String sql = "SELECT * FROM reservations WHERE id = " + reservationID;
-        //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
-
+        String sql = "SELECT * FROM reservations WHERE id = ?";
         try {
-            executeQuery(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, reservationID);
+
+        //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
+            executeQuery();
             while (results.next()) {
                 int id = results.getInt("id");
                 int customerid = results.getInt("customer_id");
@@ -619,10 +702,11 @@ public class DatabaseHandler implements DatabaseInterface {
                 String getSeats = "SELECT r2s.seat_id "
                         + "FROM `reservation2seat` r2s "
                         + "INNER JOIN reservations rs "
-                        + "ON r2s.reservation_id = " + id + " "
+                        + "ON r2s.reservation_id = ? "
                         + "WHERE r2s.reservation_id = rs.id ";
-
-                ResultSet seatResults = executeQuery(getSeats);
+                pstatement = con.prepareStatement(getSeats);
+                pstatement.setInt(1, id);
+                ResultSet seatResults = pstatement.executeQuery();
                 while (seatResults.next()) {
                     seat = new Seat(seatResults.getInt("seat_id"));
                     seats.add(seat);
@@ -637,7 +721,10 @@ public class DatabaseHandler implements DatabaseInterface {
 
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong while getting the reservation:", ex);
-
+            /*
+             Doesn't work yet. Dno about nullpointers so far.
+            
+             */
         } catch (NullPointerException e) {
             throw new RuntimeException("You didn't supply a valid reservation ID", e);
         }
@@ -653,14 +740,21 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public Booking getReservation(int seatID, int flightID) {
 
-        String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id =" + seatID + " AND flight_id=" + flightID;
-        //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
-        executeQuery(sql);
+        String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id = ? AND flight_id= ?";
         try {
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, seatID);
+            pstatement.setInt(2, flightID);
+            //pass query to query handler -> 
+            executeQuery();
+
             results.first();
             int reservationID = results.getInt(1);
-            sql = "SELECT * FROM reservations WHERE id = " + reservationID;
-            executeQuery(sql);
+            sql = "SELECT * FROM reservations WHERE id = ?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, reservationID);
+
+            executeQuery();
             // results.first();
             while (results.next()) {
                 int id = results.getInt("id");
@@ -671,10 +765,11 @@ public class DatabaseHandler implements DatabaseInterface {
                 String getSeats = "SELECT r2s.seat_id "
                         + "FROM `reservation2seat` r2s "
                         + "INNER JOIN reservations rs "
-                        + "ON r2s.reservation_id = " + id + " "
+                        + "ON r2s.reservation_id = ? "
                         + "WHERE r2s.reservation_id = rs.id ";
-
-                ResultSet seatResults = executeQuery(getSeats);
+                pstatement = con.prepareStatement(sql);
+                pstatement.setInt(1, id);
+                ResultSet seatResults = pstatement.executeQuery();
 
                 while (seatResults.next()) {
                     seat = new Seat(seatResults.getInt("seat_id"));
@@ -685,7 +780,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), seats, food, price);
 
             }
-            //statement.close();
+
             return reservation;
 
         } catch (SQLException ex) {
@@ -699,29 +794,28 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      *
-     * @param airplaneID
-     * @param firstCost
-     * @param businessCost
-     * @param economyCost
-     * @param departurePlace
-     * @param departureTime
-     * @param arrivalPlace
-     * @param arrivalTime
+     * @param flight
      */
     @Override
-    public void createFlight(int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
-        String sql = "INSERT INTO flights "
-                + "VALUES (null, "
-                + "" + airplaneID + ", "
-                + "" + firstCost + ", "
-                + "" + businessCost + ", "
-                + "" + economyCost + ", "
-                + "'" + departurePlace + "', "
-                + "'" + departureTime + "', "
-                + "'" + arrivalPlace + "', "
-                + "'" + arrivalTime + "')";
+    public void createFlight(Flight flight) {
+        try {
+            String sql = "INSERT INTO flights "
+                    + "VALUES (null, ?, ?, ?, ?, ?, ?, ? ,?)";
 
-        executeUpdate(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, flight.getAirplaneID());
+            pstatement.setInt(2, flight.getFirstClassSeatCost());
+            pstatement.setInt(3, flight.getBusinessClassSeatCost());
+            pstatement.setInt(4, flight.getEconomyClassSeatCost());
+            pstatement.setString(5, flight.getDeparturePlace());
+            pstatement.setTimestamp(6, flight.getDepartureTimestamp());
+            pstatement.setString(7, flight.getArrivalPlace());
+            pstatement.setTimestamp(8, flight.getArrivalTimestamp());
+
+            executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while creating the flight.", ex);
+        }
 
     }
 
@@ -733,10 +827,11 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public Flight getFlight(int flightID) {
         try {
-            String sql = "SELECT * FROM flights WHERE id = " + flightID;
+            String sql = "SELECT * FROM flights WHERE id = ?";
             //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
-
-            executeQuery(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, flightID);
+            executeQuery();
 
             while (results.next()) {
                 int id = results.getInt(1);
@@ -750,14 +845,12 @@ public class DatabaseHandler implements DatabaseInterface {
                 String aPlace = results.getString(9);
                 boolean isFull = results.getBoolean(10);
 
-                String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
-                Statement s = con.createStatement();
-                ResultSet rs = s.executeQuery(sqlGetSeats);
-                //ArrayList<Seat> seats = new ArrayList();
+                String sqlGetSeats = "SELECT seat_id FROM reservation2seat WHERE flight_id = ?";
+                pstatement = con.prepareStatement(sqlGetSeats);
+                pstatement.setInt(1, id);
+                ResultSet rs = pstatement.executeQuery();
                 while (rs.next()) {
-
                     int seatIndex = rs.getInt(1);
-
                     seat = new Seat(seatIndex);
                     seats.add(seat);
                     seat = null;
@@ -787,11 +880,12 @@ public class DatabaseHandler implements DatabaseInterface {
                 + "FROM `reservations` rsv "
                 + "INNER JOIN customers cs "
                 + "ON rsv.id = cs.id "
-                + "WHERE rsv.id = " + customerID;
+                + "WHERE rsv.id = ?";
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
-
         try {
-            executeQuery(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, customerID);
+            executeQuery();
             while (results.next()) {
                 Booking currentBooking = getReservation(results.getInt(1));
                 reservations.add(currentBooking);
@@ -817,8 +911,10 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public ArrayList<Seat> getFlightBookedSeats(int flightID) {
         try {
-            String sql = "SELECT s.seat_id FROM reservation2seat s, reservations r WHERE flightid =" + flightID + " AND  r.id = s.reservation_id";
-            executeQuery(sql);
+            String sql = "SELECT s.seat_id FROM reservation2seat s, reservations r WHERE flightid =? AND r.id = s.reservation_id";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, flightID);
+            executeQuery();
             while (results.next()) {
                 seat = new Seat(results.getInt(1));
                 seats.add(seat);
@@ -833,41 +929,44 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      *
-     * @param flightID
-     * @param airplaneID
-     * @param firstCost
-     * @param businessCost
-     * @param economyCost
-     * @param departurePlace
-     * @param departureTime
-     * @param arrivalPlace
-     * @param arrivalTime
+     * @param flight
      */
     @Override
-    public void editFlight(int flightID, int airplaneID, int firstCost, int businessCost, int economyCost, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime) {
+    public void editFlight(Flight flight) {
+        try {
+            String sql = "UPDATE flights SET "
+                    + "airplane_id = ?, firstcost = ?, businesscost = ?, economycost = ?, departuretime = '?', "
+                    + "departureplace = '?', arrivaltime = '?', arrivalplace = '?', WHERE id = ?";
 
-        String sql = "UPDATE flights SET "
-                + "airplane_id = " + airplaneID + ", "
-                + "firstcost = " + firstCost + ", "
-                + "businesscost = " + businessCost + ", "
-                + "economycost = " + economyCost + ", "
-                + "departuretime = '" + departurePlace + "', "
-                + "departureplace = '" + departureTime + "', "
-                + "arrivaltime = '" + arrivalTime + "', "
-                + "arrivalplace = '" + arrivalPlace + "', "
-                + "WHERE id = " + flightID;
-
-        executeUpdate(sql);
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, flight.getAirplaneID());
+            pstatement.setInt(2, flight.getFirstClassSeatCost());
+            pstatement.setInt(3, flight.getBusinessClassSeatCost());
+            pstatement.setInt(4, flight.getEconomyClassSeatCost());
+            pstatement.setTimestamp(5, flight.getDepartureTimestamp());
+            pstatement.setString(6, flight.getDeparturePlace());
+            pstatement.setTimestamp(7, flight.getArrivalTimestamp());
+            pstatement.setString(8, flight.getArrivalPlace());
+            executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong while editing your flight", ex);
+        }
     }
 
     /**
      *
-     * @param flightID
+     * @param flight
      */
     @Override
-    public void deleteFlight(int flightID) {
-        String sql = "DELETE FROM flights WHERE id =" + flightID;
-        executeUpdate(sql);
+    public void deleteFlight(Flight flight) {
+        try {
+            String sql = "DELETE FROM flights WHERE id =?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, flight.getID());
+            executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Soemthing went wrong while deleting your flight", ex);
+        }
     }
 
     /**
@@ -878,8 +977,10 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public Airplane getAirplane(int airplaneID) {
         try {
-            String sql = "SELECT * FROM airplanes WHERE id =" + airplaneID;
-            executeQuery(sql);
+            String sql = "SELECT * FROM airplanes WHERE id =?";
+            pstatement = con.prepareStatement(sql);
+            pstatement.setInt(1, airplaneID);
+            executeQuery();
             results.first();
             int id = results.getInt("id");
             int firstSeats = results.getInt("firstseats");
@@ -898,8 +999,6 @@ public class DatabaseHandler implements DatabaseInterface {
         return airplane;
     }
 
-
-
     /*
      *   Below are unimplemented methods.
      *   Below are unimplemented methods.
@@ -908,36 +1007,41 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly) {
-
+        getConnection();
         try {
+
             String sql;
             if (freeSeatsOnly == true) {
                 sql = "SELECT * FROM flights WHERE isfull = 0";
+                pstatement = con.prepareStatement(sql);
             } else {
                 sql = "SELECT * FROM flights";
+                pstatement = con.prepareStatement(sql);
             }
 
-            executeQuery(sql);
+            ResultSet rs = executeQuery();
+            
+            
+            while (rs.next()) {
 
-            while (results.next()) {
+                int id = rs.getInt(1);
+                airplane = getAirplane(rs.getInt(2));
+                int firstcost = rs.getInt(3);
+                int businesscost = rs.getInt(4);
+                int economycost = rs.getInt(5);
+                Timestamp dTime = rs.getTimestamp(6);
+                String dPlace = rs.getString(7);
+                Timestamp aTime = rs.getTimestamp(8);
+                String aPlace = rs.getString(9);
+                boolean isFull = rs.getBoolean(10);
 
-                int id = results.getInt(1);
-                airplane = getAirplane(results.getInt(2));
-                int firstcost = results.getInt(3);
-                int businesscost = results.getInt(4);
-                int economycost = results.getInt(5);
-                Timestamp dTime = results.getTimestamp(6);
-                String dPlace = results.getString(7);
-                Timestamp aTime = results.getTimestamp(8);
-                String aPlace = results.getString(9);
-                boolean isFull = results.getBoolean(10);
+                sql = "SELECT seat_id FROM reservation2seat WHERE flight_id =?";
 
-                sql = "SELECT seat_id FROM reservation2seat WHERE flight_id =" + id;
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, id);
+                ResultSet seatResults = ps.executeQuery();
 
-                Statement s = con.createStatement();
-                ResultSet rs = s.executeQuery(sql);
-
-                while (rs.next()) {
+                while (seatResults.next()) {
 
                     int seatIndex = rs.getInt(1);
                     seat = new Seat(seatIndex);
@@ -952,7 +1056,7 @@ public class DatabaseHandler implements DatabaseInterface {
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong while getting the flights", ex);
         } finally {
-            // System.out.println(getWarnings());
+            closeConnection();
         }
         return flights;
     }
