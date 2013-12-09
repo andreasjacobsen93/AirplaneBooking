@@ -215,15 +215,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
 
                     for (int i = 0; i < seatsCount; i++)
                     {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        if (bookable == true)
-=======
                         if (x > seats[i][2] && y > seats[i][3] && x < seats[i][4] && y < seats[i][5])
->>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
-=======
-                        if (x > seats[i][2] && y > seats[i][3] && x < seats[i][4] && y < seats[i][5])
->>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
                         {
                             if (seats[i][1] == 0)
                             {
@@ -234,35 +226,17 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                             {
                                 // Blue
                                 // Remove booking
+                                // seats[i][1] = 1;
                                 CurrentBooking.removeSeat(i+1);
                             }
                             else
                             {
                                 // Green    
                                 // Add booking
+                                // seats[i][1] = 2;
                                 CurrentBooking.addSeat(i+1);
                             }
                         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        else if (bookable == false)
-                        {
-                            if (seats[i][1] == 0)
-                            {
-                                // Red
-                                for (int s = 0; s < seatsCount; s++)
-                                {
-                                    if (seats[s][1] == 3) seats[s][1] = 0;
-                                }
-                                seats[i][1] = 3;
-                                CurrentFlight.setSeat(i);
-                                updated();
-                            }
-                        }
-=======
->>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
-=======
->>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
                     }
 
                     repaint();
@@ -399,22 +373,13 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                     {
                         g.setColor(Color.red);
                     }
-                    else if (seats[seat][1] == 1)
-                    {
-                        g.setColor(Color.green);
-                    }
                     else if (seats[seat][1] == 2)
                     {
                         g.setColor(Color.blue);
                     }
-                    else if (seats[seat][1] == 3)
-                    {
-                        g.setColor(Color.orange);
-                    }
-                    
                     else
                     {
-                        g.setColor(Color.black);
+                        g.setColor(Color.green);
                     }
                     g.fillRect(((l*(seatSize+5))+iniX), ((s*(seatSize+5))-5)+(r*rowSpace)+iniY, seatSize, seatSize);
                     
@@ -530,24 +495,10 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     public void bookingChanged() {
 
         for (int i = 0; i < seatsCount; i++)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        { 
-            if (seats[i][1] == 3) continue;
-            else if (CurrentBooking.isBlocked(i+1)) seats[i][1] = 0;
-            else if (CurrentBooking.isBooked(i+1) && bookable == true) seats[i][1] = 2;
-            else seats[i][1] = 1;
-=======
-=======
->>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
         {
             seats[i][1] = 1;
             if (CurrentBooking.isBlocked(i+1)) seats[i][1] = 0;
             if (CurrentBooking.isBooked(i+1) && bookable) seats[i][1] = 2;
-<<<<<<< HEAD
->>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
-=======
->>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
         }
 
         repaint();
