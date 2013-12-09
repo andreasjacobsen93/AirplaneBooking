@@ -1,6 +1,8 @@
 package airplanebooking;
 
+import airplanebooking.DB.Booking;
 import airplanebooking.DB.DatabaseHandler;
+import airplanebooking.DB.DatabaseInterface;
 import airplanebooking.DB.Flight;
 import airplanebooking.DB.Seat;
 import airplanebooking.swing.SwingMain;
