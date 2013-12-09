@@ -26,8 +26,8 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="list1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="list2" alignment="0" pref="380" max="32767" attributes="0"/>
+                  <Component id="listOfCustomers" alignment="0" max="32767" attributes="0"/>
+                  <Component id="listOfReservations" alignment="0" pref="380" max="32767" attributes="0"/>
                   <Component id="button1" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -38,9 +38,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="list1" pref="118" max="32767" attributes="0"/>
+              <Component id="listOfCustomers" pref="118" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="list2" min="-2" pref="118" max="-2" attributes="0"/>
+              <Component id="listOfReservations" min="-2" pref="118" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="button1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -49,12 +49,12 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="java.awt.List" name="list1">
+    <Component class="java.awt.List" name="listOfCustomers">
       <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="list1ItemStateChanged"/>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listOfCustomersItemStateChanged"/>
       </Events>
     </Component>
-    <Component class="java.awt.List" name="list2">
+    <Component class="java.awt.List" name="listOfReservations">
     </Component>
     <Component class="java.awt.Button" name="button1">
       <Properties>

@@ -29,22 +29,22 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
         
         for (int i = 0; i < list.size(); i++)
         {
-            list1.add(list.get(i).getFirstName() + " " + list.get(i).getLastName());
+            listOfCustomers.add(list.get(i).getFirstName() + " " + list.get(i).getLastName());
         }
     }
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        list1 = new java.awt.List();
-        list2 = new java.awt.List();
+        listOfCustomers = new java.awt.List();
+        listOfReservations = new java.awt.List();
         button1 = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        list1.addItemListener(new java.awt.event.ItemListener() {
+        listOfCustomers.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                list1ItemStateChanged(evt);
+                listOfCustomersItemStateChanged(evt);
             }
         });
 
@@ -62,8 +62,8 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(list1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(list2, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(listOfCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(listOfReservations, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -71,9 +71,9 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(list1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                .addComponent(listOfCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(list2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(listOfReservations, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -82,29 +82,29 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void list1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_list1ItemStateChanged
-        list2.removeAll();
+    private void listOfCustomersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listOfCustomersItemStateChanged
+        listOfReservations.removeAll();
         
         
-        bookingList = db.getCustomerReservations(list.get(list1.getSelectedIndex()).getID());
+        bookingList = db.getCustomerReservations(list.get(listOfCustomers.getSelectedIndex()).getID());
         
         for (int i = 0; i < bookingList.size(); i++)
         {
-            Flight f = db.getFlight(bookingList.get(i).getFlightID());
-            list2.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " @" + f.getDepartureTime());
+            Flight f = bookingList.get(i).getFlight();
+            listOfReservations.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " @" + f.getDepartureTime());
         }
-    }//GEN-LAST:event_list1ItemStateChanged
+    }//GEN-LAST:event_listOfCustomersItemStateChanged
 
     private void button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MouseClicked
-        CurrentFlight.setFlight(db.getFlight(bookingList.get(list2.getSelectedIndex()).getFlightID()));
+        CurrentFlight.setFlight(bookingList.get(listOfReservations.getSelectedIndex()).getFlight());
         this.dispose();
     }//GEN-LAST:event_button1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
-    private java.awt.List list1;
-    private java.awt.List list2;
+    private java.awt.List listOfCustomers;
+    private java.awt.List listOfReservations;
     // End of variables declaration//GEN-END:variables
 
     @Override

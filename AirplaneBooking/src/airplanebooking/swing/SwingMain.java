@@ -477,7 +477,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         
         DatabaseInterface db = new DatabaseHandler();
         Booking b = db.getReservation(CurrentFlight.getSeat(), CurrentFlight.getFlight().getID()); System.out.println("getting seat");
-        Customer c = db.getCustomer(b.getCustomerID());
+        Customer c = b.getCustomer();
         
         textMaritialStatus.setText(c.getMaritalStatus());
         textFirstName.setText(c.getFirstName());

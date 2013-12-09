@@ -17,10 +17,10 @@ public class AirplaneBooking {
         GUI mainFrame = new SwingMain();
         mainFrame.run();
         
-        DatabaseHandler db = new DatabaseHandler();
-        Flight flight = db.getFlight(4);
+        //DatabaseHandler db = new DatabaseHandler();
+        //Flight flight = db.getFlight(4);
         
-        System.out.println(flight.getArrivalTime());
+        //System.out.println(flight.getArrivalTime());
         
         
     }

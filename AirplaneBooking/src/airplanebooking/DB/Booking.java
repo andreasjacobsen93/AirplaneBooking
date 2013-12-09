@@ -34,14 +34,12 @@ public class Booking {
         return price;
     }
     
-    public int getCustomerID(){
-        int customerID = customer.getID();
-        return customerID;
+    public Customer getCustomer(){
+        return customer;
     }
     
-    public int getFlightID(){
-        int flightID = flight.getID();
-        return flightID;
+    public Flight getFlight(){
+        return flight;
     }
     
     public int getFood(){
