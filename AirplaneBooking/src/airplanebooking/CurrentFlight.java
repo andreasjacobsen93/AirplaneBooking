@@ -27,7 +27,7 @@ public class CurrentFlight {
     {
         flight = f;
         DatabaseInterface db = new DatabaseHandler();
-        airplane = db.getAirplane(flight.getAirplaneID());
+        airplane = flight.getAirplane();
         updated();
     }
     
@@ -49,6 +49,11 @@ public class CurrentFlight {
     public static int getSeat()
     {
         return seat;
+    }
+    
+    public static void addListener(FlightListener listener)
+    {
+        listeners.add(listener);
     }
     
     public static void updated() {

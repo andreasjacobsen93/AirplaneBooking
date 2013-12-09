@@ -48,7 +48,7 @@ public class Flight {
     public Airplane getAirplane() {
         return airplane;
     }
-
+    
     public int getAirplaneID() {
         return airplaneID;
     }
