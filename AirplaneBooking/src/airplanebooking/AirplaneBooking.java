@@ -20,6 +20,7 @@ public class AirplaneBooking {
         mainFrame.run();
         
 <<<<<<< HEAD
+<<<<<<< HEAD
         //DatabaseHandler db = new DatabaseHandler();
         //Flight flight = db.getFlight(4);
         
@@ -27,6 +28,8 @@ public class AirplaneBooking {
         
         
 =======
+=======
+>>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
         DatabaseHandler db = new DatabaseHandler();
        
         //Flight flight = db.getFlight(4);
@@ -40,6 +43,9 @@ public class AirplaneBooking {
             
         }
                
+<<<<<<< HEAD
+>>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
+=======
 >>>>>>> bf5acae9a64d51ebf0c6de5e16252d3dd3ca04ea
     }
 }
