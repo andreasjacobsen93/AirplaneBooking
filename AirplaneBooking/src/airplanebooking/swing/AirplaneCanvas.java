@@ -4,8 +4,6 @@ import airplanebooking.CurrentBooking;
 import airplanebooking.BookingListener;
 import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Airplane;
-import airplanebooking.DB.DatabaseHandler;
-import airplanebooking.DB.DatabaseInterface;
 import airplanebooking.DB.Flight;
 import airplanebooking.SeatListener;
 import java.awt.Color;
@@ -238,7 +236,13 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                         {
                             if (seats[i][1] == 0)
                             {
+                                for (int s = 0; s < seatsCount; s++)
+                                {
+                                    if (seats[s][1] == 3) seats[s][1] = 0;
+                                }
+                                
                                 // Red
+                                seats[i][1] = 3;
                                 CurrentFlight.setSeat(i);
                                 updated();
                             }
@@ -389,6 +393,10 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                     else if (seats[seat][1] == 2)
                     {
                         g.setColor(Color.blue);
+                    }
+                    else if (seats[seat][1] == 3)
+                    {
+                        g.setColor(Color.orange);
                     }
                     else
                     {
