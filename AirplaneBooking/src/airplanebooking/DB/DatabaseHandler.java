@@ -1210,7 +1210,7 @@ public class DatabaseHandler implements DatabaseInterface {
             results = executeQuery(pstatement);
 
             while (results.next()) {
-
+                
                 int id = results.getInt(1);
                 airplane = getAirplane(results.getInt(2));
                 int firstcost = results.getInt(3);
@@ -1221,14 +1221,15 @@ public class DatabaseHandler implements DatabaseInterface {
                 Timestamp aTime = results.getTimestamp(8);
                 String aPlace = results.getString(9);
                 boolean isFull = results.getBoolean(10);
-
+                
+                seats = new ArrayList();
+                
                 sql = "SELECT seat_id FROM reservation2seat WHERE flight_id =?";
-                //getConnection();
                 PreparedStatement pstatement2 = con.prepareStatement(sql);
                 pstatement2.setInt(1, id);
                 ResultSet seatResults = executeQuery(pstatement2);
                 while (seatResults.next()) {
-                    int seatIndex = results.getInt(1);
+                    int seatIndex = seatResults.getInt(1);
                     seat = new Seat(seatIndex);
                     seats.add(seat);
                 }
