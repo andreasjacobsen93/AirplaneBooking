@@ -53,7 +53,7 @@ public interface DatabaseInterface {
     //Below are all flight related DB method declarations.
     */
     
-    public void createFlight(Flight flight); 
+   public void createFlight(Flight flight); 
     
    public void editFlight(Flight flight);
     

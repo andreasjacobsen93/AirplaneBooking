@@ -935,17 +935,18 @@ public class DatabaseHandler implements DatabaseInterface {
         Connection con = getConnection();
         try {
             String sql = "INSERT INTO flights "
-                    + "VALUES (null, ?, ?, ?, ?, ?, ?, ? ,?)";
+                    + "VALUES (null, ?, ?, ?, ?, ?, ?, ? ,?, ?)";
 
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, flight.getAirplaneID());
             pstatement.setInt(2, flight.getFirstClassSeatCost());
             pstatement.setInt(3, flight.getBusinessClassSeatCost());
             pstatement.setInt(4, flight.getEconomyClassSeatCost());
-            pstatement.setString(5, flight.getDeparturePlace());
-            pstatement.setTimestamp(6, flight.getDepartureTimestamp());
-            pstatement.setString(7, flight.getArrivalPlace());
-            pstatement.setTimestamp(8, flight.getArrivalTimestamp());
+            pstatement.setTimestamp(5, flight.getDepartureTimestamp());
+            pstatement.setString(6, flight.getDeparturePlace());
+            pstatement.setTimestamp(7, flight.getArrivalTimestamp());
+            pstatement.setString(8, flight.getArrivalPlace());
+            pstatement.setBoolean(9, flight.isFull());
 
             executeUpdate(pstatement);
 
