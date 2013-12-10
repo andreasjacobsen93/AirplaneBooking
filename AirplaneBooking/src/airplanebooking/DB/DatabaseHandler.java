@@ -633,8 +633,6 @@ public class DatabaseHandler implements DatabaseInterface {
         Connection con = getConnection();
         try {
             if (customerExists(currentCustomer)) {
-                System.out.println(seats.get(1).getSeatID());
-                System.out.println(flight.getID());
                 if (!seatsExist(seats, flight)) {
                     customer = currentCustomer;
                     int customerID = customer.getID();
