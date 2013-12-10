@@ -443,13 +443,13 @@ public class DatabaseHandler implements DatabaseInterface {
             parts[1] = "1";
             columns[1] = lastName;
             sqlArr[1] = "lastname = ? ";
-            
+
         }
         if (email != null) {
             parts[2] = "1";
             columns[2] = email;
             sqlArr[2] = "email = ? ";
-            
+
         }
         if (Phone != null) {
             parts[3] = "1";
@@ -458,21 +458,21 @@ public class DatabaseHandler implements DatabaseInterface {
         }
 
         try {
-            
+
             int k = 0;
 
             for (int i = 0; i < parts.length; i++) {
                 if (parts[i].matches("1")) {
 
                     sql += sqlArr[i];
-                    if (sqlArr[i] != null){
-                    sql += "AND ";
+                    if (sqlArr[i] != null) {
+                        sql += "AND ";
                     }
-                   
+
                 }
 
             }
-            sql = sql.substring(0, sql.length()-4);
+            sql = sql.substring(0, sql.length() - 4);
 
             PreparedStatement pstatement = con.prepareStatement(sql);
             for (int i = 0; i < parts.length; i++) {
@@ -484,13 +484,9 @@ public class DatabaseHandler implements DatabaseInterface {
                 }
 
             }
-            
 
-            
-            
-            
             ResultSet results = pstatement.executeQuery();
-            
+
             while (results.next()) {
                 int id = results.getInt(1);
                 String maritalstatus = results.getString(2);
@@ -502,7 +498,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 String addressCountry = results.getString(8);
                 String eMail = results.getString(9);
                 int phonenumber = results.getInt(10);
-                
+
                 Customer currentCustomer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, eMail);
                 customers.add(currentCustomer);
             }
@@ -510,7 +506,7 @@ public class DatabaseHandler implements DatabaseInterface {
             resultsets.add(results);
             pstatements.add(pstatement);
             cons.add(con);
-            
+
             return customers;
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong in getting your customers", ex);
@@ -808,14 +804,14 @@ public class DatabaseHandler implements DatabaseInterface {
 
             //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
             ResultSet results = executeQuery(pstatement);
-            
+
             while (results.next()) {
                 int id = results.getInt("id");
                 int customerid = results.getInt("customer_id");
                 int flightid = results.getInt("flightid");
                 int food = results.getInt("food");
                 int price = results.getInt("price");
-                
+
                 String getSeats = "SELECT r2s.seat_id "
                         + "FROM `reservation2seat` r2s "
                         + "INNER JOIN reservations rs "
@@ -869,7 +865,8 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public Booking getReservation(int seatID, int flightID) {
         Connection con = getConnection();
-        String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id = ? AND flight_id= ?";
+        String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id = ? AND flight_id = ?";
+        int reservationID;
         try {
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, seatID);
@@ -877,42 +874,50 @@ public class DatabaseHandler implements DatabaseInterface {
             //pass query to query handler -> 
             ResultSet results = executeQuery(pstatement);
 
-            results.first();
-            int reservationID = results.getInt(1);
+            while (results.next()) {
+                reservationID = results.getInt(1);
 
-            sql = "SELECT * FROM reservations WHERE id = ?";
-            PreparedStatement pstatement2 = con.prepareStatement(sql);
-            pstatement2.setInt(1, reservationID);
-            ResultSet rs = executeQuery(pstatement2);
+                sql = "SELECT * FROM reservations WHERE id = ?";
+                PreparedStatement pstatement2 = con.prepareStatement(sql);
+                pstatement2.setInt(1, reservationID);
+                ResultSet rs = executeQuery(pstatement2);
 
-            // results.first();
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                int customerid = rs.getInt("customer_id");
-                int flightid = rs.getInt("flightid");
-                int food = rs.getInt("food");
-                int price = rs.getInt("price");
-                String getSeats = "SELECT r2s.seat_id "
-                        + "FROM reservation2seat r2s "
-                        + "INNER JOIN reservations rs "
-                        + "ON r2s.reservation_id =? "
-                        + "WHERE r2s.reservation_id = rs.id ";
-                PreparedStatement pstatement3 = con.prepareStatement(getSeats);
-                pstatement3.setInt(1, id);
-                ResultSet seatResults = executeQuery(pstatement3);
+                // results.first();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int customerid = rs.getInt("customer_id");
+                    int flightid = rs.getInt("flightid");
+                    int food = rs.getInt("food");
+                    int price = rs.getInt("price");
+                    String getSeats = "SELECT r2s.seat_id "
+                            + "FROM reservation2seat r2s "
+                            + "INNER JOIN reservations rs "
+                            + "ON r2s.reservation_id =? "
+                            + "WHERE r2s.reservation_id = rs.id ";
+                    PreparedStatement pstatement3 = con.prepareStatement(getSeats);
+                    pstatement3.setInt(1, id);
+                    ResultSet seatResults = executeQuery(pstatement3);
+                    ArrayList<Seat> bookingSeats = new ArrayList();
+                    while (seatResults.next()) {
+                        seat = new Seat(seatResults.getInt("seat_id"));
+                        bookingSeats.add(seat);
+                    }
 
-                while (seatResults.next()) {
-                    seat = new Seat(seatResults.getInt("seat_id"));
-                    seats.add(seat);
-                    seat = null;
+                    reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), bookingSeats, food, price);
+
+                    //Tidy up the connection
+                    pstatements.add(pstatement3);
+                    resultsets.add(seatResults);
+                    pstatements.add(pstatement2);
+                    resultsets.add(rs);
                 }
-
-                reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), seats, food, price);
-                pstatements.add(pstatement);
-                pstatements.add(pstatement2);
-                pstatements.add(pstatement3);
-                cons.add(con);
             }
+            //Further tidy up the connection
+            pstatements.add(pstatement);
+
+            resultsets.add(results);
+
+            cons.add(con);
 
             return reservation;
 
@@ -1210,7 +1215,7 @@ public class DatabaseHandler implements DatabaseInterface {
             results = executeQuery(pstatement);
 
             while (results.next()) {
-                
+
                 int id = results.getInt(1);
                 airplane = getAirplane(results.getInt(2));
                 int firstcost = results.getInt(3);
@@ -1221,9 +1226,9 @@ public class DatabaseHandler implements DatabaseInterface {
                 Timestamp aTime = results.getTimestamp(8);
                 String aPlace = results.getString(9);
                 boolean isFull = results.getBoolean(10);
-                
+
                 seats = new ArrayList();
-                
+
                 sql = "SELECT seat_id FROM reservation2seat WHERE flight_id =?";
                 PreparedStatement pstatement2 = con.prepareStatement(sql);
                 pstatement2.setInt(1, id);
