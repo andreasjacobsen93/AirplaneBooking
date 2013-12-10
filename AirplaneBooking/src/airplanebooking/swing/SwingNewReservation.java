@@ -370,7 +370,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     
     public void buttonCreateReservationMouseClicked()
     {
-        
+        CurrentBooking.saveBooking();
         this.dispose();
     }
 
