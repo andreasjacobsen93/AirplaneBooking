@@ -186,9 +186,10 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
             //create sql statement, which we'd like to pass to the statement handler.
             //unpacks the Customer object, and inserts values at the correct columns in the database.
-            String sql = "INSERT INTO customers VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO customers VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setString(1, customer.getMaritalStatus());
+            pstatement.setString(2, customer.getFirstName());
             pstatement.setString(3, customer.getLastName());
             pstatement.setString(4, customer.getAddressStreet());
             pstatement.setInt(5, customer.getAddressZip());
