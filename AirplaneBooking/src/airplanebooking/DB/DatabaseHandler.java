@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * If you are spawning more than one of these objects, you are most likely doing
@@ -488,22 +486,25 @@ public class DatabaseHandler implements DatabaseInterface {
             }
             
 
-
-            ResultSet results = executeQuery(pstatement);
+            
+            
+            
+            ResultSet results = pstatement.executeQuery();
             
             while (results.next()) {
-                int id = results.getInt("id");
-                String maritalstatus = results.getString("maritalstatus");
-                String firstname = results.getString("firstname");
-                String lastname = results.getString("lastname");
-                String addressStreet = results.getString("addressstreet");
-                int addressZip = results.getInt("addresszip");
-                String addressCity = results.getString("addresscity");
-                String addressCountry = results.getString("addresscountry");
-                int phonenumber = results.getInt("phonenumber");
-                String eMail = results.getString("email");
-                customer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, eMail);
-                customers.add(customer);
+                int id = results.getInt(1);
+                String maritalstatus = results.getString(2);
+                String firstname = results.getString(3);
+                String lastname = results.getString(4);
+                String addressStreet = results.getString(5);
+                int addressZip = results.getInt(6);
+                String addressCity = results.getString(7);
+                String addressCountry = results.getString(8);
+                String eMail = results.getString(9);
+                int phonenumber = results.getInt(10);
+                
+                Customer currentCustomer = new Customer(id, maritalstatus, firstname, lastname, addressStreet, addressZip, addressCity, addressCountry, phonenumber, eMail);
+                customers.add(currentCustomer);
             }
             //Tidy up the connection
             resultsets.add(results);
