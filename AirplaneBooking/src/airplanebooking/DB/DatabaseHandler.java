@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * If you are spawning more than one of these objects, you are most likely doing
  * it wrong.
  *
- * @author  Alex
+ * @author Alex
  */
 public class DatabaseHandler implements DatabaseInterface {
 
@@ -116,6 +116,7 @@ public class DatabaseHandler implements DatabaseInterface {
             System.out.println("Number of Connections: " + cpds.getNumConnections());
             System.out.println("Number of Idle Connections: " + cpds.getNumIdleConnections());
             System.out.println("Number of Busy Connections: " + cpds.getNumBusyConnections());
+            System.out.println("Number of Connection Pools: " + cpds.getNumUserPools());
             System.out.println("");
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong while getting the number of connections in the pool", ex);
@@ -130,7 +131,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     results.close();
 
                 }
-
+                this.resultsets.removeAll(resultsets);
             }
 
             if (cons != null && pstatements != null) {
@@ -144,7 +145,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     con.close();
 
                 }
-                this.resultsets.removeAll(resultsets);
+                
                 this.pstatements.removeAll(pstatements);
                 this.cons.removeAll(cons);
 
@@ -529,12 +530,13 @@ public class DatabaseHandler implements DatabaseInterface {
 
         boolean exists = false;
         try {
-            String sql = "SELECT COUNT(*) FROM customers WHERE firstname='?' AND lastname = '?' AND email = '?' OR email = '?'";
+            String sql = "SELECT COUNT(*) FROM customers WHERE firstname= ? AND lastname = ? AND email = ? OR email = ?";
 
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setString(1, firstname);
             pstatement.setString(2, lastname);
             pstatement.setString(3, email);
+            pstatement.setString(4, email);
             ResultSet results = pstatement.executeQuery();
             results.first();
             exists = 0 != results.getInt(1);
@@ -591,30 +593,33 @@ public class DatabaseHandler implements DatabaseInterface {
      * @return
      */
     private boolean seatsExist(ArrayList<Seat> seats, Flight flight) {
-        Connection con = getConnection();
+        Connection con2 = getConnection();
         boolean exists = false;
         for (Seat currentSeat : seats) {
             try {
                 String sql = "SELECT f.id, r2s.seat_id FROM flights f, reservation2seat r2s WHERE f.id = ? AND r2s.seat_id = ?";
-                PreparedStatement pstatement = con.prepareStatement(sql);
+                PreparedStatement pstatement = con2.prepareStatement(sql);
+                
                 pstatement.setInt(1, flight.getID());
                 pstatement.setInt(2, currentSeat.getSeatID());
                 ResultSet results = executeQuery(pstatement);
                 exists = results.getRow() != 0;
 
                 //Tidy up the connection
-                cons.add(con);
+                cons.add(con2);
                 resultsets.add(results);
                 pstatements.add(pstatement);
+                
             } catch (SQLException ex) {
                 throw new RuntimeException("Something went wrong while checking if the seat exists", ex);
             } finally {
-                closeConnection(cons, pstatements, resultsets);
+               // closeConnection(cons, pstatements, resultsets);
             }
-        }
+      
+        
+    }
         return exists;
     }
-
     /**
      *
      * @param currentCustomer
@@ -628,6 +633,8 @@ public class DatabaseHandler implements DatabaseInterface {
         Connection con = getConnection();
         try {
             if (customerExists(currentCustomer)) {
+                System.out.println(seats.get(1).getSeatID());
+                System.out.println(flight.getID());
                 if (!seatsExist(seats, flight)) {
                     customer = currentCustomer;
                     int customerID = customer.getID();
@@ -636,7 +643,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     String sql = "INSERT INTO reservations "
                             + "VALUES (null, ?, ?, ?, ?)";
 
-                    PreparedStatement pstatement = con.prepareStatement(sql);
+                    PreparedStatement pstatement = con.prepareStatement(sql, 1);
                     pstatement.setInt(1, customerID);
                     pstatement.setInt(2, flightID);
                     pstatement.setInt(3, food);
