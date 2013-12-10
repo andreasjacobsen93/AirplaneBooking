@@ -4,6 +4,7 @@ import airplanebooking.CurrentBooking;
 import airplanebooking.BookingListener;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.Flight;
+import airplanebooking.DB.Seat;
 import airplanebooking.GUI;
 import javax.swing.JOptionPane;
 
@@ -136,7 +137,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
                     .addComponent(buttonResetBookedSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Information"));
         
         buttonCreateReservation.setLabel("Create reservation...");
         buttonCreateReservation.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -378,10 +379,10 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         // Seat label
         int i = 0;
         String seats = "Seats: ";      
-        for (int s : CurrentBooking.getSeats())
+        for (Seat s : CurrentBooking.getBookedSeats())
         {
-            if (i == 0) seats += ""+s;
-            else seats += ", "+s;
+            if (i == 0) seats += ""+s.getSeatID();
+            else seats += ", "+s.getSeatID();
             i++;
         }
         if (i > 0) labelSeats.setText(seats);

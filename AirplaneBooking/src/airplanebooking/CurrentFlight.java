@@ -26,7 +26,6 @@ public class CurrentFlight {
     public static void setFlight(Flight f)
     {
         flight = f;
-        DatabaseInterface db = new DatabaseHandler();
         airplane = flight.getAirplane();
         updated();
     }

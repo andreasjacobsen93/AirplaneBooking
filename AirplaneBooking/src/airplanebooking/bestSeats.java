@@ -6,6 +6,7 @@
 
 package airplanebooking;
 
+import airplanebooking.DB.Seat;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * @author Andreas
  */
 public class bestSeats {
-    public ArrayList<Integer> seats;
+    public ArrayList<Seat> seats;
     public ArrayList<Integer> tempSeats;
     public int score;
     public bestSeats() {

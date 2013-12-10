@@ -26,6 +26,12 @@ public class Seat {
         // The index of the seat
         this.seatID = seatID;
     }
+    public Seat(int seatID, Boolean isFinal) {
+        this.isFinalSeat = isFinal;
+        // initialise instance variables
+        // The index of the seat
+        this.seatID = seatID;
+    }
     public int getSeatID() {
         return seatID;
     }

@@ -211,7 +211,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
                 .addContainerGap())
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Information"));
 
         buttonDeleteReservation.setLabel("Delete reservation...");
         buttonDeleteReservation.addMouseListener(new java.awt.event.MouseAdapter() {
