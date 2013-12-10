@@ -18,7 +18,7 @@ public class Seat {
     /**
      * Constructor for objects of class Seat
      *
-     * @param i
+     * @param seatID
      */
     public Seat(int seatID) {
         this.isFinalSeat = false;

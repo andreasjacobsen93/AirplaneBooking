@@ -32,7 +32,7 @@ public class AirplaneBooking {
             System.out.println(currentFlight.getArrivalPlace());
             ArrayList<Seat> seats = currentFlight.getSeats();
             for (Seat currentSeat : seats){
-                System.out.println(currentSeat.getIndex());
+                System.out.println(currentSeat.getSeatID());
             }
             
         }

@@ -22,11 +22,14 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
 
     private Boolean ready;
     private ArrayList<Flight> flights;
+    private ArrayList<javax.swing.JFrame> frames;
     
     /**
      * Creates new form SwingMainFrame
      */
     public SwingMain() {
+        frames = new ArrayList<>();
+        
         initComponents();
         setTitle("Airplane Booking");
         ready = false;
@@ -72,6 +75,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         buttonDeleteReservation = new java.awt.Button();
+        buttonEditReservation = new java.awt.Button();
         labelSeats = new java.awt.Label();
         labelRoute = new java.awt.Label();
         labelTime = new java.awt.Label();
@@ -205,6 +209,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
         buttonDeleteReservation.setLabel("Delete reservation...");
+        buttonEditReservation.setLabel("Edit reservation...");
 
         labelSeats.setText("Seats:");
 
@@ -229,6 +234,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonDeleteReservation, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                    .addComponent(buttonEditReservation, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                     .addComponent(checkboxLunchOnboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelTravelClass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -253,6 +259,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonEditReservation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(buttonDeleteReservation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -373,7 +380,15 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         );
 
         pack();
-    }                                                                   
+    }   
+    
+    private void closeAllFrames()
+    {
+        for (javax.swing.JFrame f : frames)
+        {
+            f.dispose();
+        }
+    }
     
     @Override
     public void run()
@@ -390,9 +405,13 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         else
         {
             if(ready == true) {
+                // Only allow one new reservation frame at a time.
+                closeAllFrames();
+                
                 SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
                 CurrentBooking.reset();
                 CurrentBooking.addListener(SNR);
+                frames.add(SNR);
                 SNR.run();
             }
         }
@@ -423,6 +442,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     // Variables declaration - do not modify
     private AirplaneCanvas AirplaneCanvasPanel;
     private java.awt.Button buttonDeleteReservation;
+    private java.awt.Button buttonEditReservation;
     private java.awt.Button buttonFilter;
     private java.awt.Button buttonFindCustomer;
     private java.awt.Button buttonNewReservation;
@@ -522,8 +542,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
                 EconomyClass = true;
             }
             
-            if (i == 0) seats += ""+s.getIndex();
-            else seats += ", "+s.getIndex();
+            if (i == 0) seats += ""+s.getSeatID();
+            else seats += ", "+s.getSeatID();
             i++;
         }
         if (i > 0) labelSeats.setText(seats);

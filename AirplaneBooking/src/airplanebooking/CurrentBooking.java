@@ -113,7 +113,7 @@ public class CurrentBooking {
         
         for (Seat s : flight.getSeats())
         {
-            blockedSeats.add(s.getIndex());
+            blockedSeats.add(s.getSeatID());
         }
         
         update();
