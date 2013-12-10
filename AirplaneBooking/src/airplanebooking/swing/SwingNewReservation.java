@@ -156,6 +156,12 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         checkboxLunchOnboard.setLabel("Lunch on-board");
         checkboxLunchOnboard.setName(""); // NOI18N
         checkboxLunchOnboard.setState(true);
+        checkboxLunchOnboard.addItemListener(new java.awt.event.ItemListener() {
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkboxLunchOnboardItemStateChanged();
+            }
+        });
 
         labelTravelClass.setText("No seats chosen.");
 
@@ -350,6 +356,11 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     private java.awt.TextField textMaritialStatus;
     private java.awt.TextField textPhone;
     // End of variables declaration
+    
+    public void checkboxLunchOnboardItemStateChanged()
+    {
+        CurrentBooking.changeLunch(checkboxLunchOnboard.getState());
+    }
     
     public void buttonFindBestSeatsMouseClicked()
     {

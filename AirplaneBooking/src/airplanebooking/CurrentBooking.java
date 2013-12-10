@@ -223,6 +223,11 @@ public class CurrentBooking {
         });
         return bookedSeats;
     }
+    
+    public static void changeLunch(Boolean l)
+    {
+        lunch = l;
+    }
 
     public static Boolean isFirstClass() 
     {

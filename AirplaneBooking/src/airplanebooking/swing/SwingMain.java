@@ -602,7 +602,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         if (i > 0) labelTravelClass.setText(classes);
         else labelTravelClass.setText("No seats chosen.");
         
-        if (b.getFood() == 1)
+        if (b.getFood() == true)
             checkboxLunchOnboard.setState(true);
         else
             checkboxLunchOnboard.setState(false);
