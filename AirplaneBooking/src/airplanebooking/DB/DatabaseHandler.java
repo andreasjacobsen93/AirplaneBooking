@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * If you are spawning more than one of these objects, you are most likely doing
  * it wrong.
  *
- * @author Alex
+ * @author Aleksandar Jonovic
  */
 public class DatabaseHandler implements DatabaseInterface {
 
