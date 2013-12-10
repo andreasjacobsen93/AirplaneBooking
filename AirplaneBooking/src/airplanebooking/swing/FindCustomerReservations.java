@@ -16,14 +16,12 @@ import java.util.ArrayList;
 public class FindCustomerReservations extends javax.swing.JFrame implements GUI {
     private ArrayList<Booking> bookingList;
     private final ArrayList<Customer> list;
-    private final DatabaseInterface db;
     /**
      * Creates new form FindCustomerReservations
      * @param list
      */
     public FindCustomerReservations(ArrayList<Customer> list) {
         this.list = list;
-        db = new DatabaseHandler();
         
         initComponents();
         
@@ -85,8 +83,13 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
     private void listOfCustomersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listOfCustomersItemStateChanged
         listOfReservations.removeAll();
         
+        DatabaseInterface db = new DatabaseHandler();
         
+        System.out.println("db.getCustomerReservations(list.get("+listOfCustomers.getSelectedIndex()+").getID());");
+        System.out.println("db.getCustomerReservations("+list.get(listOfCustomers.getSelectedIndex()).getID()+");");
         bookingList = db.getCustomerReservations(list.get(listOfCustomers.getSelectedIndex()).getID());
+        
+        if (bookingList == null) return;
         
         for (int i = 0; i < bookingList.size(); i++)
         {

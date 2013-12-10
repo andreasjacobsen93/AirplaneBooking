@@ -47,12 +47,17 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelTravelClass.setVisible(false); 
         labelSeats.setVisible(false);
         
+        addFlightsToList(false);
+    }
+    
+    private void addFlightsToList(Boolean freeSeatsOnly)
+    {
         DatabaseInterface db = new DatabaseHandler();
-        flights = db.getFlights(false);
+        flights = db.getFlights(freeSeatsOnly);
         
         for (Flight f : flights)
         {
-            listFlights.add(f.getDeparturePlace() + "-" + f.getArrivalPlace() + "@" + f.getDepartureTime());
+            listFlights.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " (" + f.getDepartureTime()+")");
         }
     }
         
@@ -443,13 +448,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     private void checkboxFreeSeatsOnlyItemStateChanged() {  
         listFlights.removeAll();
         
-        DatabaseInterface db = new DatabaseHandler();
-        flights = db.getFlights(checkboxFreeSeatsOnly.getState());
-        
-        for (Flight f : flights)
-        {
-            listFlights.add(f.getDeparturePlace() + "-" + f.getArrivalPlace() + "@" + f.getDepartureTime());
-        }
+        addFlightsToList(checkboxFreeSeatsOnly.getState());
     }   
     
     // Variables declaration - do not modify
