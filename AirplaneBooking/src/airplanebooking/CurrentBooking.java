@@ -64,10 +64,12 @@ public class CurrentBooking {
     
     public static void saveBooking()
     {
-        
+        DatabaseInterface db = new DatabaseHandler();
+        db.createReservation(customer, flight, bookedSeats, lunch, totalCost);
+        reset();
     }
 
-    public static void addCustomer(Customer c) 
+    public static void addCustomer(Customer c)
     {
         customer = c;
     }
