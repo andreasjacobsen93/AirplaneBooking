@@ -12,7 +12,7 @@ package airplanebooking.DB;
 public class Seat {
 
     // instance variables - replace the example below with your own
-    private final Integer index;
+    private final Integer seatID;
     private Boolean isFinalSeat;
 
     /**
@@ -20,14 +20,14 @@ public class Seat {
      *
      * @param i
      */
-    public Seat(int i) {
+    public Seat(int seatID) {
         this.isFinalSeat = false;
         // initialise instance variables
         // The index of the seat
-        index = i;
+        this.seatID = seatID;
     }
-    public int getIndex() {
-        return index;
+    public int getSeatID() {
+        return seatID;
     }
 
     public void setFinalSeat() {

@@ -31,8 +31,6 @@ public interface DatabaseInterface {
     public ArrayList<Customer> getCustomers(int q);
     
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone);
-    
-    public boolean customerExists(Customer customer);
 
     /*
     //Below are all reservation related DB method declarations.
@@ -50,7 +48,6 @@ public interface DatabaseInterface {
     
     public Booking getReservation(int seatID, int flightID);
     
-    public boolean seatsExist(ArrayList<Seat> seats, Flight flight);
     
     /*
     //Below are all flight related DB method declarations.
