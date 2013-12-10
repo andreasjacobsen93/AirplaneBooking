@@ -112,6 +112,7 @@ public class CurrentBooking {
         
         DatabaseInterface db = new DatabaseHandler();
         blockedSeats = db.getFlightBookedSeats(flight.getID());
+        System.out.println("db.getFlightBookedSeats(" + flight.getID() + ") returns "+ blockedSeats.toString());
         bookedSeats = new ArrayList<>();
         
         update();
@@ -177,9 +178,13 @@ public class CurrentBooking {
     public static void addSeat(Seat seat) 
     {
         // Add seat to booking
-        if (!bookedSeats.contains(seat)) {
-            bookedSeats.add(seat);
+        Boolean isUnique = true;
+        for (int i = 0; i < bookedSeats.size(); i++)
+        {
+            if (bookedSeats.get(i).getSeatID() == seat.getSeatID())
+                isUnique = false;
         }
+        if (isUnique) bookedSeats.add(seat);
 
         // Update
         update();

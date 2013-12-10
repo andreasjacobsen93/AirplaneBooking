@@ -484,6 +484,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     public void listFlightsItemStateChanged()
     {
         CurrentFlight.setFlight(flights.get(listFlights.getSelectedIndex()));
+        System.out.println(CurrentFlight.getFlight().getSeats());
+        System.out.println(flights.get(listFlights.getSelectedIndex()).getSeats());
     }
     
     public void buttonEditReservationMouseClicked()

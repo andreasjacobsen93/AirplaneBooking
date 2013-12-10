@@ -4,6 +4,8 @@ import airplanebooking.CurrentBooking;
 import airplanebooking.BookingListener;
 import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Airplane;
+import airplanebooking.DB.DatabaseHandler;
+import airplanebooking.DB.DatabaseInterface;
 import airplanebooking.DB.Flight;
 import airplanebooking.DB.Seat;
 import airplanebooking.SeatListener;
@@ -249,7 +251,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                             }
                             else
                             {
-                                // Green    
+                                // Green
                                 // Add booking
                                 // seats[i][1] = 2;
                                 CurrentBooking.addSeat(new Seat(i+1));
@@ -538,10 +540,12 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     @Override
     public void bookingChanged() {
         
+        System.out.println("first");
         for (int[] seat : seats) {
             seat[1] = 1;
         }
         
+        System.out.println("second");
         if (bookable == true)
         {
             for (Seat s : CurrentBooking.getBlockedSeats())
@@ -549,7 +553,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                 seats[s.getSeatID()-1][1] = 0;
                 System.out.println(s.getSeatID() + " is booked");
             }
-
+            System.out.println("third");
             for (Seat s : CurrentBooking.getBookedSeats())
             {
                 seats[s.getSeatID()-1][1] = 2;
@@ -557,10 +561,12 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         }
         else
         {
-            for (Seat s : flight.getSeats())
+            DatabaseInterface db = new DatabaseHandler();
+            ArrayList<Seat> blockedSeats = db.getFlightBookedSeats(flight.getID());
+            for (Seat s : blockedSeats)
             {
                 seats[s.getSeatID()-1][1] = 0;
-                System.out.println(s.getSeatID() + " is booked.");
+                System.out.println(s.getSeatID() + " is booked...");
             }
         }
 
