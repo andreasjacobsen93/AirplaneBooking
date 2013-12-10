@@ -209,7 +209,20 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
         buttonDeleteReservation.setLabel("Delete reservation...");
+        buttonDeleteReservation.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonDeleteReservationMouseClicked();
+            }
+        });
+        
         buttonEditReservation.setLabel("Edit reservation...");
+        buttonEditReservation.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonEditReservationMouseClicked();
+            }
+        });
 
         labelSeats.setText("Seats:");
 
@@ -397,7 +410,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     }
     
     private void buttonNewReservationMouseClicked() {                                                  
-        // TODO add your handling code here:
+
         if (CurrentFlight.getFlight().isFull())
         {
             JOptionPane.showMessageDialog(null, "All seats on flight is booked. 1");
@@ -474,6 +487,25 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         CurrentFlight.setFlight(flights.get(listFlights.getSelectedIndex()));
     }
     
+    public void buttonEditReservationMouseClicked()
+    {
+        if(ready == true) {
+            // Only allow one new reservation frame at a time.
+            closeAllFrames();
+
+            SwingEditReservation SER = new SwingEditReservation(CurrentFlight.getFlight());
+            CurrentBooking.reset();
+            CurrentBooking.addListener(SER);
+            frames.add(SER);
+            SER.run();
+        }
+    }
+    
+    public void buttonDeleteReservationMouseClicked()
+    {
+        
+    }
+    
     public void updateSearch()
     {
         
@@ -491,16 +523,16 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel6.setVisible(false);
         checkboxLunchOnboard.setVisible(false);
         labelPrice.setVisible(false);
-        labelTravelClass.setVisible(false); 
+        labelTravelClass.setVisible(false);
         labelSeats.setVisible(false);
         
         ready = true;
         
-        labelAirplaneName.setText(CurrentFlight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + ":" + CurrentFlight.getFlight().getID());
+        labelAirplaneName.setText(CurrentFlight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + "A" + CurrentFlight.getFlight().getID());
         labelRoute.setText(CurrentFlight.getFlight().getDeparturePlace() + " - " + CurrentFlight.getFlight().getArrivalPlace());
         labelTime.setText(CurrentFlight.getFlight().getDepartureTime());
     }
-
+    
     @Override
     public void seatChanged() {
         // Customer
