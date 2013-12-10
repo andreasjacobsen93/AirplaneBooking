@@ -472,8 +472,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
             }
             sql = sql.substring(0, sql.length()-4);
-            
-            System.out.println(sql);
+
             PreparedStatement pstatement = con.prepareStatement(sql);
             for (int i = 0; i < parts.length; i++) {
                 if (parts[i].matches("1")) {
@@ -808,13 +807,14 @@ public class DatabaseHandler implements DatabaseInterface {
 
             //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
             ResultSet results = executeQuery(pstatement);
-            results.first();
+            
             while (results.next()) {
                 int id = results.getInt("id");
                 int customerid = results.getInt("customer_id");
                 int flightid = results.getInt("flightid");
                 int food = results.getInt("food");
                 int price = results.getInt("price");
+                
                 String getSeats = "SELECT r2s.seat_id "
                         + "FROM `reservation2seat` r2s "
                         + "INNER JOIN reservations rs "
@@ -878,6 +878,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
             results.first();
             int reservationID = results.getInt(1);
+
             sql = "SELECT * FROM reservations WHERE id = ?";
             PreparedStatement pstatement2 = con.prepareStatement(sql);
             pstatement2.setInt(1, reservationID);
@@ -1032,8 +1033,10 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, customerID);
+            //System.out.println(customerID);
             ResultSet results = executeQuery(pstatement);
             while (results.next()) {
+                //System.out.println(results.getInt(1));
                 Booking currentBooking = getReservation(results.getInt(1));
                 reservations.add(currentBooking);
 
