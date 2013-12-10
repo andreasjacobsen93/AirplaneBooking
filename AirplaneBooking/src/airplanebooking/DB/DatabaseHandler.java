@@ -727,7 +727,7 @@ public class DatabaseHandler implements DatabaseInterface {
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, customer.getID());
             pstatement.setInt(2, flight.getID());
-            pstatement.setInt(3, booking.getFood());
+            pstatement.setBoolean(3, booking.getFood());
             pstatement.setInt(4, booking.getPrice());
             pstatement.setInt(5, booking.getID());
 
@@ -816,7 +816,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 int id = results.getInt("id");
                 int customerid = results.getInt("customer_id");
                 int flightid = results.getInt("flightid");
-                int food = results.getInt("food");
+                Boolean food = results.getBoolean("food");
                 int price = results.getInt("price");
 
                 String getSeats = "SELECT r2s.seat_id "
@@ -894,7 +894,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     int id = rs.getInt("id");
                     int customerid = rs.getInt("customer_id");
                     int flightid = rs.getInt("flightid");
-                    int food = rs.getInt("food");
+                    Boolean food = rs.getBoolean("food");
                     int price = rs.getInt("price");
                     String getSeats = "SELECT r2s.seat_id "
                             + "FROM reservation2seat r2s "

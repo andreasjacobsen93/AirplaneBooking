@@ -11,12 +11,12 @@ public class Booking {
     private final Integer id;
     private final Customer customer;
     private final Flight flight;
-    private final Integer food;
+    private final Boolean food;
     private final ArrayList<Seat> seats;
     private final Integer price;
     
     
-    public Booking(int id, Customer customer, Flight flight, ArrayList<Seat> seats, int food, int price)
+    public Booking(int id, Customer customer, Flight flight, ArrayList<Seat> seats, Boolean food, int price)
     {
         this.id = id;
         this.customer = customer;
@@ -42,7 +42,7 @@ public class Booking {
         return flight;
     }
     
-    public int getFood(){
+    public Boolean getFood(){
         return food;
     }
     
