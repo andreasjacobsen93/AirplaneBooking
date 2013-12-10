@@ -103,7 +103,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         
         // All seats available
         seatsCount = 0;
-        seats = new int[0][0];
+        seats = new int[10][6];
         seat = 0;
     }
     
@@ -159,9 +159,9 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         
         // Create data for seats
         int i = 0;
-        for (int[] seat : seats) {
-            seat[0] = i++;
-            seat[1] = 1;
+        for (int[] s : seats) {
+            s[0] = i++;
+            s[1] = 1;
         }
         
         if (bookable == true)
@@ -169,7 +169,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
             for (Seat s : CurrentBooking.getBlockedSeats())
             {
                 seats[s.getSeatID()-1][1] = 0;
-                System.out.println(s.getSeatID() + " is booked");
+                //System.out.println(s.getSeatID() + " is booked");
             }
 
             for (Seat s : CurrentBooking.getBookedSeats())
@@ -182,7 +182,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
             for (Seat s : flight.getSeats())
             {
                 seats[s.getSeatID()-1][1] = 0;
-                System.out.println(s.getSeatID() + " is booked.");
+                //System.out.println(s.getSeatID() + " is booked.");
             }
         }
 
@@ -246,14 +246,12 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                             {
                                 // Blue
                                 // Remove booking
-                                // seats[i][1] = 1;
                                 CurrentBooking.removeSeat(i+1);
                             }
-                            else
+                            else if (seats[i][1] == 1)
                             {
                                 // Green
                                 // Add booking
-                                // seats[i][1] = 2;
                                 CurrentBooking.addSeat(new Seat(i+1));
                             }
                         }
@@ -539,21 +537,20 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
 
     @Override
     public void bookingChanged() {
-        
-        System.out.println("first");
+
         for (int[] seat : seats) {
             seat[1] = 1;
         }
         
-        System.out.println("second");
+        DatabaseInterface db = new DatabaseHandler();
+
         if (bookable == true)
         {
-            for (Seat s : CurrentBooking.getBlockedSeats())
+            for (Seat s : db.getFlightBookedSeats(flight.getID()))
             {
                 seats[s.getSeatID()-1][1] = 0;
-                System.out.println(s.getSeatID() + " is booked");
             }
-            System.out.println("third");
+
             for (Seat s : CurrentBooking.getBookedSeats())
             {
                 seats[s.getSeatID()-1][1] = 2;
@@ -561,12 +558,9 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         }
         else
         {
-            DatabaseInterface db = new DatabaseHandler();
-            ArrayList<Seat> blockedSeats = db.getFlightBookedSeats(flight.getID());
-            for (Seat s : blockedSeats)
+            for (Seat s : db.getFlightBookedSeats(flight.getID()))
             {
                 seats[s.getSeatID()-1][1] = 0;
-                System.out.println(s.getSeatID() + " is booked...");
             }
         }
 

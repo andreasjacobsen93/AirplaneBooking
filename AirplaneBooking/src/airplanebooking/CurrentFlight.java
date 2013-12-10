@@ -27,7 +27,7 @@ public class CurrentFlight {
     {
         flight = f;
         airplane = flight.getAirplane();
-        updated();
+        updated(f);
     }
     
     public static Flight getFlight()
@@ -55,10 +55,10 @@ public class CurrentFlight {
         listeners.add(listener);
     }
     
-    public static void updated() {
+    public static void updated(Flight flight) {
         // Notify everybody that may be interested.
         for (FlightListener fl : listeners) {
-            fl.flightChanged();
+            fl.flightChanged(flight);
         }
     }
 }

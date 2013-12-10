@@ -22,7 +22,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
 
     private Boolean ready;
     private ArrayList<Flight> flights;
-    private ArrayList<javax.swing.JFrame> frames;
+    private final ArrayList<javax.swing.JFrame> frames;
     
     /**
      * Creates new form SwingMainFrame
@@ -484,8 +484,6 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     public void listFlightsItemStateChanged()
     {
         CurrentFlight.setFlight(flights.get(listFlights.getSelectedIndex()));
-        System.out.println(CurrentFlight.getFlight().getSeats());
-        System.out.println(flights.get(listFlights.getSelectedIndex()).getSeats());
     }
     
     public void buttonEditReservationMouseClicked()
@@ -513,9 +511,11 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     }
 
     @Override
-    public void flightChanged() {
+    public void flightChanged(Flight flight) {
         
-        AirplaneCanvasPanel.setAirplaneCanvas(false, CurrentFlight.getFlight());
+        AirplaneCanvasPanel.setAirplaneCanvas(false, flight);
+        
+        System.out.println(flight.getSeats());
         
         jPanel3.setVisible(true); // Airplane
         jPanel5.setVisible(true); // Options
@@ -529,9 +529,9 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         
         ready = true;
         
-        labelAirplaneName.setText(CurrentFlight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + "A" + CurrentFlight.getFlight().getID());
-        labelRoute.setText(CurrentFlight.getFlight().getDeparturePlace() + " - " + CurrentFlight.getFlight().getArrivalPlace());
-        labelTime.setText(CurrentFlight.getFlight().getDepartureTime());
+        labelAirplaneName.setText(flight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + "A" + CurrentFlight.getFlight().getID());
+        labelRoute.setText(flight.getDeparturePlace() + " - " + CurrentFlight.getFlight().getArrivalPlace());
+        labelTime.setText(flight.getDepartureTime());
     }
     
     @Override

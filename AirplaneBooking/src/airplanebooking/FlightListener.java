@@ -6,10 +6,12 @@
 
 package airplanebooking;
 
+import airplanebooking.DB.Flight;
+
 /**
  *
  * @author Andreas
  */
 public interface FlightListener {
-    public void flightChanged();
+    public void flightChanged(Flight flight);
 }

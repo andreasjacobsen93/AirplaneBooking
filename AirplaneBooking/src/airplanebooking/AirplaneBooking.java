@@ -16,14 +16,14 @@ public class AirplaneBooking {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-      //  GUI mainFrame = new SwingMain();
-      //  mainFrame.run();
+        GUI mainFrame = new SwingMain();
+        mainFrame.run();
 
         //DatabaseHandler db = new DatabaseHandler();
         //Flight flight = db.getFlight(4);
         
         //System.out.println(flight.getArrivalTime());
-
+/*
         DatabaseHandler db = new DatabaseHandler();
        
         //Flight flight = db.getFlight(4);
@@ -35,6 +35,6 @@ public class AirplaneBooking {
                 System.out.println(currentSeat.getSeatID());
             }
             
-        }
+        }*/
     }
 }

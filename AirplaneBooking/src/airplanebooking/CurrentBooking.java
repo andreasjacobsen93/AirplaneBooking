@@ -126,6 +126,9 @@ public class CurrentBooking {
 
     public static void reset() 
     {
+        customer = null;
+        flight = null;
+        airplane = null;
         bookedSeats = new ArrayList<>();
         blockedSeats = new ArrayList<>();
         EconomyClass = false;
@@ -210,7 +213,7 @@ public class CurrentBooking {
 
     public static ArrayList<Seat> getBookedSeats() 
     {
-        // Sorter alle kombinationerne efter højeste score
+        // Sorter alle kombinationerne efter højeste id nummer
         Collections.sort(bookedSeats, new Comparator<Seat>() {
             @Override
             public int compare(Seat o1, Seat o2) {
