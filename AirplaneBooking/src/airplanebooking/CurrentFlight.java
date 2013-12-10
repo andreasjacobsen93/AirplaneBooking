@@ -7,8 +7,6 @@
 package airplanebooking;
 
 import airplanebooking.DB.Airplane;
-import airplanebooking.DB.DatabaseHandler;
-import airplanebooking.DB.DatabaseInterface;
 import airplanebooking.DB.Flight;
 import java.util.ArrayList;
 

@@ -515,8 +515,6 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         
         AirplaneCanvasPanel.setAirplaneCanvas(false, flight);
         
-        System.out.println(flight.getSeats());
-        
         jPanel3.setVisible(true); // Airplane
         jPanel5.setVisible(true); // Options
         
@@ -544,6 +542,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelSeats.setVisible(true);
         
         DatabaseInterface db = new DatabaseHandler();
+        System.out.println("db.getReservation("+CurrentFlight.getSeat()+", "+CurrentFlight.getFlight().getID()+")");
         Booking b = db.getReservation(CurrentFlight.getSeat(), CurrentFlight.getFlight().getID());
         Customer c = b.getCustomer();
         
@@ -557,6 +556,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         Boolean EconomyClass = false;
         Boolean BusinessClass = false;
         Boolean FirstClass = false;
+        
+        AirplaneCanvasPanel.clickSeats(b.getSeats());
         
         int i = 0;
         String seats = "Seats: ";      

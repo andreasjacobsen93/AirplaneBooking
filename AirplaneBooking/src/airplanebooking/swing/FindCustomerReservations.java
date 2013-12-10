@@ -85,8 +85,6 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
         
         DatabaseInterface db = new DatabaseHandler();
         
-        System.out.println("db.getCustomerReservations(list.get("+listOfCustomers.getSelectedIndex()+").getID());");
-        System.out.println("db.getCustomerReservations("+list.get(listOfCustomers.getSelectedIndex()).getID()+");");
         bookingList = db.getCustomerReservations(list.get(listOfCustomers.getSelectedIndex()).getID());
         
         if (bookingList == null) return;

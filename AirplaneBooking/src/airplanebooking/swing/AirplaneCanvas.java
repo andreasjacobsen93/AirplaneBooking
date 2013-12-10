@@ -240,40 +240,9 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                 {
                     if (x > seats[i][2] && y > seats[i][3] && x < seats[i][4] && y < seats[i][5])
                     {
-                        if (bookable == true)
-                        {
-                            if (seats[i][1] == 2)
-                            {
-                                // Blue
-                                // Remove booking
-                                CurrentBooking.removeSeat(i+1);
-                            }
-                            else if (seats[i][1] == 1)
-                            {
-                                // Green
-                                // Add booking
-                                CurrentBooking.addSeat(new Seat(i+1));
-                            }
-                        }
-                        else
-                        {
-                            if (seats[i][1] == 0)
-                            {
-                                for (int s = 0; s < seatsCount; s++)
-                                {
-                                    if (seats[s][1] == 3) seats[s][1] = 0;
-                                }
-                                
-                                // Red
-                                seats[i][1] = 3;
-                                CurrentFlight.setSeat(i);
-                                updated();
-                            }
-                        }
+                        clickSeat(i);
                     }
                 }
-
-                repaint();
             }
         });
         
@@ -302,21 +271,57 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         CurrentBooking.addListener(this);
     }
     
+    public void clickSeats(ArrayList<Seat> list)
+    {
+        for (int[] seat : seats) {
+            if(seat[1] == 3) seat[1] = 0;
+        }
+        
+        for (Seat i : list)
+        {
+            if (bookable == false)
+            {
+                if (seats[i.getSeatID()-1][1] == 0)
+                {
+                    // Red
+                    seats[i.getSeatID()-1][1] = 3;
+                }
+            }
+        }
+        
+        repaint();
+    }
+    
     public void clickSeat(int i)
     {
-        if (seats[i][1] == 2)
+        if (bookable == true)
         {
-            // Blue
-            // Remove booking
-            seats[i][1] = 1;
-            CurrentBooking.removeSeat(i+1);
+            if (seats[i][1] == 2)
+            {
+                // Blue
+                // Remove booking
+                CurrentBooking.removeSeat(i+1);
+            }
+            else if (seats[i][1] == 1)
+            {
+                // Green
+                // Add booking
+                CurrentBooking.addSeat(new Seat(i+1));
+            }
         }
         else
         {
-            // Green    
-            // Add booking
-            seats[i][1] = 2;
-            CurrentBooking.addSeat(new Seat(i+1));
+            if (seats[i][1] == 0)
+            {
+                for (int s = 0; s < seatsCount; s++)
+                {
+                    if (seats[s][1] == 3) seats[s][1] = 0;
+                }
+                // Red
+                seats[i][1] = 3;
+                CurrentFlight.setSeat(i+1);
+                updated();
+            }
         }
         repaint();
     }

@@ -112,7 +112,6 @@ public class CurrentBooking {
         
         DatabaseInterface db = new DatabaseHandler();
         blockedSeats = db.getFlightBookedSeats(flight.getID());
-        System.out.println("db.getFlightBookedSeats(" + flight.getID() + ") returns "+ blockedSeats.toString());
         bookedSeats = new ArrayList<>();
         
         update();
