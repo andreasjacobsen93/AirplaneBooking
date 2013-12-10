@@ -36,7 +36,7 @@ public interface DatabaseInterface {
     //Below are all reservation related DB method declarations.
     */
     
-    public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, int food, int cost);
+    public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, Boolean food, int cost);
 
     public void editReservation(Booking booking);
 
