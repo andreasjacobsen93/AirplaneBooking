@@ -629,7 +629,7 @@ public class DatabaseHandler implements DatabaseInterface {
      * @param cost
      */
     @Override
-    public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, int food, int cost) {
+    public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, Boolean food, int cost) {
         Connection con = getConnection();
         try {
             if (customerExists(currentCustomer)) {
@@ -646,7 +646,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     PreparedStatement pstatement = con.prepareStatement(sql, 1);
                     pstatement.setInt(1, customerID);
                     pstatement.setInt(2, flightID);
-                    pstatement.setInt(3, food);
+                    pstatement.setBoolean(3, food);
                     pstatement.setInt(4, cost);
 
                     pstatement.executeUpdate();
