@@ -737,18 +737,32 @@ public class DatabaseHandler implements DatabaseInterface {
                 PreparedStatement pstatement2 = con.prepareStatement(sql);
                 pstatement2.setInt(1, booking.getID());
                 executeUpdate(pstatement2);
-
+                
+                //Tidy up the connection
                 pstatements.add(pstatement2);
+                
+                //If a reservation has no seats, it is no longer a reservation - therefore delete it!
+                deleteReservation(booking);
+                
             } else {
-                sql = "UPDATE reservation2seat SET reservation_id = ?, seat_id= ?";
+                //First we delete all current seats for this particular reservation
+                sql = "DELETE FROM reservation2seat WHERE reservation_id=?";
                 PreparedStatement pstatement2 = con.prepareStatement(sql);
+                pstatement2.setInt(1, booking.getID());
+                executeUpdate(pstatement2);
+                
+                //Then we add all the seats which were given to us, by the Booking object
+                sql = "INSERT INTO reservation2seat VALUES(?, ?, ?)";
+                PreparedStatement pstatement3 = con.prepareStatement(sql);
 
                 for (Seat currentSeat : seats) {
-                    pstatement2.setInt(1, booking.getID());
-                    pstatement2.setInt(2, currentSeat.getSeatID());
-                    executeUpdate(pstatement2);
+                    pstatement3.setInt(1, booking.getID());
+                    pstatement3.setInt(2, currentSeat.getSeatID());
+                    pstatement3.setInt(3, flight.getID());
+                    executeUpdate(pstatement3);
                 }
-                pstatements.add(pstatement2);
+                //Tidy up the connection
+                pstatements.add(pstatement3);
             }
             //Further tidy up the connection
             pstatements.add(pstatement);
@@ -757,7 +771,7 @@ public class DatabaseHandler implements DatabaseInterface {
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong while editing your reservation", ex);
         } finally {
-            closeConnection(cons, pstatements, resultsets);
+            closeConnection(cons, pstatements, null);
         }
 
     }
@@ -1210,10 +1224,10 @@ public class DatabaseHandler implements DatabaseInterface {
             ResultSet results;
             PreparedStatement pstatement;
             if (freeSeatsOnly == true) {
-                sql = "SELECT * FROM flights WHERE isfull = 0";
+                sql = "SELECT * FROM flights WHERE isfull = 0 AND departuretime > DATE_ADD(SYSDATE(), INTERVAL 2 HOUR) ORDER BY departuretime ";
                 pstatement = con.prepareStatement(sql);
             } else {
-                sql = "SELECT * FROM flights";
+                sql = "SELECT * FROM flights WHERE departuretime > DATE_ADD(SYSDATE(), INTERVAL 2 HOUR) ORDER BY departuretime";
                 pstatement = con.prepareStatement(sql);
             }
 
