@@ -13,11 +13,11 @@ import java.util.ArrayList;
  *
  * @author Andreas
  */
-public class bestSeats {
+public class BestSeats {
     public ArrayList<Seat> seats;
     public ArrayList<Integer> tempSeats;
     public int score;
-    public bestSeats() {
+    public BestSeats() {
         seats = new ArrayList<>();
         tempSeats = new ArrayList<>();
     }

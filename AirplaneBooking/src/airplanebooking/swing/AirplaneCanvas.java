@@ -361,7 +361,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                 }
                 // Red
                 seats[i][1] = 3;
-                CurrentFlight.setSeat(i+1);
+                CurrentFlight.setSeat(new Seat(i+1));
                 updated();
             }
         }

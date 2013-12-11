@@ -12,25 +12,32 @@ import java.util.Comparator;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Andreas
+ * There can only be one of this class.
+ * Used to inform all listening classes of the current booking,
+ * to create and update bookings.
+ * @author Andreas Jacobsen
  */
 public class CurrentBooking {
 
     // Seats which are booked in the current booking
     private static ArrayList<Seat> bookedSeats;
+    
     // Seats which are already booked and cannot be booked
     private static ArrayList<Seat> blockedSeats;
+    
     // Seats which are currently booked but is allowed to be booked again in edit reservation
     private static ArrayList<Seat> allowedSeats;
 
     // The customer to book for
     private static Customer customer;
+    
     // The flight to book on
     private static Flight flight;
+    
     // The airplane to fly with
     private static Airplane airplane;
     
+    // The id of the booking if it is already existing
     private static int id;
 
     // Economy Class
@@ -57,38 +64,21 @@ public class CurrentBooking {
     private static int FrowSeats;
     private static int FseatPrice;
     
+    // Lunch on-board or not
     private static Boolean lunch;
     
+    // The total cost of the booking
     private static int totalCost;
     
     // List of event subscribers
     private static final ArrayList<BookingListener> listeners = new ArrayList<>();
-
-    public CurrentBooking() {
-        customer = null;
-        flight = null;
-        airplane = null;
-        bookedSeats = null;
-        blockedSeats = null;
-        allowedSeats = null;
-        EconomyClass = false;
-        BusinessClass = false;
-        FirstClass = false;
-        EconomySeats = 0;
-        BusinessSeats = 0;
-        FirstSeats = 0;
-        EseatGroups = 0;
-        EseatLength = 0;
-        ErowSeats = 0;
-        BseatGroups = 0;
-        BseatLength = 0;
-        BrowSeats = 0;
-        FseatGroups = 0;
-        FseatLength = 0;
-        FrowSeats = 0;
-        blockedSeats = null;
-    }
     
+    /**
+     * This method saves the current booking,
+     * as either a new reservation or an update
+     * of an existing one.
+     * @param update Whether to update an existing reservation or not.
+     */
     public static void saveBooking(Boolean update)
     {
         if(update) Database.db().editReservation(new Booking(id, customer, flight, bookedSeats, lunch, totalCost));
@@ -98,16 +88,32 @@ public class CurrentBooking {
         reset();
     }
 
+    /**
+     * This method adds a customer to current booking. 
+     * @param c Customer object with data.
+     * @see Customer
+     */
     public static void addCustomer(Customer c)
     {
         customer = c;
     }
     
+    /**
+     * This method returns the Customer object
+     * currently related to the current booking.
+     * @return Customer object with data.
+     * @see Customer
+     */
     public static Customer getCustomer()
     {
         return customer;
     }
 
+    /**
+     * This method adds a flight to the current booking.
+     * @param f Flight object with data
+     * @see Flight
+     */
     public static void addFlight(Flight f) 
     {
         flight = f;
@@ -149,6 +155,11 @@ public class CurrentBooking {
         update();
     }
     
+    /**
+     * This method adds an existing booking to the current booking.
+     * @param b Booking object with data
+     * @see Booking
+     */
     public static void addBooking(Booking b)
     {
         addCustomer(b.getCustomer());
@@ -159,18 +170,31 @@ public class CurrentBooking {
         allowedSeats = b.getSeats();
     }
     
+    /**
+     * This method removes all seats from
+     * the bookedSeats array list.
+     */
     public static void clearBookedSeats()
     {
         bookedSeats.clear();
         update();
     }
     
+    /**
+     * This method sets whether the customer
+     * wants lunch on-board or not.
+     * @param state True or false
+     */
     public static void setLunch(Boolean state)
     {
         lunch = state;
         update();
     }
 
+    /**
+     * This method resets the whole current booking,
+     * with standard values for all fields.
+     */
     public static void reset() 
     {
         customer = null;
@@ -197,6 +221,12 @@ public class CurrentBooking {
         blockedSeats = null;
     }
 
+    /**
+     * This method update boolean fields
+     * for whether the three classes are
+     * representet in the booking or not.
+     * Also sends an update-event to BookingListeners.
+     */
     public static void update() 
     {
         EconomyClass = false;
@@ -229,30 +259,46 @@ public class CurrentBooking {
         updated();
     }
 
+    /**
+     * This method adds a seat to the current booking.
+     * @param seat Seat object with seat number.
+     * @see Seat
+     */
     public static void addSeat(Seat seat) 
     {
         // Add seat to booking
         Boolean isUnique = true;
+        
+        // Check if seat is already in the list
         for (int i = 0; i < bookedSeats.size(); i++)
         {
             if (bookedSeats.get(i).getSeatID() == seat.getSeatID())
                 isUnique = false;
         }
         
+        // If seat is the last free seat on flight, mark it as last seat
         if (isLastSeat()) seat.setFinalSeat();
         
+        // If seat is not in the list already add it
         if (isUnique) bookedSeats.add(seat);
 
         // Update
         update();
     }
     
+    /**
+     * This method checks whether next seat is last free seat or not.
+     * @return True if seat is last, false if not.
+     */
     private static Boolean isLastSeat()
     {
-        if (blockedSeats.size() + bookedSeats.size() + 1 == FirstSeats + BusinessSeats + EconomySeats) return true;
-        return false;
+        return blockedSeats.size() + bookedSeats.size() + 1 == FirstSeats + BusinessSeats + EconomySeats;
     }
 
+    /**
+     * This method removes a seat from the list of the currently booked seats.
+     * @param seat Seat number as integer for seat to remove.
+     */
     public static void removeSeat(int seat) 
     {
         // Remove seat from booking
@@ -266,11 +312,20 @@ public class CurrentBooking {
         update();
     }
     
+    /**
+     * This method gets the list of blocked seats.
+     * @return Array list of blocked seats.
+     * @see Seat
+     */
     public static ArrayList<Seat> getBlockedSeats()
     {
         return blockedSeats;
     }
 
+    /**
+     * This method gets the list of booked seats.
+     * @return Array list of currently booked seats.
+     */
     public static ArrayList<Seat> getBookedSeats() 
     {
         // Sorter alle kombinationerne efter højeste id nummer
@@ -283,76 +338,137 @@ public class CurrentBooking {
         return bookedSeats;
     }
     
+    /**
+     * This method gets the list of allowed seats,
+     * which are already booked but can be booked again
+     * because the booking is being edited.
+     * @return Array list of allowed seats.
+     */
     public static ArrayList<Seat> getAllowedSeats()
     {
         return allowedSeats;
     }
 
+    /**
+     * This method gets if current booking is on first class.
+     * @return True if first class, false if not.
+     */
     public static Boolean isFirstClass() 
     {
         return FirstClass;
     }
 
+    /**
+     * This method gets if current booking is on business class.
+     * @return True if business class, false if not.
+     */
     public static Boolean isBusinessClass() 
     {
         return BusinessClass;
     }
 
+    /**
+     * This method gets if current booking is on economy class.
+     * @return True if economy class, false if not.
+     */
     public static Boolean isEconomyClass() 
     {
         return EconomyClass;
     }
 
+    /**
+     * This method gets the seat groups on economy class
+     * @return Seat groups on economy class as integer.
+     */
     public static int economySeatGroups() 
     {
         return EseatGroups;
     }
 
+    /**
+     * This method gets the vertical number of seats on economy class
+     * @return Seat groups on economy class as integer.
+     */
     public static int economySeatLength() 
     {
         return EseatLength;
     }
 
+    /**
+     * This method gets the horizontal number of seats in a group on economy class
+     * @return Seat groups on economy class as integer.
+     */
     public static int economyRowSeats() 
     {
         return ErowSeats;
     }
 
+    /**
+     * This method gets the seat groups on business class
+     * @return Seat groups on business class as integer.
+     */
     public static int businessSeatGroups() 
     {
         return BseatGroups;
     }
 
+    /**
+     * This method gets the vertical number of seats on business class
+     * @return Seat groups on business class as integer.
+     */
     public static int businessSeatLength() 
     {
         return BseatLength;
     }
 
+    /**
+     * This method gets the horizontal number of seats in a group on business class
+     * @return Seat groups on business class as integer.
+     */
     public static int businessRowSeats() 
     {
         return BrowSeats;
     }
 
+    /**
+     * This method gets the seat groups on first class
+     * @return Seat groups on first class as integer.
+     */
     public static int firstSeatGroups() 
     {
         return FseatGroups;
     }
 
+    /**
+     * This method gets the vertical number of seats on first class
+     * @return Seat groups on first class as integer.
+     */
     public static int firstSeatLength() 
     {
         return FseatLength;
     }
 
+    /**
+     * This method gets the horizontal number of seats in a group on first class
+     * @return Seat groups on first class as integer.
+     */
     public static int firstRowSeats()
     {
         return FrowSeats;
     }
     
+    /**
+     * This method gets the total cost of the current booking.
+     * @return Total booking cost as integer.
+     */
     public static int getTotalCost()
     {
         return totalCost;
     }
 
+    /**
+     * This method send an update to all listeners.
+     */
     public static void updated()
     {
         // Notify everybody that may be interested.
@@ -361,11 +477,21 @@ public class CurrentBooking {
         }
     }
 
+    /**
+     * This method adds a new listener to the list.
+     * @param listener Listener as BookingListener.
+     * @see BookingListener
+     */
     public static void addListener(BookingListener listener)
     {
         listeners.add(listener);
     }
 
+    /**
+     * This method finds the best seats on the flight
+     * by using an algorithm to search through all the seats.
+     * @param amount The amount of seats to search for.
+     */
     public static void findBestSeats(int amount)
     {
         bookedSeats.clear();
@@ -374,12 +500,23 @@ public class CurrentBooking {
         findSeatsAlgorithm(amount);
     }
 
+    /**
+     * This method adds a list of seats to the current booking.
+     * @param list List of seats to add.
+     * @see Seat
+     */
     public static void addSeats(ArrayList<Seat> list) {
         for (Seat s : list) {
             addSeat(s);
         }
     }
     
+    /**
+     * This method check if the list of blocked seats contains
+     * the given integer.
+     * @param i Integer to check for.
+     * @return True if integer exists in list of blocked seats, false if not.
+     */
     private static Boolean blockedSeatsContains(Integer i)
     {
         for (int a = 0; a < blockedSeats.size(); a++)
@@ -390,6 +527,10 @@ public class CurrentBooking {
         return false;
     }
 
+    /**
+     * This method searches for the best seats on the flight
+     * @param amount The amount of seats to search for.
+     */
     private static void findSeatsAlgorithm(int amount) {
 
         // Først laver vi et int 2d array som holder alle sæde numrene
@@ -403,14 +544,14 @@ public class CurrentBooking {
         }
 
         // Vi laver så en liste over alle de mulige kombinationer vi kan få
-        ArrayList<bestSeats> list = new ArrayList<>();
+        ArrayList<BestSeats> list = new ArrayList<>();
 
         // Så kører vi alle sæderne i gennem
         for (int i = 0; i < EseatGroups * ErowSeats; i++) {
             for (int j = 0; j < EseatLength; j++) {
                 
                 // Create new combination holder
-                bestSeats bs = new bestSeats();
+                BestSeats bs = new BestSeats();
                 
                 if(blockedSeatsContains(seatsArray[i][j])) continue;
 
@@ -439,9 +580,9 @@ public class CurrentBooking {
         }
 
         // Sorter alle kombinationerne efter højeste score
-        Collections.sort(list, new Comparator<bestSeats>() {
+        Collections.sort(list, new Comparator<BestSeats>() {
             @Override
-            public int compare(bestSeats o1, bestSeats o2) {
+            public int compare(BestSeats o1, BestSeats o2) {
                 return o2.score - o1.score;
             }
         });
@@ -457,7 +598,17 @@ public class CurrentBooking {
 
     }
     
-    private static void vAlgorithmSearch(int i, int j, bestSeats bs, int amount, int[][] seatsArray)
+    /**
+     * This method searches vertically for best seats.
+     * @param i The current y-coordinate to continue from.
+     * @param j The current x-coordinate to keep.
+     * @param bs The current BestSeats object to continue on.
+     * @param amount The amount of seats to find.
+     * @param seatsArray The 2d-array of seats to find seat numbers in.
+     * @see BestSeats
+     * @see Seats
+     */
+    private static void vAlgorithmSearch(int i, int j, BestSeats bs, int amount, int[][] seatsArray)
     {
         for (int ii = i + 1; ii < EseatGroups * ErowSeats; ii++) {
             if (bs.seats.size() >= amount) {
@@ -475,7 +626,17 @@ public class CurrentBooking {
         }
     }
     
-    private static void hAlgorithmSearch(int j, String a, bestSeats bs, int amount, int[][] seatsArray)
+    /**
+     * This method sorts whether the horizontal search should be left (-) or right (+).
+     * @param j The current x-coordinate to continue on.
+     * @param a Whether the search should be left or right. String as "+" or "-".
+     * @param bs The current BestSeats object to continue on.
+     * @param amount The amount of seats to find.
+     * @param seatsArray The 2d-array of seats to find seat numbers in.
+     * @see BestSeats
+     * @see Seats
+     */
+    private static void hAlgorithmSearch(int j, String a, BestSeats bs, int amount, int[][] seatsArray)
     {
         ArrayList<Integer> tempSeatsFirst = bs.tempSeats;
         ArrayList<Integer> tempSeatsSecond = new ArrayList<>();
@@ -516,7 +677,21 @@ public class CurrentBooking {
         }
     }
     
-    private static ArrayList<Integer> hAlgorithmSearchDo(int jj, bestSeats bs, int amount, int[][] seatsArray, ArrayList<Integer> tempSeatsFirst, ArrayList<Integer> tempSeatsSecond)
+    /**
+     * This method searches horizontally for best seats.
+     * It takes a list of y-coordinates, and if a seat is free
+     * it puts the y-coordinate in a new list.
+     * @param jj The x-coordinate to keep.
+     * @param bs The current BestSeats object to continue on.
+     * @param amount The amount of seats to find.
+     * @param seatsArray The 2d-array of seats to find seat numbers in.
+     * @param tempSeatsFirst The list of y-coordinates to search in.
+     * @param tempSeatsSecond A new list of y-coordinates to fill in.
+     * @return tempSeatsSecond as a new list of y-coordinates to search for next time.
+     * @see BestSeats
+     * @see Seats
+     */
+    private static ArrayList<Integer> hAlgorithmSearchDo(int jj, BestSeats bs, int amount, int[][] seatsArray, ArrayList<Integer> tempSeatsFirst, ArrayList<Integer> tempSeatsSecond)
     {
         for (int ii : tempSeatsFirst) {
 

@@ -3,8 +3,8 @@ package airplanebooking.DB;
 import java.util.ArrayList;
 
 /**
- *
- * @author Alex
+ * Booking class used to store all data about a booking.
+ * @author Andreas Jacobsen
  */
 public class Booking {
     

@@ -1,26 +1,35 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package airplanebooking;
 
 import airplanebooking.DB.Airplane;
 import airplanebooking.DB.Flight;
+import airplanebooking.DB.Seat;
 import java.util.ArrayList;
 
 /**
- *
- * @author Andreas
+ * There can only be one of this class.
+ * Is used to hold the current flight and inform
+ * all listening classes that flight has been changed.
+ * @author Andreas Jacobsen
  */
-public class CurrentFlight {
+public class CurrentFlight 
+{
+    // List of listeners to notify when flight has changed
     private static final ArrayList<FlightListener> listeners = new ArrayList<>();
     
+    // The current flight
     private static Flight flight;
-    private static Airplane airplane;
-    private static int seat;
     
+    // The current airplane the flight is on
+    private static Airplane airplane;
+    
+    // The current seat
+    private static Seat seat;
+    
+    /**
+     * This method sets the current flight.
+     * @param f Flight object with data.
+     * @see Flight
+     */
     public static void setFlight(Flight f)
     {
         flight = f;
@@ -28,31 +37,58 @@ public class CurrentFlight {
         updated(f);
     }
     
+    /**
+     * This method gets the current flight.
+     * @return Flight object with data.
+     * @see Flight
+     */
     public static Flight getFlight()
     {
         return flight;
     }
     
+    /**
+     * This method gets the current airplane.
+     * @return Airplane object with data.
+     * @see Airplane
+     */
     public static Airplane getAirplane()
     {
         return airplane;
     }
     
-    public static void setSeat(int s)
+    /**
+     * This method sets the current seat on current flight.
+     * @param s Seat object with seat number.
+     * @see Seat
+     */
+    public static void setSeat(Seat s)
     {
         seat = s;
     }
     
-    public static int getSeat()
+    /**
+     * This method gets the current seat on current flight.
+     * @return Seat object with seat number.
+     */
+    public static Seat getSeat()
     {
         return seat;
     }
     
+    /**
+     * This method adds a listener to the list.
+     * @param listener Flight listener to notify on update.
+     */
     public static void addListener(FlightListener listener)
     {
         listeners.add(listener);
     }
     
+    /**
+     * This method is used to notify all listeners
+     * that list of flights should be updated.
+     */
     public static void updateFlights() {
         // Notify everybody that may be interested.
         for (FlightListener fl : listeners) {
@@ -60,6 +96,12 @@ public class CurrentFlight {
         }
     }
     
+    /**
+     * This method is used to notify all listeners
+     * that the current flight has been updated
+     * @param flight
+     * @see Flight
+     */
     public static void updated(Flight flight) {
         // Notify everybody that may be interested.
         for (FlightListener fl : listeners) {
