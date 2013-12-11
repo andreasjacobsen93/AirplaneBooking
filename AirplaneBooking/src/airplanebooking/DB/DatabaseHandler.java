@@ -464,10 +464,11 @@ public class DatabaseHandler implements DatabaseInterface {
 
             for (int i = 0; i < parts.length; i++) {
                 if (parts[i].matches("1")) {
-
+                    
                     sql += sqlArr[i];
                     if (sqlArr[i] != null) {
                         sql += "AND ";
+                        System.out.println(sql);
                     }
 
                 }
@@ -487,7 +488,7 @@ public class DatabaseHandler implements DatabaseInterface {
             }
 
             ResultSet results = pstatement.executeQuery();
-
+            customers = new ArrayList();
             while (results.next()) {
                 int id = results.getInt(1);
                 String maritalstatus = results.getString(2);
@@ -555,7 +556,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      *
-     * @param customerID
+     * @param customerID Must be a valid customer ID which relates to the ID field in the table 'customers' in the database.
      * @return
      */
     private boolean customerExists(int customerID) {
@@ -581,7 +582,7 @@ public class DatabaseHandler implements DatabaseInterface {
         return exists;
 
     }
-
+    
     /**
      *
      * THIS METHOD IS PARTIALLY BROKEN IN FUNKTIONALITY, IF --*ANY*-- OF THE
@@ -590,7 +591,7 @@ public class DatabaseHandler implements DatabaseInterface {
      *
      * @param seats
      * @param flight
-     * @return
+     * @return Beware; returns TRUE if ANY of the seats sent, exist in the database, even if the rest do not.
      */
     private boolean seatsExist(ArrayList<Seat> seats, Flight flight) {
         Connection con2 = getConnection();
@@ -1218,6 +1219,9 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly) {
         Connection con = getConnection();
+        flights = null;
+        flights = new ArrayList();
+            
         try {
 
             String sql;
