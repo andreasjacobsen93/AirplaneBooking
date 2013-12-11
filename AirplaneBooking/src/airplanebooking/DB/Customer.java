@@ -1,9 +1,5 @@
 package airplanebooking.DB;
 
-import java.sql.Array;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Andreas

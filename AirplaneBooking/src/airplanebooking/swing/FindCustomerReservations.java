@@ -3,8 +3,7 @@ package airplanebooking.swing;
 import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
-import airplanebooking.DB.DatabaseHandler;
-import airplanebooking.DB.DatabaseInterface;
+import airplanebooking.DB.Database;
 import airplanebooking.DB.Flight;
 import airplanebooking.GUI;
 import java.util.ArrayList;
@@ -83,9 +82,7 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
     private void listOfCustomersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listOfCustomersItemStateChanged
         listOfReservations.removeAll();
         
-        DatabaseInterface db = new DatabaseHandler();
-        
-        bookingList = db.getCustomerReservations(list.get(listOfCustomers.getSelectedIndex()).getID());
+        bookingList = Database.db().getCustomerReservations(list.get(listOfCustomers.getSelectedIndex()).getID());
         
         if (bookingList == null) return;
         

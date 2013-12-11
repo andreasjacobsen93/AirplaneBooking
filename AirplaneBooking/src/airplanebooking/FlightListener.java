@@ -14,4 +14,5 @@ import airplanebooking.DB.Flight;
  */
 public interface FlightListener {
     public void flightChanged(Flight flight);
+    public void updateFlights();
 }

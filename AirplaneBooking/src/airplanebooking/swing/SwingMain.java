@@ -4,8 +4,7 @@ import airplanebooking.CurrentBooking;
 import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
-import airplanebooking.DB.DatabaseHandler;
-import airplanebooking.DB.DatabaseInterface;
+import airplanebooking.DB.Database;
 import airplanebooking.DB.Flight;
 import airplanebooking.DB.Seat;
 import airplanebooking.FlightListener;
@@ -16,13 +15,14 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Andreas
+ * @author Andreas Jacobsen
  */
 public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener, SeatListener {
 
     private Boolean ready;
     private ArrayList<Flight> flights;
     private final ArrayList<javax.swing.JFrame> frames;
+    private Booking booking;
     
     /**
      * Creates new form SwingMainFrame
@@ -52,8 +52,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     
     private void addFlightsToList(Boolean freeSeatsOnly)
     {
-        DatabaseInterface db = new DatabaseHandler();
-        flights = db.getFlights(freeSeatsOnly);
+        flights = Database.db().getFlights(freeSeatsOnly);
         
         for (Flight f : flights)
         {
@@ -426,8 +425,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
                 // Only allow one new reservation frame at a time.
                 closeAllFrames();
                 
-                SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
                 CurrentBooking.reset();
+                SwingNewReservation SNR = new SwingNewReservation(CurrentFlight.getFlight());
                 CurrentBooking.addListener(SNR);
                 frames.add(SNR);
                 SNR.run();
@@ -492,8 +491,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
             // Only allow one new reservation frame at a time.
             closeAllFrames();
 
-            SwingEditReservation SER = new SwingEditReservation(CurrentFlight.getFlight());
             CurrentBooking.reset();
+            SwingEditReservation SER = new SwingEditReservation(booking);
             CurrentBooking.addListener(SER);
             frames.add(SER);
             SER.run();
@@ -502,7 +501,16 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     
     public void buttonDeleteReservationMouseClicked()
     {
-        
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog (null, "The reservation will be deleted from the system. Are you sure?","Warning",dialogButton);
+        if(dialogResult == JOptionPane.YES_OPTION)
+        {
+            Database.db().deleteReservation(booking);
+            CurrentBooking.reset();
+            //CurrentBooking.addFlight(db.getFlight(booking.getFlight().getID()));
+            CurrentFlight.setFlight(Database.db().getFlight(booking.getFlight().getID()));
+            CurrentFlight.updateFlights();
+        }
     }
     
     public void updateSearch()
@@ -511,8 +519,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     }
 
     @Override
-    public void flightChanged(Flight flight) {
-        
+    public void flightChanged(Flight flight)
+    {
         AirplaneCanvasPanel.setAirplaneCanvas(false, flight);
         
         jPanel3.setVisible(true); // Airplane
@@ -527,8 +535,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         
         ready = true;
         
-        labelAirplaneName.setText(flight.getAirplane().getName() + " " + CurrentFlight.getAirplane().getID() + "A" + CurrentFlight.getFlight().getID());
-        labelRoute.setText(flight.getDeparturePlace() + " - " + CurrentFlight.getFlight().getArrivalPlace());
+        labelAirplaneName.setText(flight.getAirplane().getName() + " " + flight.getAirplane().getID() + "A" + flight.getID());
+        labelRoute.setText(flight.getDeparturePlace() + " - " + flight.getArrivalPlace());
         labelTime.setText(flight.getDepartureTime());
     }
     
@@ -541,8 +549,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelTravelClass.setVisible(true); 
         labelSeats.setVisible(true);
         
-        DatabaseInterface db = new DatabaseHandler();
-        Booking b = db.getReservation(CurrentFlight.getSeat(), CurrentFlight.getFlight().getID());
+        Booking b = Database.db().getReservation(CurrentFlight.getSeat(), CurrentFlight.getFlight().getID());
+        booking = b;
         Customer c = b.getCustomer();
         
         textMaritialStatus.setText(c.getMaritalStatus());
@@ -559,7 +567,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         AirplaneCanvasPanel.clickSeats(b.getSeats());
         
         int i = 0;
-        String seats = "Seats: ";      
+        String seats = "Seats: ";
         for (Seat s : b.getSeats())
         {
             // Current seat is First Class
@@ -602,11 +610,15 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         if (i > 0) labelTravelClass.setText(classes);
         else labelTravelClass.setText("No seats chosen.");
         
-        if (b.getFood() == true)
-            checkboxLunchOnboard.setState(true);
-        else
-            checkboxLunchOnboard.setState(false);
+        checkboxLunchOnboard.setState(b.getFood());
 
         labelPrice.setText("Price: " + b.getPrice() + " USD");
+    }
+
+    @Override
+    public void updateFlights() {
+        listFlights.removeAll();
+        
+        addFlightsToList(checkboxFreeSeatsOnly.getState());
     }
 }

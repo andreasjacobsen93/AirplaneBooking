@@ -2,27 +2,29 @@ package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
+import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
-import airplanebooking.DB.Flight;
 import airplanebooking.DB.Seat;
 import airplanebooking.GUI;
-import javax.swing.JOptionPane;
 
 /**
  *
- * @author Andreas
+ * @author Andreas Jacobsen
  */
-public class SwingEditReservation extends javax.swing.JFrame implements GUI, BookingListener {
+public final class SwingEditReservation extends javax.swing.JFrame implements GUI, BookingListener {
 
     /**
      * Creates new form SwingMainFrame
-     * @param flight
+     * @param b
      */
-    public SwingEditReservation(Flight flight) {
+    public SwingEditReservation(Booking b) {
         CurrentBooking.reset();
         initComponents();
-        AirplaneCan.setAirplaneCanvas(true, flight);
-        labelAirplaneName.setText(flight.getAirplane().getName() + " " + flight.getAirplane().getID() + "A" + flight.getID());
+        AirplaneCan.setAirplaneCanvas(true, b.getFlight());
+        labelAirplaneName.setText( b.getFlight().getAirplane().getName() + " " +  b.getFlight().getAirplane().getID() + "A" +  b.getFlight().getID());
+        
+        CurrentBooking.addBooking(b);
+        bookingChanged();
         
         setTitle("Airplane Booking - Edit Reservation...");
     }
@@ -319,7 +321,7 @@ public class SwingEditReservation extends javax.swing.JFrame implements GUI, Boo
     
     public void buttonChangeFlightMouseClicked()
     {
-        GUI fbsForm = new SwingFindBestSeats(AirplaneCan);
+        GUI fbsForm = new SwingFindBestSeats();
         fbsForm.run();
     }
     

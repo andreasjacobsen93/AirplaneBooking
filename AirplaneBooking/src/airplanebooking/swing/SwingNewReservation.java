@@ -10,19 +10,19 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Andreas
+ * @author Andreas Jacobsen
  */
 public class SwingNewReservation extends javax.swing.JFrame implements GUI, BookingListener {
 
+    private int customerID;
     /**
      * Creates new form SwingMainFrame
      * @param flight
      */
     public SwingNewReservation(Flight flight) {
-        CurrentBooking.reset();
+
         initComponents();
         AirplaneCan.setAirplaneCanvas(true, flight);
-        labelAirplaneName.setText(flight.getAirplane().getName() + " " + flight.getAirplane().getID() + "A" + flight.getID());
         
         if (AirplaneCan.airplaneIsFull())
         {
@@ -31,6 +31,12 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         }
         
         setTitle("Airplane Booking - New Reservation...");
+        
+        labelAirplaneName.setText(flight.getAirplane().getName() + " " + flight.getAirplane().getID() + "A" + flight.getID());
+        labelRoute.setText(flight.getDeparturePlace() + " - " + flight.getArrivalPlace());
+        labelTime.setText(flight.getDepartureTime());
+        
+        customerID = 0;
     }
                        
     private void initComponents() {
@@ -359,12 +365,12 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     
     public void checkboxLunchOnboardItemStateChanged()
     {
-        CurrentBooking.changeLunch(checkboxLunchOnboard.getState());
+        CurrentBooking.setLunch(checkboxLunchOnboard.getState());
     }
     
     public void buttonFindBestSeatsMouseClicked()
     {
-        GUI fbsForm = new SwingFindBestSeats(AirplaneCan);
+        GUI fbsForm = new SwingFindBestSeats();
         fbsForm.run();
     }
     
@@ -381,7 +387,8 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     
     public void buttonCreateReservationMouseClicked()
     {
-        CurrentBooking.saveBooking();
+        CurrentBooking.addCustomer(new Customer(customerID, textMaritialStatus.getText(), textFirstName.getText(), textLastName.getText(), textAddressStreet.getText(), Integer.parseInt(textAddressZip.getText()), textAddressCity.getText(), textAddressCountry.getText(), Integer.parseInt(textPhone.getText()), textEmail.getText()));
+        CurrentBooking.saveBooking(false);
         this.dispose();
     }
 
@@ -422,6 +429,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         if (CurrentBooking.getCustomer() != null)
         {
             Customer c = CurrentBooking.getCustomer();
+            customerID = c.getID();
             textMaritialStatus.setText(c.getMaritalStatus());
             textFirstName.setText(c.getFirstName());
             textLastName.setText(c.getLastName());

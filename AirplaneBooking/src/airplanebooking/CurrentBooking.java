@@ -1,10 +1,10 @@
 package airplanebooking;
 
 import airplanebooking.DB.Airplane;
+import airplanebooking.DB.Booking;
 import airplanebooking.DB.Flight;
 import airplanebooking.DB.Customer;
-import airplanebooking.DB.DatabaseHandler;
-import airplanebooking.DB.DatabaseInterface;
+import airplanebooking.DB.Database;
 import airplanebooking.DB.Seat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +21,8 @@ public class CurrentBooking {
     private static ArrayList<Seat> bookedSeats;
     // Seats which are already booked and cannot be booked
     private static ArrayList<Seat> blockedSeats;
+    // Seats which are currently booked but is allowed to be booked again in edit reservation
+    private static ArrayList<Seat> allowedSeats;
 
     // The customer to book for
     private static Customer customer;
@@ -28,6 +30,8 @@ public class CurrentBooking {
     private static Flight flight;
     // The airplane to fly with
     private static Airplane airplane;
+    
+    private static int id;
 
     // Economy Class
     private static Boolean EconomyClass;
@@ -60,12 +64,37 @@ public class CurrentBooking {
     // List of event subscribers
     private static final ArrayList<BookingListener> listeners = new ArrayList<>();
 
-    public CurrentBooking() { }
+    public CurrentBooking() {
+        customer = null;
+        flight = null;
+        airplane = null;
+        bookedSeats = null;
+        blockedSeats = null;
+        allowedSeats = null;
+        EconomyClass = false;
+        BusinessClass = false;
+        FirstClass = false;
+        EconomySeats = 0;
+        BusinessSeats = 0;
+        FirstSeats = 0;
+        EseatGroups = 0;
+        EseatLength = 0;
+        ErowSeats = 0;
+        BseatGroups = 0;
+        BseatLength = 0;
+        BrowSeats = 0;
+        FseatGroups = 0;
+        FseatLength = 0;
+        FrowSeats = 0;
+        blockedSeats = null;
+    }
     
-    public static void saveBooking()
+    public static void saveBooking(Boolean update)
     {
-        DatabaseInterface db = new DatabaseHandler();
-        db.createReservation(customer, flight, bookedSeats, lunch, totalCost);
+        if(update) Database.db().editReservation(new Booking(id, customer, flight, bookedSeats, lunch, totalCost));
+        else Database.db().createReservation(customer, flight, bookedSeats, lunch, totalCost);
+        CurrentFlight.setFlight(Database.db().getFlight(flight.getID()));
+        CurrentFlight.updateFlights();
         reset();
     }
 
@@ -112,16 +141,33 @@ public class CurrentBooking {
         FseatLength = Integer.parseInt(fc[0]);
         FrowSeats = Integer.parseInt(fc[2]);
         
-        DatabaseInterface db = new DatabaseHandler();
-        blockedSeats = db.getFlightBookedSeats(flight.getID());
+        blockedSeats = Database.db().getFlightBookedSeats(flight.getID());
         bookedSeats = new ArrayList<>();
         
+        lunch = true;
+        
         update();
+    }
+    
+    public static void addBooking(Booking b)
+    {
+        addCustomer(b.getCustomer());
+        addFlight(b.getFlight());
+        setLunch(b.getFood());
+        totalCost = b.getPrice();
+        addSeats(b.getSeats());
+        allowedSeats = b.getSeats();
     }
     
     public static void clearBookedSeats()
     {
         bookedSeats.clear();
+        update();
+    }
+    
+    public static void setLunch(Boolean state)
+    {
+        lunch = state;
         update();
     }
 
@@ -132,6 +178,7 @@ public class CurrentBooking {
         airplane = null;
         bookedSeats = new ArrayList<>();
         blockedSeats = new ArrayList<>();
+        allowedSeats = new ArrayList<>();
         EconomyClass = false;
         BusinessClass = false;
         FirstClass = false;
@@ -163,16 +210,19 @@ public class CurrentBooking {
             if (FirstSeats > s.getSeatID()) {
                 FirstClass = true;
                 totalCost += FseatPrice;
+                if (lunch) totalCost += 30;
             } 
             // Current seat is Business Class
             else if (FirstSeats + BusinessSeats > s.getSeatID()) {
                 BusinessClass = true;
                 totalCost += BseatPrice;
+                if (lunch) totalCost += 20;
             } 
             // Current seat is Economy Class
             else {
                 EconomyClass = true;
                 totalCost += EseatPrice;
+                if (lunch) totalCost += 10;
             }
         }
 
@@ -188,10 +238,19 @@ public class CurrentBooking {
             if (bookedSeats.get(i).getSeatID() == seat.getSeatID())
                 isUnique = false;
         }
+        
+        if (isLastSeat()) seat.setFinalSeat();
+        
         if (isUnique) bookedSeats.add(seat);
 
         // Update
         update();
+    }
+    
+    private static Boolean isLastSeat()
+    {
+        if (blockedSeats.size() + bookedSeats.size() + 1 == FirstSeats + BusinessSeats + EconomySeats) return true;
+        return false;
     }
 
     public static void removeSeat(int seat) 
@@ -218,15 +277,15 @@ public class CurrentBooking {
         Collections.sort(bookedSeats, new Comparator<Seat>() {
             @Override
             public int compare(Seat o1, Seat o2) {
-                return o2.getSeatID() - o1.getSeatID();
+                return o1.getSeatID() - o2.getSeatID();
             }
         });
         return bookedSeats;
     }
     
-    public static void changeLunch(Boolean l)
+    public static ArrayList<Seat> getAllowedSeats()
     {
-        lunch = l;
+        return allowedSeats;
     }
 
     public static Boolean isFirstClass() 
@@ -320,6 +379,16 @@ public class CurrentBooking {
             addSeat(s);
         }
     }
+    
+    private static Boolean blockedSeatsContains(Integer i)
+    {
+        for (int a = 0; a < blockedSeats.size(); a++)
+        {
+            if (blockedSeats.get(a).getSeatID() == i)
+                return true;
+        }
+        return false;
+    }
 
     private static void findSeatsAlgorithm(int amount) {
 
@@ -342,10 +411,8 @@ public class CurrentBooking {
                 
                 // Create new combination holder
                 bestSeats bs = new bestSeats();
-
-                if (blockedSeats.contains(seatsArray[i][j])) {
-                    continue;
-                }
+                
+                if(blockedSeatsContains(seatsArray[i][j])) continue;
 
                 bs.score++;
 
@@ -378,7 +445,7 @@ public class CurrentBooking {
                 return o2.score - o1.score;
             }
         });
-
+        
         addSeats(list.get(0).seats);
 
         if (list.get(0).seats.isEmpty()) {
@@ -396,8 +463,8 @@ public class CurrentBooking {
             if (bs.seats.size() >= amount) {
                 break;
             }
-
-            if (blockedSeats.contains(seatsArray[ii][j])) {
+            
+            if(blockedSeatsContains(seatsArray[ii][j])){
                 bs.score--;
                 break;
             }
@@ -456,8 +523,8 @@ public class CurrentBooking {
             if (bs.seats.size() >= amount) {
                 break;
             }
-
-            if (blockedSeats.contains(seatsArray[ii][jj])) continue;
+            
+            if(blockedSeatsContains(seatsArray[ii][jj])) continue;
                 
             bs.score++;
 

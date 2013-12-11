@@ -1,8 +1,7 @@
 package airplanebooking.swing;
 
 import airplanebooking.DB.Customer;
-import airplanebooking.DB.DatabaseHandler;
-import airplanebooking.DB.DatabaseInterface;
+import airplanebooking.DB.Database;
 import airplanebooking.GUI;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -132,9 +131,8 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
             JOptionPane.showMessageDialog(null, "No data is inputted!");
             return;
         }
-        
-        DatabaseInterface db = new DatabaseHandler();
-        ArrayList<Customer> list = db.getCustomers(firstname, lastname, email, phone);
+
+        ArrayList<Customer> list = Database.db().getCustomers(firstname, lastname, email, phone);
         
         switch(nextStep)
         {

@@ -4,7 +4,7 @@ import airplanebooking.GUI;
 
 /**
  *
- * @author Andreas
+ * @author Andreas Jacobsen
  */
 public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
 

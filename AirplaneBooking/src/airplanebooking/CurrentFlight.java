@@ -53,6 +53,13 @@ public class CurrentFlight {
         listeners.add(listener);
     }
     
+    public static void updateFlights() {
+        // Notify everybody that may be interested.
+        for (FlightListener fl : listeners) {
+            fl.updateFlights();
+        }
+    }
+    
     public static void updated(Flight flight) {
         // Notify everybody that may be interested.
         for (FlightListener fl : listeners) {
