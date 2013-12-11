@@ -9,12 +9,16 @@ import airplanebooking.GUI;
 import java.util.ArrayList;
 
 /**
- *
- * @author Andreas
+ * FindCustomerReservations is used to get a list of bookings by a customer.
+ * @author Andreas Jacobsen
  */
 public class FindCustomerReservations extends javax.swing.JFrame implements GUI {
+    //
     private ArrayList<Booking> bookingList;
+    
+    //
     private final ArrayList<Customer> list;
+    
     /**
      * Creates new form FindCustomerReservations
      * @param list

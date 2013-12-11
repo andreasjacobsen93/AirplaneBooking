@@ -14,12 +14,15 @@ import java.awt.Cursor;
 import java.util.ArrayList;
 
 /**
- *
- * @author Andreas
+ * AirplaneCanvas is used to draw the airplane on a JComponent.
+ * @author Andreas Jacobsen
  */
-public final class AirplaneCanvas extends javax.swing.JComponent implements BookingListener {
-    
+public final class AirplaneCanvas extends javax.swing.JComponent implements BookingListener 
+{ 
+    // The flight to mark the seats for.
     private Flight flight;
+    
+    // The airplane to draw.
     private Airplane airplane;
     
     // Economy Class
@@ -45,31 +48,34 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     private int FtotalSeats;
     private int FseatSize;
     
+    // Initial space in x- and y-direction
     private int iniX;
     private int iniY;
     
+    // array of seats and current seat.
     private int[][] seats;
     private int seat;
     
+    // 
     public int seatNumber;
     public String seatClass;
     private int seatsCount;
     public Boolean bookable;
     
+    // X- and y-coordinate for the mouse.
     public int x;
     public int y;
-    
-    public int lastField;
     
     // List of event subscribers
     private static final ArrayList<SeatListener> listeners = new ArrayList<>();
     
+    /**
+     * Constructor used to initialze everything.
+     */
     public AirplaneCanvas()
     {
         CurrentBooking.reset();
         bookable = false;
-        
-        lastField = -1;
         
         flight = null;
         airplane = null;
@@ -111,15 +117,26 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         seat = 0;
     }
     
+    /**
+     * This method sets the airplane canvas with everything
+     * used to draw the airplane.
+     * @param isBookable Whether seat can be clicked for booking or not as boolean.
+     * @param flight The flight to draw for as flight object.
+     * @see Flight
+     */
     public void setAirplaneCanvas(Boolean isBookable, Flight flight)
     {
+        // Add flight to current booking
         CurrentBooking.addFlight(flight);
         
+        // Set whether flight is bookable or not
         this.bookable = isBookable;
         
+        // Set flight and airplane variables
         this.flight = flight;
         airplane = flight.getAirplane();
         
+        // Get seat formations
         String[] ec = airplane.getECSeatFormation().split(":");
         String[] bc = airplane.getBCSeatFormation().split(":");
         String[] fc = airplane.getFCSeatFormation().split(":");
@@ -169,11 +186,13 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         
         if (bookable == true)
         {
+            // Go through all blocked seats
             for (Seat s : CurrentBooking.getBlockedSeats())
             {
                 seats[s.getSeatID()-1][1] = 0;
             }
-
+            
+            // Go through all booked seats
             for (Seat s : CurrentBooking.getBookedSeats())
             {
                 seats[s.getSeatID()-1][1] = 2;
@@ -266,6 +285,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
             }
         });
         
+        // If bookable add AirplaneCanvas to booking listeners
         if(bookable == true) addToBookingListeners();
         
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -286,11 +306,20 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         repaint();
     }
     
+    /**
+     * This method changes the mouse cursor
+     * @param c Cursor to change to
+     * @see Cursor
+     */
     public void changeCursor(Cursor c)
     {
         this.setCursor(c);
     }
     
+    /**
+     * This method checks if airplane if fully booked.
+     * @return Whether airplane is fully booked or not as boolean.
+     */
     public Boolean airplaneIsFull()
     {
         int c = 0;
@@ -301,6 +330,9 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         return c >= seatsCount;
     }
     
+    /**
+     * This method send an update notify to all listeners.
+     */
     public void updated() {
         // Notify everybody that may be interested.
         for (SeatListener sl : listeners) {
@@ -308,11 +340,19 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         }
     }
     
+    /**
+     * This method adds AirplaneCanvas to CurrentBooking as listener.
+     */
     private void addToBookingListeners()
     {
         CurrentBooking.addListener(this);
     }
     
+    /**
+     * This method make a virtual click on a list of seats.
+     * @param list Array list of seat objects.
+     * @see Seat
+     */
     public void clickSeats(ArrayList<Seat> list)
     {
         for (int[] seat : seats) {
@@ -334,6 +374,10 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         repaint();
     }
     
+    /**
+     * This method makes a virtual click on a seat.
+     * @param i The seat number to click on.
+     */
     public void clickSeat(int i)
     {
         if (bookable == true)
@@ -368,6 +412,11 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         repaint();
     }
     
+    /**
+     * This method paints the airplane.
+     * @param g
+     * @see Graphics
+     */
     @Override
     public void paint(Graphics g)
     {
@@ -389,6 +438,12 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         if (EClass) drawClass(g, "economy");
     }
     
+    /**
+     * This method draws the correspondent class.
+     * @param g
+     * @see Graphics
+     * @param cl Class to draw as string.
+     */
     private void drawClass(Graphics g, String cl)
     {
         // Set default values
@@ -494,7 +549,10 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         iniX = iniX+(l*15)+30;
     }
     
-    // Get the highest (in pixel) class.
+    /**
+     * This method gets the highest (in pixel) class.
+     * @return The class as string (economy/business/first).
+     */
     private String getBiggestClass()
     {
         int EconomyClassHeight = getClassHeight("economy");
@@ -526,7 +584,11 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         }        
     }
     
-    // Get the height of the class in pixel
+    /**
+     * This method gets the height of a class in pixel.
+     * @param cl Class to get height of.
+     * @return The height of the class as integer.
+     */
     private int getClassHeight(String cl)
     {
         switch(cl)
@@ -541,6 +603,11 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         return 0;
     }
     
+    /**
+     * This method gets the class for a given seat number.
+     * @param s The seat number as integer.
+     * @return The class as string (f/b/e).
+     */
     public String getClassType(int s)
     {
         if (FClass && FtotalSeats > s)
@@ -560,7 +627,10 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         return "error";
     }
     
-    // Get the length of all the seats in pixel
+    /**
+     * This method gets the length in pixel of the airplane (all of the seats).
+     * @return The length in pixel as integer.
+     */
     private int getAirplaneLength()
     {
         int l = 0;
@@ -572,35 +642,50 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         return l;
     }
     
+    /**
+     * This method gets the x-offset to draw after.
+     * @return Offest in integer.
+     */
     private int offsetX()
     {
         return (getWidth() - getAirplaneLength()) / 2;
     }
     
+    /**
+     * This method gets y-offet to draw after.
+     * @return Offset in integer.
+     */
     private int offsetY()
     {
         return (getHeight() - getClassHeight(getBiggestClass())) / 2;
     }
 
+    /**
+     * This method is called when a booking changed event has been fired.
+     */
     @Override
-    public void bookingChanged() {
-
+    public void bookingChanged() 
+    {
+        // Go through all seats and set them to free.
         for (int[] s : seats) {
             s[1] = 1;
         }
 
         if (bookable == true)
         {
+            // Go through all blocked seats and mark them red.
             for (Seat s : CurrentBooking.getBlockedSeats())
             {
                 seats[s.getSeatID()-1][1] = 0;
             }
             
+            // Go through all seats which are blocked but allowed to be booked anyway.
             for (Seat s : CurrentBooking.getAllowedSeats())
             {
                 seats[s.getSeatID()-1][1] = 1;
             }
-
+            
+            // Go through all booked seats and mark them blue.
             for (Seat s : CurrentBooking.getBookedSeats())
             {
                 seats[s.getSeatID()-1][1] = 2;
@@ -617,6 +702,10 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         repaint();
     }
     
+    /**
+     * This method adds a listener to the SeatListener list.
+     * @param listener Listener as SeatListener.
+     */
     public void addListener(SeatListener listener) {
         listeners.add(listener);
     }

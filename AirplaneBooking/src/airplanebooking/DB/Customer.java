@@ -1,24 +1,55 @@
 package airplanebooking.DB;
 
 /**
- *
- * @author Andreas
+ * Customer class is used to store all data about a customer.
+ * @author Andreas Jacobsen
  */
 public class Customer {
     
+    // The identification number of the customer
     private final Integer id;
-    private final String maritialStatus;
-    private final String firstName;
-    private final String lastName;
-    private final String addressStreet;
-    private final Integer addressZip; 
-    private final String addressCity;
-    private final String addressCountry;
-    private final Integer phone;
-    private final String mail;
-
     
-    public Customer(int id, String maritialStatus, String firstName, String lastName, String addressStreet, int addressZip, String addressCity, String addressCountry, int phone, String mail)
+    // The maritial status of the customer
+    private final String maritialStatus;
+    
+    // The customers first name
+    private final String firstName;
+    
+    // The customers last name
+    private final String lastName;
+    
+    // The street of the customers address
+    private final String addressStreet;
+    
+    // The zip code of the customers address
+    private final Integer addressZip; 
+    
+    // The city of the customers address
+    private final String addressCity;
+    
+    // The country of the customers address
+    private final String addressCountry;
+    
+    // The phone number of the customer
+    private final Integer phone;
+    
+    // The email address of the customer
+    private final String email;
+
+    /**
+     * Constructor is used to create a customer object with data.
+     * @param id Identification number of the customer as integer.
+     * @param maritialStatus Maritial status of the customer as string.
+     * @param firstName First name of the customer as string.
+     * @param lastName Last name of the customer as string.
+     * @param addressStreet Street of customers address as string.
+     * @param addressZip Zip code of customers address as integer.
+     * @param addressCity City of customers address as string.
+     * @param addressCountry Country of customers address as string
+     * @param phone Phone number of customer as integer.
+     * @param email Email address of customer as string.
+     */
+    public Customer(int id, String maritialStatus, String firstName, String lastName, String addressStreet, int addressZip, String addressCity, String addressCountry, int phone, String email)
     {
         this.id = id;
         this.maritialStatus = maritialStatus;
@@ -29,47 +60,86 @@ public class Customer {
         this.addressCity = addressCity;
         this.addressCountry = addressCountry;
         this.phone = phone;
-        this.mail = mail;
+        this.email = email;
     }
     
+    /**
+     * This method gets the identification number of the customer.
+     * @return Identification number of customer as integer.
+     */
     public int getID(){
         return id;
     }
     
+    /**
+     * This method gets the maritial status of the customer.
+     * @return Maritial status of customer as string.
+     */
     public String getMaritalStatus(){
         return maritialStatus;
     }
     
+    /**
+     * This method gets the first name of the customer.
+     * @return First name of customer as string.
+     */
     public String getFirstName(){
         return firstName;
     }
     
+    /**
+     * This method gets the last name of the customer.
+     * @return Last name of customers as string.
+     */
     public String getLastName(){
         return lastName;
     }
 
+    /**
+     * This method gets the street of the customer address.
+     * @return Street of customers address as string.
+     */
     public String getAddressStreet(){
         return addressStreet;
     }
     
-    
+    /**
+     * This method gets the zip code of the customer address.
+     * @return Zip code of customers address as integer.
+     */
     public int getAddressZip(){
         return addressZip;
     } 
 
+    /**
+     * This method gets the city of the customer address.
+     * @return City of customers address as string.
+     */
     public String getAddressCity(){
         return addressCity;
     }
 
+    /**
+     * This method gets the country of the customer address.
+     * @return Country of customers address as string.
+     */
     public String getAddressCountry(){
         return addressCountry;
     }
     
+    /**
+     * This method gets the phone number of the customer.
+     * @return Phone number of customer as integer.
+     */
     public int getPhone(){
         return phone;
     }
     
+    /**
+     * This method gets the email address of the customer.
+     * @return Email address of customer as string.
+     */
     public String getEmail(){
-        return mail;
+        return email;
     }
 }

@@ -6,15 +6,18 @@ import airplanebooking.GUI;
 import java.util.ArrayList;
 
 /**
- *
- * @author Andreas
+ * FindCustomerList gets a list of customers.
+ * @author Andreas Jacobsen
  */
-public class FindCustomerList extends javax.swing.JFrame implements GUI {
-
+public class FindCustomerList extends javax.swing.JFrame implements GUI 
+{
+    // List of customers
     ArrayList<Customer> list;
+    
     /**
-     * Creates new form FindCustomerList
-     * @param list
+     * Creates new form FindCustomerList and sets list of customers.
+     * @param list List of customer objects.
+     * @see Customer
      */
     public FindCustomerList(ArrayList<Customer> list) {
         initComponents();
@@ -22,6 +25,7 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI {
 
         for (int i = 0; i < list.size(); i++)
         {
+            // add customer to list
             list1.add(list.get(i).getFirstName() + " " + list.get(i).getLastName());
         }
     }
@@ -30,14 +34,14 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI {
     private void initComponents() {
 
         list1 = new java.awt.List();
-        button1 = new java.awt.Button();
+        buttonChooseCustomer = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        button1.setLabel("Choose customer...");
-        button1.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonChooseCustomer.setLabel("Choose customer...");
+        buttonChooseCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                button1MouseClicked(evt);
+                buttonChooseCustomerMouseClicked(evt);
             }
         });
 
@@ -49,7 +53,7 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(list1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
+                    .addComponent(buttonChooseCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -58,26 +62,35 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI {
                 .addContainerGap()
                 .addComponent(list1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonChooseCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MouseClicked
-        // TODO add your handling code here:
+    /**
+     * This method is called when button gets a mouse click.
+     * @param evt 
+     */
+    private void buttonChooseCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonChooseCustomerMouseClicked
+        // Add customer from list to current booking.
         CurrentBooking.addCustomer(list.get(list1.getSelectedIndex()));
         CurrentBooking.update();
+        
+        // Close this frame.
         this.dispose();
-    }//GEN-LAST:event_button1MouseClicked
+    }//GEN-LAST:event_buttonChooseCustomerMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button button1;
+    private java.awt.Button buttonChooseCustomer;
     private java.awt.List list1;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Used to load frame.
+     */
     @Override
     public void run() {
         setVisible(true);

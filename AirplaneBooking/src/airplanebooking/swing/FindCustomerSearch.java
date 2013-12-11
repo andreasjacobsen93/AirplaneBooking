@@ -109,6 +109,7 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchMouseClicked
+
         String firstname = null;
         String lastname = null;
         String email = null;
@@ -131,7 +132,7 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
             JOptionPane.showMessageDialog(null, "No data is inputted!");
             return;
         }
-
+        
         ArrayList<Customer> list = Database.db().getCustomers(firstname, lastname, email, phone);
         
         switch(nextStep)
