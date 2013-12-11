@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Booking class used to store all data about a booking.
- * @author Andreas Jacobsen
+ * @author Andreas Jacobsen & Aleksandar Jonovic
  */
 public class Booking 
 {

@@ -3,7 +3,7 @@ package airplanebooking.DB;
 /**
  * Airplane class.
  * Used to store data about an airplane.
- * @author Andreas Jacobsen
+ * @author Andreas Jacobsen & Aleksandar Jonovic
  */
 public class Airplane 
 {
