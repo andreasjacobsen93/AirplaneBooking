@@ -64,6 +64,35 @@ public class Customer {
     }
     
     /**
+     *  Overloaded constructor for methods which require this object to insert into the database. <br>
+     * For JavaDoc please refer to:<p>
+     * {@link #Customer(int, String, String, String, String, int, String, String, int, String) Customer constructor - JavaDoc}
+     * 
+     * @param maritialStatus
+     * @param firstName
+     * @param lastName
+     * @param addressStreet
+     * @param addressZip
+     * @param addressCity
+     * @param addressCountry
+     * @param phone
+     * @param email
+     */
+    public Customer(String maritialStatus, String firstName, String lastName, String addressStreet, int addressZip, String addressCity, String addressCountry, int phone, String email)
+    {
+        this.id = 0;
+        this.maritialStatus = maritialStatus;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.addressStreet = addressStreet;
+        this.addressZip = addressZip;
+        this.addressCity = addressCity;
+        this.addressCountry = addressCountry;
+        this.phone = phone;
+        this.email = email;
+    }
+    
+    /**
      * This method gets the identification number of the customer.
      * @return Identification number of customer as integer.
      */

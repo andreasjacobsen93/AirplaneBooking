@@ -112,6 +112,7 @@ public class DatabaseHandler implements DatabaseInterface {
      *
      */
     public void getNumCon() {
+        //Maintenance debug method, for getting all number of alive connections and connection pools - use to debug current state of the pool.
         try {
             System.out.println("Number of Connections: " + cpds.getNumConnections());
             System.out.println("Number of Idle Connections: " + cpds.getNumIdleConnections());
@@ -124,8 +125,9 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     private void closeConnection(ArrayList<Connection> cons, ArrayList<PreparedStatement> pstatements, ArrayList<ResultSet> resultsets) {
+        //This is where all the "tidy'd" up Connections, preparedStatements and ResultSets go to die (and get closed).
         try {
-
+            //Not all methods produce ResulSets, so check these first, and weed out.
             if (resultsets != null) {
                 for (ResultSet results : resultsets) {
                     results.close();
@@ -133,7 +135,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 }
                 this.resultsets.removeAll(resultsets);
             }
-
+            //All methods create Connections and preparedStatements, so collect these, close them and destroy them.
             if (cons != null && pstatements != null) {
 
                 for (PreparedStatement pstatement : pstatements) {
@@ -183,12 +185,14 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void createCustomer(Customer customer) {
+        //Method for creating a customer
         Connection con = getConnection();
         try {
-            //create sql statement, which we'd like to pass to the statement handler.
-            //unpacks the Customer object, and inserts values at the correct columns in the database.
+            //Create prepared statement string.
             String sql = "INSERT INTO customers VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            //Prepare the statement.
             PreparedStatement pstatement = con.prepareStatement(sql);
+            //Unpack the Customer object, and insert values relative to the the correct column positions in the database.
             pstatement.setString(1, customer.getMaritalStatus());
             pstatement.setString(2, customer.getFirstName());
             pstatement.setString(3, customer.getLastName());
@@ -199,7 +203,7 @@ public class DatabaseHandler implements DatabaseInterface {
             pstatement.setString(8, customer.getEmail());
             pstatement.setInt(9, customer.getPhone());
 
-            //execute the statement
+            //Execute the prepared statement 
             executeUpdate(pstatement);
 
             //Tidy up connection
@@ -220,12 +224,15 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void editCustomer(Customer customer) {
+        //Method for editing a specific customer.
         Connection con = getConnection();
         try {
-            //create string (sql statement), which we'd like to pass to the statement handler.
+            //Create the prepared statement string.
             String sql = "UPDATE customers SET maritalstatus = '?', firstname = '?', lastname = '?', addressstreet = '?', addresszip = ?, addresscity = '?', "
                     + "addresscountry = '?', email = '?', phonenumber = ? WHERE id = ?";
+            //Prepare the statement
             PreparedStatement pstatement = con.prepareStatement(sql);
+            //Unpack the Customer object, and insert values relative to the the correct column positions in the database.
             pstatement.setString(1, customer.getMaritalStatus());
             pstatement.setString(3, customer.getLastName());
             pstatement.setString(4, customer.getAddressStreet());
@@ -236,7 +243,7 @@ public class DatabaseHandler implements DatabaseInterface {
             pstatement.setInt(9, customer.getPhone());
             pstatement.setInt(10, customer.getID());
 
-            //execute statement
+            //Execute the prepared statement
             executeUpdate(pstatement);
 
             //Tidy up connection
@@ -255,13 +262,15 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void deleteCustomer(Customer customer) {
+        //Method for deleting a specific customer.
         Connection con = getConnection();
         try {
-            //create string (sql statement), which we'd like to pass to the statement handler.
+            //Create the prepared statement string.
             String sql = "DELETE FROM customers WHERE id = ?";
+            //Prepare the statement.
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, customer.getID());
-            //execute statement
+            //Execute statement.
             executeUpdate(pstatement);
 
             //Tidy up connection

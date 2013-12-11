@@ -7,43 +7,44 @@ import java.util.ArrayList;
 
 /**
  * Flight class is used to store all data about a flight.
+ *
  * @author Andreas Jacobsen & Aleksandar Jonovic
  */
-public class Flight 
-{
+public class Flight {
+
     // The idenfication number of the flight
     private final Integer id;
-    
+
     // The airplane which the flight is with
     private final Airplane airplane;
-    
+
     // The idenfication number of the airplane
     private final Integer airplaneID;
-    
+
     // The cost of a seat on first class
     private final Integer firstCost;
-    
+
     // The cost of a seat on business class
     private final Integer businessCost;
-    
+
     // The cost of a seat on economy class
     private final Integer economyCost;
-    
+
     // List of booked seats on flight
     private final ArrayList<Seat> bookedSeats;
-    
+
     // The time when the flight takes off
     private final Timestamp departureTime;
-    
+
     // The time when the flight lands
     private final Timestamp arrivalTime;
-    
+
     // The place where the flight takes off
     private final String departurePlace;
-    
+
     // The place where the flight lands
     private final String arrivalPlace;
-    
+
     // Is the flight filled or not
     private final Boolean isFull;
 
@@ -52,6 +53,7 @@ public class Flight
 
     /**
      * Constructor is used to create a flight with all the right data.
+     *
      * @param id Identification number of flight as integer.
      * @param airplane Airplane to fly with as airplane object.
      * @param firstCost The cost of a ticket on first class as integer.
@@ -82,7 +84,38 @@ public class Flight
     }
 
     /**
+     * Overloaded constructor for methods which insert into the database. <br>For
+     * JavaDoc please refer to:<p>
+     * {@link #Flight(int, Airplane, int, int, int, ArrayList, String, Timestamp, String, Timestamp, Boolean) Flight constructor - JavaDoc}
+     * @param airplane N/A
+     * @param firstCost N/A
+     * @param businessCost N/A
+     * @param economyCost N/A
+     * @param seats N/A
+     * @param departurePlace N/A
+     * @param departureTime N/A
+     * @param arrivalPlace N/A
+     * @param arrivalTime N/A
+     * @param isFull N/A
+     */
+    public Flight(Airplane airplane, int firstCost, int businessCost, int economyCost, ArrayList<Seat> seats, String departurePlace, Timestamp departureTime, String arrivalPlace, Timestamp arrivalTime, Boolean isFull) {
+        this.id = 0;
+        this.airplane = airplane;
+        this.airplaneID = airplane.getID();
+        this.firstCost = firstCost;
+        this.businessCost = businessCost;
+        this.economyCost = economyCost;
+        this.bookedSeats = seats;
+        this.departurePlace = departurePlace;
+        this.departureTime = departureTime;
+        this.arrivalPlace = arrivalPlace;
+        this.arrivalTime = arrivalTime;
+        this.isFull = isFull;
+    }
+
+    /**
      * This method gets the identification number of the flight.
+     *
      * @return Identification number of flight as integer.
      */
     public int getID() {
@@ -91,15 +124,17 @@ public class Flight
 
     /**
      * This method gets the airplane to fly with.
+     *
      * @return Airplane as airplane object.
      * @see Airplane
      */
     public Airplane getAirplane() {
         return airplane;
     }
-    
+
     /**
      * This method gets the identification number of the airplane.
+     *
      * @return Airplane idenfication number as integer.
      */
     public int getAirplaneID() {
@@ -108,6 +143,7 @@ public class Flight
 
     /**
      * This method gets the cost of flying on first class.
+     *
      * @return Cost of a seat on first class as integer.
      */
     public int getFirstClassSeatCost() {
@@ -116,6 +152,7 @@ public class Flight
 
     /**
      * This method gets the cost of flying on business class.
+     *
      * @return Cost of a seat on business class as integer.
      */
     public int getBusinessClassSeatCost() {
@@ -124,6 +161,7 @@ public class Flight
 
     /**
      * This method gets the cost of flying on economy class.
+     *
      * @return Cost of a seat on economy class as integer.
      */
     public int getEconomyClassSeatCost() {
@@ -132,6 +170,7 @@ public class Flight
 
     /**
      * This method gets a list of seats on flight.
+     *
      * @return List of seats as array list of seat objects.
      * @see Seat
      */
@@ -141,6 +180,7 @@ public class Flight
 
     /**
      * This method gets the time when the airplane takes off.
+     *
      * @return Take off time as string.
      */
     public String getDepartureTime() {
@@ -150,31 +190,35 @@ public class Flight
 
     /**
      * This method gets the time when the airplane arrives.
+     *
      * @return Arrival time as string.
      */
     public String getArrivalTime() {
         String returnTime = df.format(arrivalTime);
         return returnTime;
     }
-    
+
     /**
      * This method gets the time when the airplane arrives.
+     *
      * @return Arrival time as timestamp.
      */
-    public Timestamp getArrivalTimestamp(){
+    public Timestamp getArrivalTimestamp() {
         return arrivalTime;
     }
-    
+
     /**
      * This method gets the time when the airplane takes off.
+     *
      * @return Take off time as timestamp.
      */
-    public Timestamp getDepartureTimestamp(){
+    public Timestamp getDepartureTimestamp() {
         return departureTime;
     }
 
     /**
      * This method gets the place where the airplane takes off.
+     *
      * @return Take off place as string.
      */
     public String getDeparturePlace() {
@@ -183,6 +227,7 @@ public class Flight
 
     /**
      * This method gets the place where the airplane lands.
+     *
      * @return Landing place as string.
      */
     public String getArrivalPlace() {
@@ -191,6 +236,7 @@ public class Flight
 
     /**
      * This method gets whether the flight is fully booked or not.
+     *
      * @return Fully booked or not as boolean.
      */
     public Boolean isFull() {

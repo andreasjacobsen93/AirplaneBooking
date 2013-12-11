@@ -27,7 +27,7 @@ public class Booking
     private final Integer price;
     
     /**
-     * Contructor used to create booking object with all data.
+     * Constructor used to create booking object with all data.
      * @param id Identification number of booking.
      * @param customer Booking customer.
      * @param flight Flight booked on.
@@ -41,6 +41,26 @@ public class Booking
     public Booking(int id, Customer customer, Flight flight, ArrayList<Seat> seats, Boolean food, int price)
     {
         this.id = id;
+        this.customer = customer;
+        this.flight = flight;
+        this.seats = seats;
+        this.food = food;
+        this.price = price;
+    }
+    
+    /**
+     * Overloaded constructor for methods which insert into the database. <br>For
+     * JavaDoc please refer to:<p>
+     * {@link #Booking(int, Customer, Flight, ArrayList, Boolean, int) Booking constructor - JavaDoc}
+     * @param customer N/A
+     * @param flight N/A
+     * @param seats N/A
+     * @param food N/A
+     * @param price N/A
+     */
+    public Booking(Customer customer, Flight flight, ArrayList<Seat> seats, Boolean food, int price)
+    {
+        this.id = 0;
         this.customer = customer;
         this.flight = flight;
         this.seats = seats;
