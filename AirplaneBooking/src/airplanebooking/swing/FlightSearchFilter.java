@@ -3,15 +3,18 @@ package airplanebooking.swing;
 import airplanebooking.GUI;
 
 /**
- *
+ * FlightSearchFilter is used to filter the list of flights.
  * @author Andreas Jacobsen
  */
 public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
 
+    // The main frame to change list on.
     private final SwingMain swingMain;
     
     /**
-     * Creates new form FlightSearchFilter
+     * Creates new form FlightSearchFilter.
+     * Sets the swingMain object
+     * and initializes components.
      * @param sm
      */
     public FlightSearchFilter(SwingMain sm) {
@@ -146,11 +149,21 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Called when selected item on list of filters is changed.
+     * Changes the state of delete filter button to enabled or not.
+     * @param evt 
+     */
     private void listFiltersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listFiltersItemStateChanged
         if (listFilters.getSelectedItem().equals("")) buttonDeleteFilter.setEnabled(false);
         else buttonDeleteFilter.setEnabled(true);
     }//GEN-LAST:event_listFiltersItemStateChanged
 
+    /**
+     * Called when button to create a new filter is clicked.
+     * Creates a new filter.
+     * @param evt 
+     */
     private void buttonCreateFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCreateFilterMouseClicked
         switch(choice.getSelectedItem())
         {
@@ -184,16 +197,31 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
         }
     }//GEN-LAST:event_buttonCreateFilterMouseClicked
 
+    /**
+     * Called when delete filter button is clicked.
+     * Deletes the selected filter.
+     * @param evt 
+     */
     private void buttonDeleteFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteFilterMouseClicked
         listFilters.remove(listFilters.getSelectedItem());
         buttonDeleteFilter.setEnabled(false);
     }//GEN-LAST:event_buttonDeleteFilterMouseClicked
 
+    /**
+     * Called when apply filter button is clicked.
+     * Creates a search from the filters.
+     * @param evt 
+     */
     private void buttonApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonApplyFiltersMouseClicked
-        // TODO add your handling code here:
+        // TODO: Apply filters to search!!!
         this.dispose();
     }//GEN-LAST:event_buttonApplyFiltersMouseClicked
 
+    /**
+     * Called when filter category is changed.
+     * Set the textbox to enabled or not.
+     * @param evt 
+     */
     private void choiceItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_choiceItemStateChanged
         textField.setText(""); 
         switch(choice.getSelectedItem())
@@ -231,8 +259,14 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
         }
     }//GEN-LAST:event_choiceItemStateChanged
 
+    /**
+     * Called when comparer is changed.
+     * Comparer sets the search to match all filters
+     * or just one of them.
+     * @param evt 
+     */
     private void choiceComparerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_choiceComparerItemStateChanged
-        // TODO add your handling code here:
+        // TODO: Change search.
     }//GEN-LAST:event_choiceComparerItemStateChanged
 
 
@@ -249,6 +283,9 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
     private java.awt.TextField textField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * This method load the frame.
+     */
     @Override
     public void run() {
         setVisible(true);

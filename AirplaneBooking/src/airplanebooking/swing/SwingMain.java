@@ -14,14 +14,21 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Main form.
  * @author Andreas Jacobsen
  */
 public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener, SeatListener {
 
+    // Whether form is ready to book or not
     private Boolean ready;
+    
+    // List of flights
     private ArrayList<Flight> flights;
+    
+    // List of frames
     private final ArrayList<javax.swing.JFrame> frames;
+    
+    // Current booking
     private Booking booking;
     
     /**
@@ -50,6 +57,11 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         addFlightsToList(false);
     }
     
+    /**
+     * This method gets all flights from database and add them to flights list.
+     * List can be of all flights or only flights with free seats.
+     * @param freeSeatsOnly 
+     */
     private void addFlightsToList(Boolean freeSeatsOnly)
     {
         flights = Database.db().getFlights(freeSeatsOnly);
@@ -399,6 +411,9 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         pack();
     }   
     
+    /**
+     * This method closes all frames.
+     */
     private void closeAllFrames()
     {
         for (javax.swing.JFrame f : frames)
@@ -407,12 +422,19 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         }
     }
     
+    /**
+     * This method loads the frame.
+     */
     @Override
     public void run()
     {
         setVisible(true);
     }
     
+    /**
+     * Called when new reservation button is clicked.
+     * Opens a new reservation windows, so booking can be made.
+     */
     private void buttonNewReservationMouseClicked() {                                                  
 
         if (CurrentFlight.getFlight().isFull())
@@ -434,16 +456,30 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         }
     } 
     
+    /**
+     * Called when find customer button is clicked.
+     * Opens a new window to search for a customer.
+     */
     private void buttonFindCustomerMouseClicked(){
         GUI fcsForm = new FindCustomerSearch("reservations");
         fcsForm.run();
     } 
     
+    /**
+     * Called when filter button is clicked.
+     * Opens a new window to filter flight list.
+     */
     private void buttonFilterMouseClicked(){
+        // Filter is not implemented yet.
         GUI fsfForm = new FlightSearchFilter(this);
         fsfForm.run();
     }
     
+    /**
+     * Called when free-seats-only checkbox i clicked.
+     * Changes the flight list to be of all flights
+     * or only those with free seats.
+     */
     private void checkboxFreeSeatsOnlyItemStateChanged() {  
         listFlights.removeAll();
         
@@ -480,11 +516,19 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     private java.awt.TextField textPhone;
     // End of variables declaration  
     
+    /**
+     * Called when a flight on flight list is clicked.
+     * Changes the current flight to the one clicked.
+     */
     public void listFlightsItemStateChanged()
     {
         CurrentFlight.setFlight(flights.get(listFlights.getSelectedIndex()));
     }
     
+    /**
+     * Called when edit reservation button is clicked.
+     * Opens a new window to edit the booking.
+     */
     public void buttonEditReservationMouseClicked()
     {
         if(ready == true) {
@@ -499,8 +543,15 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         }
     }
     
+    /**
+     * Called when delete reservation button is clicked.
+     * Deletes the booking.
+     */
     public void buttonDeleteReservationMouseClicked()
     {
+        // ERROR: Doesn't refresh the airplane drawing,
+        // so the deleted booking will still be there
+        // until a new flight has been selected
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog (null, "The reservation will be deleted from the system. Are you sure?","Warning",dialogButton);
         if(dialogResult == JOptionPane.YES_OPTION)
@@ -513,11 +564,19 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         }
     }
     
+    /**
+     * Will change the flight list from a search
+     */
     public void updateSearch()
     {
-        
+        // Not implemented yet
     }
 
+    /**
+     * Called when the flight has been changed.
+     * @param flight Flight which has just been selected.
+     * @see Flight
+     */
     @Override
     public void flightChanged(Flight flight)
     {
@@ -540,6 +599,10 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelTime.setText(flight.getDepartureTime());
     }
     
+    /**
+     * This method is called when selected seat has been changed.
+     * Is used to update all informations regarding seats.
+     */
     @Override
     public void seatChanged() {
         // Customer
@@ -615,6 +678,9 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelPrice.setText("Price: " + b.getPrice() + " USD");
     }
 
+    /**
+     * Update flight list.
+     */
     @Override
     public void updateFlights() {
         listFlights.removeAll();

@@ -9,12 +9,14 @@ import airplanebooking.GUI;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Creates a new booking.
  * @author Andreas Jacobsen
  */
 public class SwingNewReservation extends javax.swing.JFrame implements GUI, BookingListener {
 
+    // Identification number of customer
     private int customerID;
+    
     /**
      * Creates new form SwingMainFrame
      * @param flight
@@ -327,6 +329,9 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         pack();
     }                                            
     
+    /**
+     * This method load the frame.
+     */
     @Override
     public void run() 
     {
@@ -363,28 +368,48 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     private java.awt.TextField textPhone;
     // End of variables declaration
     
+    /**
+     * Called when lunch-on-board checkbox is clicked.
+     * Set the lunch for the current booking.
+     */
     public void checkboxLunchOnboardItemStateChanged()
     {
         CurrentBooking.setLunch(checkboxLunchOnboard.getState());
     }
     
+    /**
+     * Called when find-best-seats button is clicked.
+     * Opens a new window to find best seats.
+     */
     public void buttonFindBestSeatsMouseClicked()
     {
         GUI fbsForm = new SwingFindBestSeats();
         fbsForm.run();
     }
     
+    /**
+     * Called when existing-customer button is clicked.
+     * Opens a new window to find existing customer.
+     */
     public void buttonExistingCustomerMouseClicked()
     {
         GUI fcsForm = new FindCustomerSearch("customers");
         fcsForm.run();
     }
     
+    /**
+     * Called when reset-booked-seats button is clicked.
+     * Removes all booked seats from booking.
+     */
     public void buttonResetBookedSeatsMouseClicked()
     {
         CurrentBooking.clearBookedSeats();
     }
     
+    /**
+     * Called when create-reservation button is clicked.
+     * Creates the reservation in the database.
+     */
     public void buttonCreateReservationMouseClicked()
     {
         CurrentBooking.addCustomer(new Customer(customerID, textMaritialStatus.getText(), textFirstName.getText(), textLastName.getText(), textAddressStreet.getText(), Integer.parseInt(textAddressZip.getText()), textAddressCity.getText(), textAddressCountry.getText(), Integer.parseInt(textPhone.getText()), textEmail.getText()));
@@ -392,6 +417,9 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         this.dispose();
     }
 
+    /**
+     * Called when booking has been changed.
+     */
     @Override
     public void bookingChanged() {
         // Seat label

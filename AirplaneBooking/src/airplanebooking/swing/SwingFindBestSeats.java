@@ -1,23 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.GUI;
 
 /**
- *
+ * Used to get the amount of seats to find as best seats.
  * @author Andreas Jacobsen
  */
 public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
 
     /**
      * Creates new form SwingFindBestSeats
-     * @param ac
      */
     public SwingFindBestSeats() {
         initComponents();
@@ -30,7 +23,7 @@ public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
         textField1 = new java.awt.TextField();
         label2 = new java.awt.Label();
         label3 = new java.awt.Label();
-        button1 = new java.awt.Button();
+        buttonFindSeats = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -43,10 +36,10 @@ public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
 
         label3.setText("Economy Class");
 
-        button1.setLabel("Find seats");
-        button1.addActionListener(new java.awt.event.ActionListener() {
+        buttonFindSeats.setLabel("Find seats");
+        buttonFindSeats.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
+                buttonFindSeatsActionPerformed(evt);
             }
         });
 
@@ -65,7 +58,7 @@ public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
                         .addGap(0, 14, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(buttonFindSeats, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(textField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -81,31 +74,39 @@ public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonFindSeats, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        // TODO add your handling code here:
+    /**
+     * This method is called when find seats button is clicked.
+     * calls the find seats algorithm and closes this frame.
+     * @param evt 
+     */
+    private void buttonFindSeatsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFindSeatsActionPerformed
         
         // Find best seats
         CurrentBooking.findBestSeats(Integer.parseInt(textField1.getText()));
         
+        // Close this frame
         this.dispose();
-    }//GEN-LAST:event_button1ActionPerformed
+    }//GEN-LAST:event_buttonFindSeatsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button button1;
+    private java.awt.Button buttonFindSeats;
     private java.awt.Label label1;
     private java.awt.Label label2;
     private java.awt.Label label3;
     private java.awt.TextField textField1;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * This method load the frame.
+     */
     @Override
     public void run() {
         setVisible(true);

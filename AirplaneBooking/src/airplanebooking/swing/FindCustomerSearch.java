@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Andreas
+ * FindCustomerSearch is used to search for an existing customer in database.
+ * @author Andreas Jacobsen
  */
 public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
 
+    // Determines what to do next (reservations/customers).
     private final String nextStep;
     
     /**
@@ -108,6 +109,11 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Occurs when button is clicked.
+     * Gets a list of customers matching search.
+     * @param evt 
+     */
     private void buttonSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchMouseClicked
 
         String firstname = null;
@@ -159,6 +165,9 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
     private java.awt.TextField textPhone;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * This method load the frame.
+     */
     @Override
     public void run() {
         setVisible(true);

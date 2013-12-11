@@ -8,7 +8,7 @@ import airplanebooking.DB.Seat;
 import airplanebooking.GUI;
 
 /**
- *
+ * Used to change data of a booking.
  * @author Andreas Jacobsen
  */
 public final class SwingEditReservation extends javax.swing.JFrame implements GUI, BookingListener {
@@ -21,14 +21,14 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
         CurrentBooking.reset();
         initComponents();
         AirplaneCan.setAirplaneCanvas(true, b.getFlight());
-        labelAirplaneName.setText( b.getFlight().getAirplane().getName() + " " +  b.getFlight().getAirplane().getID() + "A" +  b.getFlight().getID());
+        labelAirplaneName.setText(b.getFlight().getAirplane().getName() + " " +  b.getFlight().getAirplane().getID() + "A" +  b.getFlight().getID());
         
         CurrentBooking.addBooking(b);
         bookingChanged();
         
         setTitle("Airplane Booking - Edit Reservation...");
     }
-                       
+                 
     private void initComponents() {
         
         AirplaneCan = new AirplaneCanvas();
@@ -285,6 +285,9 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
         pack();
     }                                            
     
+    /**
+     * This method loads the frame.
+     */
     @Override
     public void run() 
     {
@@ -319,18 +322,26 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
     private java.awt.TextField textPhone;
     // End of variables declaration
     
+    /**
+     * Called when change flight mouse i clicked.
+     */
     public void buttonChangeFlightMouseClicked()
     {
-        GUI fbsForm = new SwingFindBestSeats();
-        fbsForm.run();
+        // Not implemented.
     }
     
+    /**
+     * Called when update reservation button is clicked.
+     */
     public void buttonUpdateReservationMouseClicked()
     {
-        
+        CurrentBooking.saveBooking(true);
         this.dispose();
     }
 
+    /**
+     * Called when booking has been changed.
+     */
     @Override
     public void bookingChanged() {
         // Seat label
@@ -365,6 +376,7 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
         if (i > 0) labelTravelClass.setText(classes);
         else labelTravelClass.setText("No seats chosen.");
         
+        // Get customer
         if (CurrentBooking.getCustomer() != null)
         {
             Customer c = CurrentBooking.getCustomer();
