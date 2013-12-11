@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Flight class is used to store all data about a flight.
- * @author Andreas Jacobsen
+ * @author Andreas Jacobsen & Aleksandar Jonovic
  */
 public class Flight 
 {

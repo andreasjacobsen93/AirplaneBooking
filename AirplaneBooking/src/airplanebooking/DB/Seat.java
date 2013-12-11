@@ -2,7 +2,7 @@ package airplanebooking.DB;
 
 /**
  * Seat class is used to create a seat with data.
- * @author Andreas Jacobsen
+ * @author Andreas Jacobsen & Aleksandar Jonovic
  */
 public class Seat {
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Alex
+ * @author Aleksandar Jonovic
  */
 public interface DatabaseInterface {
     

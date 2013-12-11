@@ -2,7 +2,7 @@ package airplanebooking.DB;
 
 /**
  * Customer class is used to store all data about a customer.
- * @author Andreas Jacobsen
+ * @author Andreas Jacobsen & Aleksandar Jonovic
  */
 public class Customer {
     
