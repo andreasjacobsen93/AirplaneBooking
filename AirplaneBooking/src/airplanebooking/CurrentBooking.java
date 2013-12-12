@@ -165,6 +165,7 @@ public class CurrentBooking {
         addCustomer(b.getCustomer());
         addFlight(b.getFlight());
         setLunch(b.getFood());
+        id = b.getID();
         totalCost = b.getPrice();
         addSeats(b.getSeats());
         allowedSeats = b.getSeats();
