@@ -235,6 +235,8 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
     }//GEN-LAST:event_buttonDeleteFilterMouseClicked
 
     private void buttonApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonApplyFiltersMouseClicked
+        buttonApplyFilters.setLabel("Applying filters...");
+        
         String comparer = "";
         switch (choiceComparer.getSelectedItem()){
             case "All of the above":

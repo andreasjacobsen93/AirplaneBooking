@@ -211,7 +211,6 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
             {
                 seats[s.getSeatID()-1][1] = 1;
             }
-            System.out.println(flight.getID() + ": " +Database.db().getFlightBookedSeats(flight.getID()));
         }
         
         

@@ -65,6 +65,7 @@ public class CurrentFlight
     public static void setSeat(Seat s)
     {
         seat = s;
+        updateSeat();
     }
     
     /**
@@ -83,6 +84,17 @@ public class CurrentFlight
     public static void addListener(FlightListener listener)
     {
         listeners.add(listener);
+    }
+    
+    /**
+     * This method is used to notify all listeners
+     * that the current selected seat has been changed.
+     */
+    public static void updateSeat() {
+        // Notify everybody that may be interested.
+        for (FlightListener fl : listeners) {
+            fl.seatChanged();
+        }
     }
     
     /**

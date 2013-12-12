@@ -78,10 +78,12 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     private void addFlightsToList(Boolean freeSeatsOnly)
     {
         listFlights.removeAll();
+        listFlights.add("Searching...");
         
         flights = Database.db().getFlights(freeSeatsOnly);
         //backupFlights = Database.db().getFlights(freeSeatsOnly);
         
+        listFlights.removeAll();
         for (Flight f : flights)
         {
             listFlights.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " (" + f.getDepartureTime()+")");
@@ -510,7 +512,11 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         if (filtered) 
         {
             listFlights.removeAll();
+            listFlights.add("Searching...");
+            
             flights.clear();
+            listFlights.removeAll();
+            
             for (Flight f : backupFlights)
             {
                 if (checkboxFreeSeatsOnly.getState() == true && f.isFull()) {}
@@ -612,6 +618,9 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         filtered = true;
         buttonFilter.setLabel("Remove filter");
         
+        listFlights.removeAll();
+        listFlights.add("Searching...");
+        
         backupFlights = flightsList;
         
         listFlights.removeAll();
@@ -634,8 +643,6 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     @Override
     public void flightChanged(Flight flight)
     {
-        System.out.println(flight);
-        
         AirplaneCanvasPanel.setAirplaneCanvas(false, flight);
         
         jPanel3.setVisible(true); // Airplane
