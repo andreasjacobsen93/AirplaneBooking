@@ -6,7 +6,6 @@
 package airplanebooking.DB;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1368,7 +1367,7 @@ public class DatabaseHandler implements DatabaseInterface {
                         sql += " a.firstseats > 0 " + comparer;
                         break;
                     case "Business":
-                        sql += " a.businesseats > 0 " + comparer;
+                        sql += " a.businessseats > 0 " + comparer;
                         break;
                     case "Economy":
                         sql += " a.economyseats > 0 " + comparer;
