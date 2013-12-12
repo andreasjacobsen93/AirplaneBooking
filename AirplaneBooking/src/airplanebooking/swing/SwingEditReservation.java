@@ -22,6 +22,8 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
         initComponents();
         AirplaneCan.setAirplaneCanvas(true, b.getFlight());
         labelAirplaneName.setText(b.getFlight().getAirplane().getName() + " " +  b.getFlight().getAirplane().getID() + "A" +  b.getFlight().getID());
+        labelRoute.setText(b.getFlight().getDeparturePlace() + " - " + b.getFlight().getArrivalPlace());
+        labelTime.setText(b.getFlight().getDepartureTime());
         
         CurrentBooking.addBooking(b);
         bookingChanged();
