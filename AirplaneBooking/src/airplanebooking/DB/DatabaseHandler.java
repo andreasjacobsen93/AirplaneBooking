@@ -1396,7 +1396,7 @@ public class DatabaseHandler implements DatabaseInterface {
                         break;
 
                 }
-                if (filterSplit.length > 1) {
+                if (filterSplit.length > 1 && filterSplit[1].contains("Class") != true) {
                     filterArguments[i-1] = filterSplit[1];
 
                 }
