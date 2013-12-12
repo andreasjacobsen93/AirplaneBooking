@@ -23,8 +23,15 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     // Whether form is ready to book or not
     private Boolean ready;
     
+    // Whether the list is currently being filtered or not.
+    private Boolean filtered;
+    
     // List of flights
     private ArrayList<Flight> flights;
+    private ArrayList<Flight> backupFlights;
+    
+    // Checkbox state
+    private Boolean state;
     
     // List of frames
     private final ArrayList<javax.swing.JFrame> frames;
@@ -44,6 +51,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         setExtendedState( getExtendedState()|JFrame.MAXIMIZED_BOTH );
         
         ready = false;
+        filtered = false;
         
         // Airplane
         jPanel3.setVisible(false); 
@@ -69,7 +77,10 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
      */
     private void addFlightsToList(Boolean freeSeatsOnly)
     {
+        listFlights.removeAll();
+        
         flights = Database.db().getFlights(freeSeatsOnly);
+        //backupFlights = Database.db().getFlights(freeSeatsOnly);
         
         for (Flight f : flights)
         {
@@ -475,9 +486,17 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
      * Opens a new window to filter flight list.
      */
     private void buttonFilterMouseClicked(){
-        // Filter is not implemented yet.
-        GUI fsfForm = new FlightSearchFilter(this);
-        fsfForm.run();
+        if (filtered){
+            filtered = false;
+            buttonFilter.setLabel("Removing....");
+            addFlightsToList(checkboxFreeSeatsOnly.getState());
+            buttonFilter.setLabel("Filter...");
+        }
+        else
+        {
+            GUI fsfForm = new FlightSearchFilter(this);
+            fsfForm.run();
+        }
     }
     
     /**
@@ -485,10 +504,22 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
      * Changes the flight list to be of all flights
      * or only those with free seats.
      */
-    private void checkboxFreeSeatsOnlyItemStateChanged() {  
-        listFlights.removeAll();
-        
-        addFlightsToList(checkboxFreeSeatsOnly.getState());
+    private void checkboxFreeSeatsOnlyItemStateChanged() 
+    {  
+        if (filtered) 
+        {
+            listFlights.removeAll();
+            flights.clear();
+            for (Flight f : backupFlights)
+            {
+                if (checkboxFreeSeatsOnly.getState() == true && f.isFull()) {}
+                else {
+                    listFlights.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " (" + f.getDepartureTime()+")");
+                    flights.add(f);
+                }
+            }
+        }
+        else addFlightsToList(checkboxFreeSeatsOnly.getState());
     }   
     
     // Variables declaration - do not modify
@@ -571,13 +602,24 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     
     /**
      * Will change the flight list from a search
-     * @param flights List of flights to add.
+     * @param flightsList List of flights to add.
      */
-    public void updateSearch(ArrayList<Flight> flights)
+    public void updateSearch(ArrayList<Flight> flightsList)
     {
-        for (Flight f : flights)
+        filtered = true;
+        buttonFilter.setLabel("Remove filter");
+        
+        backupFlights = flightsList;
+        
+        listFlights.removeAll();
+        
+        for (Flight f : backupFlights)
         {
-            listFlights.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " (" + f.getDepartureTime()+")");
+            if (checkboxFreeSeatsOnly.getState() == true && f.isFull()) {}
+            else {
+                listFlights.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " (" + f.getDepartureTime()+")");
+                flights.add(f);
+            }
         }
     }
 
@@ -589,6 +631,8 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     @Override
     public void flightChanged(Flight flight)
     {
+        System.out.println(flight);
+        
         AirplaneCanvasPanel.setAirplaneCanvas(false, flight);
         
         jPanel3.setVisible(true); // Airplane
@@ -709,8 +753,19 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
      */
     @Override
     public void updateFlights() {
-        listFlights.removeAll();
-        
-        addFlightsToList(checkboxFreeSeatsOnly.getState());
+        if (filtered) 
+        {
+            listFlights.removeAll();
+            flights.clear();
+            for (Flight f : backupFlights)
+            {
+                if (checkboxFreeSeatsOnly.getState() == true && f.isFull()) {}
+                else {
+                    listFlights.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " (" + f.getDepartureTime()+")");
+                    flights.add(f);
+                }
+            }
+        }
+        else addFlightsToList(checkboxFreeSeatsOnly.getState());
     }
 }

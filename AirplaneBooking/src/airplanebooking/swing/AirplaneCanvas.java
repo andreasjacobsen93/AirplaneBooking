@@ -75,6 +75,11 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     public AirplaneCanvas()
     {
         CurrentBooking.reset();
+        reset();
+    }
+    
+    private void reset()
+    {
         bookable = false;
         
         flight = null;
@@ -126,6 +131,9 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
      */
     public void setAirplaneCanvas(Boolean isBookable, Flight flight)
     {
+        reset();
+        CurrentBooking.reset();
+        
         // Add flight to current booking
         CurrentBooking.addFlight(flight);
         
@@ -181,7 +189,6 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         int i = 0;
         for (int[] s : seats) {
             s[0] = i++;
-            s[1] = 1;
         }
         
         if (bookable == true)
@@ -189,7 +196,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
             // Go through all blocked seats
             for (Seat s : CurrentBooking.getBlockedSeats())
             {
-                seats[s.getSeatID()-1][1] = 0;
+                seats[s.getSeatID()-1][1] = 1;
             }
             
             // Go through all booked seats
@@ -200,12 +207,13 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         }
         else
         {
-            for (Seat s : flight.getSeats())
+            for (Seat s : Database.db().getFlightBookedSeats(flight.getID()))
             {
-                seats[s.getSeatID()-1][1] = 0;
+                seats[s.getSeatID()-1][1] = 1;
             }
+            System.out.println(flight.getID() + ": " +Database.db().getFlightBookedSeats(flight.getID()));
         }
-
+        
         
         // Event for mouse movement
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -227,7 +235,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                                 // Blue
                                 changeCursor(new Cursor(Cursor.HAND_CURSOR));
                             }
-                            else if (seats[i][1] == 1)
+                            else if (seats[i][1] == 0)
                             {
                                 // Green
                                 changeCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -239,7 +247,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                         }
                         else
                         {
-                            if (seats[i][1] == 0)
+                            if (seats[i][1] == 1)
                             {
                                 // Red
                                 changeCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -325,7 +333,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         int c = 0;
         for (int i = 0; i < seatsCount; i++)
         {
-            if (seats[i][1] == 0) c++;
+            if (seats[i][1] == 1) c++;
         }
         return c >= seatsCount;
     }
@@ -355,15 +363,15 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
      */
     public void clickSeats(ArrayList<Seat> list)
     {
-        for (int[] seat : seats) {
-            if(seat[1] == 3) seat[1] = 0;
+        for (int[] s : seats) {
+            if(s[1] == 3) s[1] = 1;
         }
         
         for (Seat i : list)
         {
             if (bookable == false)
             {
-                if (seats[i.getSeatID()-1][1] == 0)
+                if (seats[i.getSeatID()-1][1] == 1)
                 {
                     // Red
                     seats[i.getSeatID()-1][1] = 3;
@@ -388,7 +396,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                 // Remove booking
                 CurrentBooking.removeSeat(i+1);
             }
-            else if (seats[i][1] == 1)
+            else if (seats[i][1] == 0)
             {
                 // Green
                 // Add booking
@@ -397,11 +405,11 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         }
         else
         {
-            if (seats[i][1] == 0)
+            if (seats[i][1] == 1)
             {
                 for (int s = 0; s < seatsCount; s++)
                 {
-                    if (seats[s][1] == 3) seats[s][1] = 0;
+                    if (seats[s][1] == 3) seats[s][1] = 1;
                 }
                 // Red
                 seats[i][1] = 3;
@@ -513,11 +521,11 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
                     // else show green
                     if (seats[seat][1] == 0)
                     {
-                        g.setColor(Color.red);
+                        g.setColor(Color.green);
                     }
                     else if (seats[seat][1] == 1)
                     {
-                        g.setColor(Color.green);
+                        g.setColor(Color.red);
                     }
                     else if (seats[seat][1] == 2)
                     {
@@ -676,13 +684,13 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
             // Go through all blocked seats and mark them red.
             for (Seat s : CurrentBooking.getBlockedSeats())
             {
-                seats[s.getSeatID()-1][1] = 0;
+                seats[s.getSeatID()-1][1] = 1;
             }
             
             // Go through all seats which are blocked but allowed to be booked anyway.
             for (Seat s : CurrentBooking.getAllowedSeats())
             {
-                seats[s.getSeatID()-1][1] = 1;
+                seats[s.getSeatID()-1][1] = 0;
             }
             
             // Go through all booked seats and mark them blue.
@@ -695,7 +703,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         {
             for (Seat s : Database.db().getFlightBookedSeats(flight.getID()))
             {
-                seats[s.getSeatID()-1][1] = 0;
+                seats[s.getSeatID()-1][1] = 1;
             }
         }
 
