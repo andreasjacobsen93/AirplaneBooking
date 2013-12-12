@@ -676,7 +676,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
     {
         // Go through all seats and set them to free.
         for (int[] s : seats) {
-            s[1] = 1;
+            s[1] = 0;
         }
 
         if (bookable == true)
