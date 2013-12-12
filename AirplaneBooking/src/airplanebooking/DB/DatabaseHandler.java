@@ -6,6 +6,7 @@
 package airplanebooking.DB;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1352,16 +1353,15 @@ public class DatabaseHandler implements DatabaseInterface {
 
     @Override
     public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer) {
-        String sql = "SELECT f.id, a.id, CAST(f.departuretime AS DATE) + 0 FROM flights f, airplanes a WHERE f.airplane_id = a.id AND ";
+        String sql = "SELECT f.id, a.id, CAST(f.departuretime AS DATE) + 0 FROM flights f, airplanes a WHERE f.airplane_id = a.id AND";
         try {
             Connection con = getConnection();
-            PreparedStatement pstatement = con.prepareStatement(sql);    
-
+            int i = 0;
+            String[] filterArguments = new String[filters.length];
             for (String filter : filters) {
                 String[] filterSplit = filter.split(" ");
-                int i = 0;
-                
-                switch (filterSplit[0]) {
+
+                switch (filterSplit[0].toString()) {
 
                     case "First":
                         sql += " a.firstseats > 0 " + comparer;
@@ -1379,42 +1379,41 @@ public class DatabaseHandler implements DatabaseInterface {
                         sql += " CAST(f.departuretime AS DATE) + 0 = CAST( SYSDATE( ) AS DATE ) + 1 " + comparer;
                         break;
                     case "Airplane":
-                        sql += " a.name = ? " + comparer;
+                        sql += " a.name=? " + comparer;
                         i++;
-                        pstatement = con.prepareStatement(sql);
-                        pstatement.setString(i,filterSplit[1]);
-                    break;
+                        break;
                     case "Date":
-                        sql += " CAST(f.departuretime AS DATE) + 0 = CAST(? AS DATE ) " + comparer;
+                        sql += " CAST(f.departuretime AS DATE) + 0 = CAST( ? AS DATE) " + comparer;
                         i++;
-                        pstatement = con.prepareStatement(sql);
-                        pstatement.setString(i,filterSplit[1]);
                         break;
                     case "From":
                         sql += " f.departureplace = ? " + comparer;
                         i++;
-                        pstatement = con.prepareStatement(sql);
-                        pstatement.setString(i,filterSplit[1]);
                         break;
                     case "To":
                         sql += " f.arrivalplace = ? " + comparer;
                         i++;
-                        pstatement = con.prepareStatement(sql);
-                        pstatement.setString(i,filterSplit[1]);
                         break;
+
+                }
+                if (!filterSplit[1].isEmpty()) {
+                    filterArguments[i-1] = filterSplit[1];
 
                 }
 
             }
+            sql = sql.substring(0, sql.length() - comparer.length() - 1);
+            PreparedStatement pstatement = con.prepareStatement(sql);
+            for (int u = 0; u < i; u++) {
+                pstatement.setString(u+1, filterArguments[u]);
+            }
 
-            sql = sql.substring(0, sql.length() - comparer.length());
-            System.out.println(sql);
             ResultSet results = executeQuery(pstatement);
             flights = new ArrayList();
-            while(results.next()){
+            while (results.next()) {
                 flight = null;
                 flight = getFlight(results.getInt(1));
-                
+
                 flights.add(flight);
             }
         } catch (SQLException ex) {
