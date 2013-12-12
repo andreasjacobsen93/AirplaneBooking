@@ -39,7 +39,7 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         buttonUpdateReservation = new java.awt.Button();
-        labelSeats = new java.awt.Label();
+        labelSeats = new javax.swing.JLabel();
         labelRoute = new java.awt.Label();
         labelTime = new java.awt.Label();
         checkboxLunchOnboard = new java.awt.Checkbox();
@@ -308,7 +308,7 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
     private java.awt.Label labelAirplaneName;
     private java.awt.Label labelPrice;
     private java.awt.Label labelRoute;
-    private java.awt.Label labelSeats;
+    private javax.swing.JLabel labelSeats;
     private java.awt.Label labelTime;
     private java.awt.Label labelTravelClass;
     private java.awt.TextField textAddressCity;
@@ -346,12 +346,27 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
     public void bookingChanged() {
         // Seat label
         int i = 0;
-        String seats = "Seats: ";      
+        String seats = "Seats: ";     
+        String seatsTooltip = "";
         for (Seat s : CurrentBooking.getBookedSeats())
         {
-            if (i == 0) seats += ""+s.getSeatID();
-            else seats += ", "+s.getSeatID();
+            if (i == 0) {
+                seats += ""+s.getSeatID();
+                seatsTooltip += ""+s.getSeatID();
+            }
+            else if (i < 25) {
+                seats += ", "+s.getSeatID();
+                seatsTooltip += ", "+s.getSeatID();
+            }
+            else
+            {
+                seatsTooltip += ", "+s.getSeatID();
+            }
             i++;
+        }
+        if (i > 24) {
+            seats += "...";
+            labelSeats.setToolTipText(seatsTooltip);
         }
         if (i > 0) labelSeats.setText(seats);
         else labelSeats.setText("No seats chosen.");

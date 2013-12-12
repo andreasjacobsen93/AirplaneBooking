@@ -92,7 +92,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel5 = new javax.swing.JPanel();
         buttonDeleteReservation = new java.awt.Button();
         buttonEditReservation = new java.awt.Button();
-        labelSeats = new java.awt.Label();
+        labelSeats = new javax.swing.JLabel();
         labelRoute = new java.awt.Label();
         labelTime = new java.awt.Label();
         checkboxLunchOnboard = new java.awt.Checkbox();
@@ -439,7 +439,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
 
         if (CurrentFlight.getFlight().isFull())
         {
-            JOptionPane.showMessageDialog(null, "All seats on flight is booked. 1");
+            JOptionPane.showMessageDialog(null, "All seats on flight is booked.");
         }
         else
         {
@@ -504,7 +504,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     private java.awt.Label labelAirplaneName;
     private java.awt.Label labelPrice;
     private java.awt.Label labelRoute;
-    private java.awt.Label labelSeats;
+    private javax.swing.JLabel labelSeats;
     private java.awt.Label labelTime;
     private java.awt.Label labelTravelClass;
     private java.awt.List listFlights;
@@ -631,6 +631,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         
         int i = 0;
         String seats = "Seats: ";
+        String seatsTooltip = "";
         for (Seat s : b.getSeats())
         {
             // Current seat is First Class
@@ -646,9 +647,23 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
                 EconomyClass = true;
             }
             
-            if (i == 0) seats += ""+s.getSeatID();
-            else seats += ", "+s.getSeatID();
+            if (i == 0) {
+                seats += ""+s.getSeatID();
+                seatsTooltip += ""+s.getSeatID();
+            }
+            else if (i < 25) {
+                seats += ", "+s.getSeatID();
+                seatsTooltip += ", "+s.getSeatID();
+            }
+            else
+            {
+                seatsTooltip += ", "+s.getSeatID();
+            }
             i++;
+        }
+        if (i > 24) {
+            seats += "...";
+            labelSeats.setToolTipText(seatsTooltip);
         }
         if (i > 0) labelSeats.setText(seats);
         else labelSeats.setText("No seats chosen.");
