@@ -6,6 +6,7 @@ import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.Seat;
 import airplanebooking.GUI;
+import javax.swing.JOptionPane;
 
 /**
  * Used to change data of a booking.
@@ -330,6 +331,7 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
     public void buttonChangeFlightMouseClicked()
     {
         // Not implemented.
+        JOptionPane.showMessageDialog(null, "This feature is not implemented yet.");
     }
     
     /**
