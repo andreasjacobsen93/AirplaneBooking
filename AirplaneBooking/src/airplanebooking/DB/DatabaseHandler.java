@@ -761,7 +761,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 pstatement.setString(7, addressCountry);
                 pstatement.setString(8, email);
                 pstatement.setInt(9, phonenumber);
-
+                customer = null;
                 customer = getCustomer(pstatement.executeUpdate(sql, 1));
                 createReservation(customer, flight, seats, food, cost);
 
@@ -1112,7 +1112,7 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public ArrayList<Booking> getCustomerReservations(int customerID) {
 
-        String sql = "SELECT rsv.id, cs.id FROM reservations rsv, customers cs WHERE cs.id = ?";
+        String sql = "SELECT rsv.id FROM reservations rsv WHERE rsv.customer_ID = ?";
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
         try {
             Connection con = getConnection();
