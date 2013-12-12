@@ -1353,7 +1353,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     @Override
     public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer) {
-        String sql = "SELECT f.id, a.id, CAST(f.departuretime AS DATE) + 0 FROM flights f, airplanes a WHERE f.airplane_id = a.id AND";
+        String sql = "SELECT f.id, a.id, CAST(f.departuretime AS DATE) + 0 FROM flights f, airplanes a WHERE ";
         try {
             Connection con = getConnection();
             int i = 0;
@@ -1396,7 +1396,7 @@ public class DatabaseHandler implements DatabaseInterface {
                         break;
 
                 }
-                if (!filterSplit[1].isEmpty()) {
+                if (filterSplit.length > 1) {
                     filterArguments[i-1] = filterSplit[1];
 
                 }
@@ -1409,11 +1409,13 @@ public class DatabaseHandler implements DatabaseInterface {
             }
 
             ResultSet results = executeQuery(pstatement);
+            flights.clear();
             flights = new ArrayList();
+            
             while (results.next()) {
                 flight = null;
                 flight = getFlight(results.getInt(1));
-
+                System.out.println(flight.getID());
                 flights.add(flight);
             }
         } catch (SQLException ex) {
