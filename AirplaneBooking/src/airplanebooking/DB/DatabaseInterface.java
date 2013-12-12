@@ -278,6 +278,8 @@ public interface DatabaseInterface {
      * with information from the database. Only returns flights which have more than 2 hours left before departure time.
      */
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly);
+    
+    public ArrayList<Flight> getFilteredFlights(String[] flights, String comparer);
 
     /**
      * This method gets an ArrayList of Seat objects, by searching the database based on an

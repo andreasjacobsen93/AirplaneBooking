@@ -566,10 +566,14 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     
     /**
      * Will change the flight list from a search
+     * @param flights List of flights to add.
      */
-    public void updateSearch()
+    public void updateSearch(ArrayList<Flight> flights)
     {
-        // Not implemented yet
+        for (Flight f : flights)
+        {
+            listFlights.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " (" + f.getDepartureTime()+")");
+        }
     }
 
     /**

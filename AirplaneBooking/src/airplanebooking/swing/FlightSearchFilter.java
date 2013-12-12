@@ -78,12 +78,6 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
 
         label2.setText("Filters:");
 
-        choiceComparer.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                choiceComparerItemStateChanged(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -213,7 +207,21 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
      * @param evt 
      */
     private void buttonApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonApplyFiltersMouseClicked
-        // TODO: Apply filters to search!!!
+
+        String comparer;
+        switch (choiceComparer.getSelectedItem()){
+            case "All of the above":
+                comparer = "and";
+                break;
+            case "Some of the above":
+                comparer = "or";
+                break;
+        }
+        
+        String[] filters = listFilters.getItems();
+        
+        
+        
         this.dispose();
     }//GEN-LAST:event_buttonApplyFiltersMouseClicked
 
@@ -223,7 +231,7 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
      * @param evt 
      */
     private void choiceItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_choiceItemStateChanged
-        textField.setText(""); 
+        textField.setText("");
         switch(choice.getSelectedItem())
         {
             case "First Class":
@@ -258,16 +266,6 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
                 break;
         }
     }//GEN-LAST:event_choiceItemStateChanged
-
-    /**
-     * Called when comparer is changed.
-     * Comparer sets the search to match all filters
-     * or just one of them.
-     * @param evt 
-     */
-    private void choiceComparerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_choiceComparerItemStateChanged
-        // TODO: Change search.
-    }//GEN-LAST:event_choiceComparerItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

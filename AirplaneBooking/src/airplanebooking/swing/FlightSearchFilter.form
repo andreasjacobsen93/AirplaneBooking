@@ -139,9 +139,6 @@
       </Properties>
     </Component>
     <Component class="java.awt.Choice" name="choiceComparer">
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="choiceComparerItemStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="choiceComparer.add(&quot;All of the above&quot;);&#xa;choiceComparer.add(&quot;Some of the above&quot;);"/>
       </AuxValues>
