@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -749,25 +750,32 @@ public class DatabaseHandler implements DatabaseInterface {
                 String email = currentCustomer.getEmail();
                 int phonenumber = currentCustomer.getPhone();
 
-                String sql = "INSERT INTO customers "
-                        + "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                PreparedStatement pstatement = con.prepareStatement(sql);
-                pstatement.setString(1, maritalstatus);
-                pstatement.setString(2, firstname);
-                pstatement.setString(3, lastname);
-                pstatement.setString(4, addressStreet);
-                pstatement.setInt(5, addressZip);
-                pstatement.setString(6, addressCity);
-                pstatement.setString(7, addressCountry);
-                pstatement.setString(8, email);
-                pstatement.setInt(9, phonenumber);
-                customer = null;
-                customer = getCustomer(pstatement.executeUpdate(sql, 1));
-                createReservation(customer, flight, seats, food, cost);
+                String sql = "INSERT INTO customers VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                
+                PreparedStatement pstatement2 = pstatement2 = con.prepareStatement(sql, 1);
+                pstatement2.setString(1, maritalstatus);
+                pstatement2.setString(2, firstname);
+                pstatement2.setString(3, lastname);
+                pstatement2.setString(4, addressStreet);
+                pstatement2.setInt(5, addressZip);
+                pstatement2.setString(6, addressCity);
+                pstatement2.setString(7, addressCountry);
+                pstatement2.setString(8, email);
+                pstatement2.setInt(9, phonenumber);
+                
+                pstatement2.executeUpdate();
+                ResultSet rs = pstatement2.getGeneratedKeys();
+                rs.first();
+                int id = rs.getInt(1);
+                System.out.println("ID of customer: "+id);
+                Customer newCustomer = getCustomer(id);
+                
+                
+                createReservation(newCustomer, flight, seats, food, cost);
 
                 //Tidy up the connection
                 cons.add(con);
-                pstatements.add(pstatement);
+                pstatements.add(pstatement2);
 
             }
 
