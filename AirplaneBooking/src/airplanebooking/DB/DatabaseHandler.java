@@ -82,15 +82,10 @@ public class DatabaseHandler implements DatabaseInterface {
         cpds.setMaxIdleTimeExcessConnections(5);
     }
 
-    private Connection getConnection() {
-        try {
-            //System.out.println(cpds.getNumConnectionsAllUsers());
+    private Connection getConnection() throws SQLException {
+
             return cpds.getConnection();
-
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong while getting the connection", ex);
-        }
-
+      
     }
 
     /**
@@ -246,8 +241,8 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public void createCustomer(Customer customer) {
         //Method for creating a customer
-        Connection con = getConnection();
         try {
+            Connection con = getConnection();
             //Create prepared statement string.
             String sql = "INSERT INTO customers VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             //Prepare the statement.
@@ -285,8 +280,8 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public void editCustomer(Customer customer) {
         //Method for editing a specific customer.
-        Connection con = getConnection();
         try {
+            Connection con = getConnection();
             //Create the prepared statement string.
             String sql = "UPDATE customers SET maritalstatus = '?', firstname = '?', lastname = '?', addressstreet = '?', addresszip = ?, addresscity = '?', "
                     + "addresscountry = '?', email = '?', phonenumber = ? WHERE id = ?";
@@ -323,8 +318,8 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public void deleteCustomer(Customer customer) {
         //Method for deleting customer
-        Connection con = getConnection();
         try {
+            Connection con = getConnection();
             //Create the prepared statement string.
             String sql = "DELETE FROM customers WHERE id = ?";
             //Prepare the statement.
@@ -351,8 +346,8 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Customer getCustomer(int customerID) {
-        Connection con = getConnection();
         try {
+            Connection con = getConnection();
             if (customerExists(customerID)) {
                 String sql = "SELECT * FROM customers WHERE id = ?";
 
@@ -398,9 +393,10 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Customer> getCustomers(int q) {
-        Connection con = getConnection();
+        //Method for getting multiple customers
         String sql = "SELECT * FROM customers WHERE addresszip = ? OR phonenumber = ?";
         try {
+            Connection con = getConnection();
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, q);
             pstatement.setInt(2, q);
@@ -443,10 +439,10 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Customer> getCustomers(String q) {
-        Connection con = getConnection();
+        //Method for getting multiple customers.
         String sql = "SELECT * FROM customers WHERE firstname = ? OR lastname = ? OR addressstreet = ? OR email = ?";
-
         try {
+            Connection con = getConnection();
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setString(1, q);
             pstatement.setString(2, q);
@@ -494,7 +490,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone) {
-        Connection con = getConnection();
+        
         String recieverMatrix = "0:0:0:0";
         String[] parts = recieverMatrix.split(":");
         String[] columns = new String[4];
@@ -527,7 +523,7 @@ public class DatabaseHandler implements DatabaseInterface {
         }
 
         try {
-
+            Connection con = getConnection();
             int k = 0;
 
             for (int i = 0; i < parts.length; i++) {
@@ -591,13 +587,14 @@ public class DatabaseHandler implements DatabaseInterface {
      * @return
      */
     private boolean customerExists(Customer customer) {
-        Connection con = getConnection();
+        
         String firstname = customer.getFirstName();
         String lastname = customer.getLastName();
         String email = customer.getEmail();
 
         boolean exists = false;
         try {
+            Connection con = getConnection();
             String sql = "SELECT COUNT(*) FROM customers WHERE firstname= ? AND lastname = ? AND email = ? OR email = ?";
 
             PreparedStatement pstatement = con.prepareStatement(sql);
@@ -628,10 +625,11 @@ public class DatabaseHandler implements DatabaseInterface {
      * @return
      */
     private boolean customerExists(int customerID) {
-        Connection con = getConnection();
+        
         String sql = "SELECT * FROM customers WHERE id= ?";
         Boolean exists = false;
         try {
+            Connection con = getConnection();
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, customerID);
             ResultSet results = executeQuery(pstatement);
@@ -663,10 +661,11 @@ public class DatabaseHandler implements DatabaseInterface {
      * database, even if the rest do not.
      */
     private boolean seatsExist(ArrayList<Seat> seats, Flight flight) {
-        Connection con2 = getConnection();
+        
         boolean exists = false;
         for (Seat currentSeat : seats) {
             try {
+                Connection con2 = getConnection();
                 String sql = "SELECT f.id, r2s.seat_id FROM flights f, reservation2seat r2s WHERE f.id = ? AND r2s.seat_id = ?";
                 PreparedStatement pstatement = con2.prepareStatement(sql);
 
@@ -700,8 +699,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, Boolean food, int cost) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             if (customerExists(currentCustomer)) {
                 if (!seatsExist(seats, flight)) {
                     customer = currentCustomer;
@@ -786,8 +786,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void editReservation(Booking booking) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             String sql = "UPDATE reservations SET "
                     + "customer_id = ?, flightid = ?, food = ?, price = ? WHERE id = ?";
             customer = booking.getCustomer();
@@ -852,8 +853,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void deleteReservation(Booking booking) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             String sql = "DELETE FROM reservations WHERE id = ?";
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, booking.getID());
@@ -885,9 +887,10 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Booking getReservation(int reservationID) {
-        Connection con = getConnection();
+        
         String sql = "SELECT * FROM reservations WHERE id =?";
         try {
+            Connection con = getConnection();
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, reservationID);
 
@@ -946,10 +949,11 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Booking getReservation(int seatID, int flightID) {
-        Connection con = getConnection();
+        
         String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id = ? AND flight_id = ?";
         int reservationID;
         try {
+            Connection con = getConnection();
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, seatID);
             pstatement.setInt(2, flightID);
@@ -1014,8 +1018,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void createFlight(Flight flight) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             String sql = "INSERT INTO flights "
                     + "VALUES (null, ?, ?, ?, ?, ?, ?, ? ,?, ?)";
 
@@ -1050,8 +1055,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Flight getFlight(int flightID) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             String sql = "SELECT * FROM flights WHERE id = ?";
             //pass query to query handler -> db. REMEMBER THAT THIS DOESN'T CLOSE DB CONNECTION, CLOSING IS PARAMOUNT!
             PreparedStatement pstatement = con.prepareStatement(sql);
@@ -1106,7 +1112,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Booking> getCustomerReservations(int customerID) {
-        Connection con = getConnection();
+        
         String sql = "SELECT rsv.id "
                 + "FROM `reservations` rsv "
                 + "INNER JOIN customers cs "
@@ -1114,6 +1120,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 + "WHERE rsv.id = ?";
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
         try {
+            Connection con = getConnection();
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, customerID);
             //System.out.println(customerID);
@@ -1145,8 +1152,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Seat> getFlightBookedSeats(int flightID) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             String sql = "SELECT s.seat_id FROM reservation2seat s, reservations r WHERE flightid = ? AND r.id = s.reservation_id";
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, flightID);
@@ -1173,8 +1181,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void editFlight(Flight flight) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             String sql = "UPDATE flights SET "
                     + "airplane_id = ?, firstcost = ?, businesscost = ?, economycost = ?, departuretime = '?', "
                     + "departureplace = '?', arrivaltime = '?', arrivalplace = '?', WHERE id = ?";
@@ -1207,8 +1216,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void deleteFlight(Flight flight) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             String sql = "DELETE FROM flights WHERE id =?";
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, flight.getID());
@@ -1231,8 +1241,9 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Airplane getAirplane(int airplaneID) {
-        Connection con = getConnection();
+        
         try {
+            Connection con = getConnection();
             String sql = "SELECT * FROM airplanes WHERE id =?";
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, airplaneID);
@@ -1277,12 +1288,12 @@ public class DatabaseHandler implements DatabaseInterface {
     
     @Override
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly) {
-        Connection con = getConnection();
+        
         flights = null;
         flights = new ArrayList();
 
         try {
-
+            Connection con = getConnection();
             String sql;
             ResultSet results;
             PreparedStatement pstatement;
@@ -1339,6 +1350,48 @@ public class DatabaseHandler implements DatabaseInterface {
         } finally {
             closeConnection(cons, pstatements, resultsets);
         }
+        return flights;
+    }
+    @Override
+    public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer){
+        String sql = "SELECT f.id, a.id, CAST(f.departuretime AS DATE) + 0 FROM flights f, airplanes a WHERE f.airplane_id = a.id AND ";
+        for (String filter : filters){
+            switch(filter){
+                case "First Class": sql += "a.firstseats > 0 " + comparer;
+                    break;
+                case "Business Class": sql += "a.businesseats > 0 " + comparer;
+                    break;
+                case "Economy Class": sql += "a.economyseats > 0 " + comparer;
+                    break;
+                case "To": sql += " f.arrivalplace = ? " + comparer;
+                    break;
+                case "From": sql += " f.departureplace = ? " + comparer;
+                    break;    
+                case "Airplane": sql += " a.name = ? " + comparer;
+                    break;
+                case "Today": sql += " CAST(f.departuretime AS DATE) + 0 = CAST( SYSDATE( ) AS DATE ) + 0 " + comparer;
+                    break;
+                case "Tomorrow": sql += " CAST(f.departuretime AS DATE) + 0 = CAST( SYSDATE( ) AS DATE ) + 1  " + comparer;
+                    break;
+                case "Date": sql += " CAST(f.departuretime AS DATE) + 0 = CAST(? AS DATE ) " + comparer;
+            }
+            
+        }
+      
+        
+        sql = sql.substring(0, sql.length() - comparer.length());
+        System.out.println(sql);
+        /*
+        try{
+            Connection con = getConnection();
+            PreparedStatement pstatement = con.prepareStatement(sql);
+            pstatement.
+        } catch (SQLException ex) {
+            printSQLException(ex);
+        } finally {
+            closeConnection(cons, pstatements, resultsets);
+        }*/
+        
         return flights;
     }
 }
