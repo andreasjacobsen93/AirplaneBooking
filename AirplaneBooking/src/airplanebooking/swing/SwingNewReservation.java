@@ -444,8 +444,9 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
             i++;
         }
         if (i > 24) {
-            seats += "...";
-            labelSeats.setToolTipText(seatsTooltip);
+            seats += "... (+ " + (i-24) + " seats)";
+            if (i-24 > 25) labelSeats.setToolTipText("<html><p width=\"350px\">" + seatsTooltip + "</p></html>");
+            else labelSeats.setToolTipText(seatsTooltip);
         }
         if (i > 0) labelSeats.setText(seats);
         else labelSeats.setText("No seats chosen.");
