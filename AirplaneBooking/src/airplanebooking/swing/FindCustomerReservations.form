@@ -28,7 +28,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="listOfCustomers" alignment="0" max="32767" attributes="0"/>
                   <Component id="listOfReservations" alignment="0" pref="380" max="32767" attributes="0"/>
-                  <Component id="button1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="buttonChooseReservation" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -42,7 +42,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="listOfReservations" min="-2" pref="118" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="button1" min="-2" max="-2" attributes="0"/>
+              <Component id="buttonChooseReservation" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -56,12 +56,12 @@
     </Component>
     <Component class="java.awt.List" name="listOfReservations">
     </Component>
-    <Component class="java.awt.Button" name="button1">
+    <Component class="java.awt.Button" name="buttonChooseReservation">
       <Properties>
         <Property name="label" type="java.lang.String" value="Choose reservation..."/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="button1MouseClicked"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonChooseReservationMouseClicked"/>
       </Events>
     </Component>
   </SubComponents>

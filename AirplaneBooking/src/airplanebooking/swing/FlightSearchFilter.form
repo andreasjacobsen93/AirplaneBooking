@@ -108,7 +108,7 @@
         <Property name="label" type="java.lang.String" value="Create filter"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonCreateFilterMouseClicked"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonCreateFilterMouseClicked"/>
       </Events>
     </Component>
     <Component class="java.awt.List" name="listFilters">
@@ -121,7 +121,7 @@
         <Property name="label" type="java.lang.String" value="Apply filters..."/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonApplyFiltersMouseClicked"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonApplyFiltersMouseClicked"/>
       </Events>
     </Component>
     <Component class="java.awt.Button" name="buttonDeleteFilter">
@@ -130,7 +130,7 @@
         <Property name="label" type="java.lang.String" value="Delete selected filter"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonDeleteFilterMouseClicked"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonDeleteFilterMouseClicked"/>
       </Events>
     </Component>
     <Component class="java.awt.Label" name="label2">

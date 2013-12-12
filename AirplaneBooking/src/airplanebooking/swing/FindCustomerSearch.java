@@ -78,7 +78,7 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
         buttonSearch.setLabel("Search for customer...");
         buttonSearch.setName(""); // NOI18N
         buttonSearch.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonSearchMouseClicked(evt);
             }
         });
@@ -109,13 +109,7 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Occurs when button is clicked.
-     * Gets a list of customers matching search.
-     * @param evt 
-     */
     private void buttonSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchMouseClicked
-
         String firstname = null;
         String lastname = null;
         String email = null;

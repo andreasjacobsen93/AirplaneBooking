@@ -37,9 +37,9 @@ public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
         label3.setText("Economy Class");
 
         buttonFindSeats.setLabel("Find seats");
-        buttonFindSeats.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonFindSeatsActionPerformed(evt);
+        buttonFindSeats.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                buttonFindSeatsMouseReleased(evt);
             }
         });
 
@@ -86,15 +86,15 @@ public class SwingFindBestSeats extends javax.swing.JFrame implements GUI {
      * calls the find seats algorithm and closes this frame.
      * @param evt 
      */
-    private void buttonFindSeatsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFindSeatsActionPerformed
-        
+    private void buttonFindSeatsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonFindSeatsMouseReleased
         // Find best seats
         CurrentBooking.findBestSeats(Integer.parseInt(textField1.getText()));
         
         // Close this frame
         this.dispose();
-    }//GEN-LAST:event_buttonFindSeatsActionPerformed
+    }//GEN-LAST:event_buttonFindSeatsMouseReleased
 
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button buttonFindSeats;

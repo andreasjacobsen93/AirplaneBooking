@@ -11,6 +11,7 @@ import airplanebooking.FlightListener;
 import airplanebooking.GUI;
 import airplanebooking.SeatListener;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,6 +40,9 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         
         initComponents();
         setTitle("Airplane Booking");
+        
+        setExtendedState( getExtendedState()|JFrame.MAXIMIZED_BOTH );
+        
         ready = false;
         
         // Airplane
@@ -53,6 +57,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelPrice.setVisible(false);
         labelTravelClass.setVisible(false); 
         labelSeats.setVisible(false);
+        buttonEditReservation.setVisible(false);
         
         addFlightsToList(false);
     }
@@ -120,7 +125,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         buttonFindCustomer.setLabel("Find customer...");
         buttonFindCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonFindCustomerMouseClicked();
             }
         });
@@ -128,7 +133,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         buttonFilter.setLabel("Filter...");
         buttonFilter.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonFilterMouseClicked();
             }
         });
@@ -175,7 +180,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         buttonNewReservation.setLabel("New reservation...");
         buttonNewReservation.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonNewReservationMouseClicked();
             }
         });
@@ -227,7 +232,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         buttonDeleteReservation.setLabel("Delete reservation...");
         buttonDeleteReservation.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonDeleteReservationMouseClicked();
             }
         });
@@ -235,7 +240,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         buttonEditReservation.setLabel("Edit reservation...");
         buttonEditReservation.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonEditReservationMouseClicked();
             }
         });
@@ -595,6 +600,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelPrice.setVisible(false);
         labelTravelClass.setVisible(false);
         labelSeats.setVisible(false);
+        buttonEditReservation.setVisible(false);
         
         ready = true;
         
@@ -615,6 +621,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelPrice.setVisible(true);
         labelTravelClass.setVisible(true); 
         labelSeats.setVisible(true);
+        buttonEditReservation.setVisible(true);
         
         Booking b = Database.db().getReservation(CurrentFlight.getSeat().getSeatID(), CurrentFlight.getFlight().getID());
         booking = b;

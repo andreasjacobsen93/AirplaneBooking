@@ -91,7 +91,7 @@
         <Property name="label" type="java.lang.String" value="Find seats"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonFindSeatsActionPerformed"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonFindSeatsMouseReleased"/>
       </Events>
     </Component>
   </SubComponents>

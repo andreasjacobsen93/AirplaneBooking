@@ -72,7 +72,7 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
         buttonChangeFlight.setLabel("Change flight...");
         buttonChangeFlight.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonChangeFlightMouseClicked();
             }
         });
@@ -117,7 +117,7 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
         buttonUpdateReservation.setLabel("Update reservation...");
         buttonUpdateReservation.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonUpdateReservationMouseClicked();
             }
         });

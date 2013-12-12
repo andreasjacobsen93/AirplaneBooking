@@ -53,7 +53,7 @@
         <Property name="label" type="java.lang.String" value="Choose customer..."/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonChooseCustomerMouseClicked"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonChooseCustomerMouseClicked"/>
       </Events>
     </Component>
   </SubComponents>

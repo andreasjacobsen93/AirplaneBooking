@@ -51,7 +51,7 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
 
         buttonCreateFilter.setLabel("Create filter");
         buttonCreateFilter.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonCreateFilterMouseClicked(evt);
             }
         });
@@ -64,7 +64,7 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
 
         buttonApplyFilters.setLabel("Apply filters...");
         buttonApplyFilters.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonApplyFiltersMouseClicked(evt);
             }
         });
@@ -72,7 +72,7 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
         buttonDeleteFilter.setEnabled(false);
         buttonDeleteFilter.setLabel("Delete selected filter");
         buttonDeleteFilter.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonDeleteFilterMouseClicked(evt);
             }
         });
@@ -155,78 +155,6 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
     }//GEN-LAST:event_listFiltersItemStateChanged
 
     /**
-     * Called when button to create a new filter is clicked.
-     * Creates a new filter.
-     * @param evt 
-     */
-    private void buttonCreateFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCreateFilterMouseClicked
-        switch(choice.getSelectedItem())
-        {
-            case "First Class":
-                    listFilters.add("First Class");
-                break;
-            case "Business Class":
-                    listFilters.add("Business Class");
-                break;
-            case "Economy Class":
-                    listFilters.add("Economy Class");
-                break;
-            case "From":
-                    listFilters.add("From " + textField.getText());
-                break;
-            case "Destination":
-                    listFilters.add("To " + textField.getText());
-                break;
-            case "Airplane name":
-                    listFilters.add("Airplane " + textField.getText());
-                break;
-            case "Today":
-                    listFilters.add("Today");
-                break;
-            case "Tomorrow":
-                    listFilters.add("Tomorrow");
-                break;
-            case "Date":
-                    listFilters.add("Date: " + textField.getText());
-                break;
-        }
-    }//GEN-LAST:event_buttonCreateFilterMouseClicked
-
-    /**
-     * Called when delete filter button is clicked.
-     * Deletes the selected filter.
-     * @param evt 
-     */
-    private void buttonDeleteFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteFilterMouseClicked
-        listFilters.remove(listFilters.getSelectedItem());
-        buttonDeleteFilter.setEnabled(false);
-    }//GEN-LAST:event_buttonDeleteFilterMouseClicked
-
-    /**
-     * Called when apply filter button is clicked.
-     * Creates a search from the filters.
-     * @param evt 
-     */
-    private void buttonApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonApplyFiltersMouseClicked
-
-        String comparer = "";
-        switch (choiceComparer.getSelectedItem()){
-            case "All of the above":
-                comparer = "AND";
-                break;
-            case "Some of the above":
-                comparer = "OR";
-                break;
-        }
-        
-        String[] filters = listFilters.getItems();
-        
-        swingMain.updateSearch(Database.db().getFilteredFlights(filters, comparer));
-        
-        this.dispose();
-    }//GEN-LAST:event_buttonApplyFiltersMouseClicked
-
-    /**
      * Called when filter category is changed.
      * Set the textbox to enabled or not.
      * @param evt 
@@ -267,6 +195,62 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
                 break;
         }
     }//GEN-LAST:event_choiceItemStateChanged
+
+    private void buttonCreateFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCreateFilterMouseClicked
+        switch(choice.getSelectedItem())
+        {
+            case "First Class":
+                    listFilters.add("First Class");
+                break;
+            case "Business Class":
+                    listFilters.add("Business Class");
+                break;
+            case "Economy Class":
+                    listFilters.add("Economy Class");
+                break;
+            case "From":
+                    listFilters.add("From " + textField.getText());
+                break;
+            case "Destination":
+                    listFilters.add("To " + textField.getText());
+                break;
+            case "Airplane name":
+                    listFilters.add("Airplane " + textField.getText());
+                break;
+            case "Today":
+                    listFilters.add("Today");
+                break;
+            case "Tomorrow":
+                    listFilters.add("Tomorrow");
+                break;
+            case "Date":
+                    listFilters.add("Date: " + textField.getText());
+                break;
+        }
+    }//GEN-LAST:event_buttonCreateFilterMouseClicked
+
+    private void buttonDeleteFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteFilterMouseClicked
+        listFilters.remove(listFilters.getSelectedItem());
+        buttonDeleteFilter.setEnabled(false);
+    }//GEN-LAST:event_buttonDeleteFilterMouseClicked
+
+    private void buttonApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonApplyFiltersMouseClicked
+        String comparer = "";
+        switch (choiceComparer.getSelectedItem()){
+            case "All of the above":
+                comparer = "AND";
+                break;
+            case "Some of the above":
+                comparer = "OR";
+                break;
+        }
+        
+        String[] filters = listFilters.getItems();
+        
+        swingMain.updateSearch(Database.db().getFilteredFlights(filters, comparer));
+        
+        this.dispose();
+    }//GEN-LAST:event_buttonApplyFiltersMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

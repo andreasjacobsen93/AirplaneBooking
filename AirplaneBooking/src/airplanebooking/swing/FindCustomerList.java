@@ -40,7 +40,7 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI
 
         buttonChooseCustomer.setLabel("Choose customer...");
         buttonChooseCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonChooseCustomerMouseClicked(evt);
             }
         });
@@ -70,7 +70,8 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * This method is called when button gets a mouse click.
+     * Called when the choose-customer button is clicked.
+     * Updates the current booking with the chosen customer.
      * @param evt 
      */
     private void buttonChooseCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonChooseCustomerMouseClicked

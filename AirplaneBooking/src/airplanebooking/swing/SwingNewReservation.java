@@ -85,7 +85,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         buttonFindBestSeats.setLabel("Find best seats...");
         buttonFindBestSeats.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonFindBestSeatsMouseClicked();
             }
         });
@@ -93,7 +93,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         buttonResetBookedSeats.setLabel("Reset booked seats...");
         buttonResetBookedSeats.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonResetBookedSeatsMouseClicked();
             }
         });
@@ -101,7 +101,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         buttonExistingCustomer.setLabel("Existing customer...");
         buttonExistingCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonExistingCustomerMouseClicked();
             }
         });
@@ -150,7 +150,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         buttonCreateReservation.setLabel("Create reservation...");
         buttonCreateReservation.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
                 buttonCreateReservationMouseClicked();
             }
         });

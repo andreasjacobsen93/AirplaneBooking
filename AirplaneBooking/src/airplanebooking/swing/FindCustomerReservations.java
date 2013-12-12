@@ -28,6 +28,8 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
         
         initComponents();
         
+        buttonChooseReservation.setEnabled(false);
+        
         for (int i = 0; i < list.size(); i++)
         {
             listOfCustomers.add(list.get(i).getFirstName() + " " + list.get(i).getLastName());
@@ -39,7 +41,7 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
 
         listOfCustomers = new java.awt.List();
         listOfReservations = new java.awt.List();
-        button1 = new java.awt.Button();
+        buttonChooseReservation = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -49,10 +51,10 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
             }
         });
 
-        button1.setLabel("Choose reservation...");
-        button1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                button1MouseClicked(evt);
+        buttonChooseReservation.setLabel("Choose reservation...");
+        buttonChooseReservation.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                buttonChooseReservationMouseClicked(evt);
             }
         });
 
@@ -65,7 +67,7 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(listOfCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(listOfReservations, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonChooseReservation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -76,13 +78,18 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(listOfReservations, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonChooseReservation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This method is called when the chosen customer has changes.
+     * Is used to update the reservation list from the chosen customer.
+     * @param evt 
+     */
     private void listOfCustomersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listOfCustomersItemStateChanged
         listOfReservations.removeAll();
         
@@ -95,16 +102,24 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
             Flight f = bookingList.get(i).getFlight();
             listOfReservations.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " @" + f.getDepartureTime());
         }
+        
+        if (bookingList.size() > 0) buttonChooseReservation.setEnabled(true);
+        else buttonChooseReservation.setEnabled(false);
     }//GEN-LAST:event_listOfCustomersItemStateChanged
 
-    private void button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MouseClicked
+    /**
+     * This method is called when choose-reservation button is clicked.
+     * Is used to set the current flight to that of the chosen reservation.
+     * @param evt 
+     */
+    private void buttonChooseReservationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonChooseReservationMouseClicked
         CurrentFlight.setFlight(bookingList.get(listOfReservations.getSelectedIndex()).getFlight());
         this.dispose();
-    }//GEN-LAST:event_button1MouseClicked
+    }//GEN-LAST:event_buttonChooseReservationMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button button1;
+    private java.awt.Button buttonChooseReservation;
     private java.awt.List listOfCustomers;
     private java.awt.List listOfReservations;
     // End of variables declaration//GEN-END:variables

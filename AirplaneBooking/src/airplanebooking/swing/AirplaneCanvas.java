@@ -290,7 +290,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         
         addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseReleased(java.awt.event.MouseEvent e) {
                 x = e.getX(); y = e.getY();
 
                 for (int i = 0; i < seatsCount; i++)
