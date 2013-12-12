@@ -19,6 +19,7 @@ import java.util.ArrayList;
  * it wrong.
  *
  * {@inheritDoc}
+ *
  * @author Aleksandar Jonovic
  */
 public class DatabaseHandler implements DatabaseInterface {
@@ -54,8 +55,8 @@ public class DatabaseHandler implements DatabaseInterface {
     Airplane airplane;
 
     /**
-     * Constructor for this object.
-     * For more detail about the API methods of this class, please refer to:
+     * Constructor for this object. For more detail about the API methods of
+     * this class, please refer to:
      * {@link airplanebooking.DB.DatabaseInterface DatabaseInterface}
      */
     public DatabaseHandler() {
@@ -84,8 +85,8 @@ public class DatabaseHandler implements DatabaseInterface {
 
     private Connection getConnection() throws SQLException {
 
-            return cpds.getConnection();
-      
+        return cpds.getConnection();
+
     }
 
     /**
@@ -183,11 +184,9 @@ public class DatabaseHandler implements DatabaseInterface {
      * Still testing this sucker. Not yet implemented.
      *
      */
-
     /**
      *
      */
-    
     private void getNumCon() {
         //Maintenance debug method, for getting all number of alive connections and connection pools - use to debug current state of the pool.
         try {
@@ -236,7 +235,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
-     *  
+     *
      */
     @Override
     public void createCustomer(Customer customer) {
@@ -490,7 +489,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone) {
-        
+
         String recieverMatrix = "0:0:0:0";
         String[] parts = recieverMatrix.split(":");
         String[] columns = new String[4];
@@ -587,7 +586,7 @@ public class DatabaseHandler implements DatabaseInterface {
      * @return
      */
     private boolean customerExists(Customer customer) {
-        
+
         String firstname = customer.getFirstName();
         String lastname = customer.getLastName();
         String email = customer.getEmail();
@@ -625,7 +624,7 @@ public class DatabaseHandler implements DatabaseInterface {
      * @return
      */
     private boolean customerExists(int customerID) {
-        
+
         String sql = "SELECT * FROM customers WHERE id= ?";
         Boolean exists = false;
         try {
@@ -661,7 +660,7 @@ public class DatabaseHandler implements DatabaseInterface {
      * database, even if the rest do not.
      */
     private boolean seatsExist(ArrayList<Seat> seats, Flight flight) {
-        
+
         boolean exists = false;
         for (Seat currentSeat : seats) {
             try {
@@ -699,7 +698,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, Boolean food, int cost) {
-        
+
         try {
             Connection con = getConnection();
             if (customerExists(currentCustomer)) {
@@ -786,7 +785,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void editReservation(Booking booking) {
-        
+
         try {
             Connection con = getConnection();
             String sql = "UPDATE reservations SET "
@@ -799,7 +798,7 @@ public class DatabaseHandler implements DatabaseInterface {
             pstatement.setBoolean(3, booking.getFood());
             pstatement.setInt(4, booking.getPrice());
             pstatement.setInt(5, booking.getID());
-            
+
             executeUpdate(pstatement);
             seats = booking.getSeats();
 
@@ -853,7 +852,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void deleteReservation(Booking booking) {
-        
+
         try {
             Connection con = getConnection();
             String sql = "DELETE FROM reservations WHERE id = ?";
@@ -887,7 +886,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Booking getReservation(int reservationID) {
-        
+
         String sql = "SELECT * FROM reservations WHERE id =?";
         try {
             Connection con = getConnection();
@@ -949,7 +948,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Booking getReservation(int seatID, int flightID) {
-        
+
         String sql = "SELECT reservation_id FROM reservation2seat WHERE seat_id = ? AND flight_id = ?";
         int reservationID;
         try {
@@ -1018,7 +1017,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void createFlight(Flight flight) {
-        
+
         try {
             Connection con = getConnection();
             String sql = "INSERT INTO flights "
@@ -1055,7 +1054,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Flight getFlight(int flightID) {
-        
+
         try {
             Connection con = getConnection();
             String sql = "SELECT * FROM flights WHERE id = ?";
@@ -1112,7 +1111,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Booking> getCustomerReservations(int customerID) {
-        
+
         String sql = "SELECT rsv.id "
                 + "FROM `reservations` rsv "
                 + "INNER JOIN customers cs "
@@ -1152,7 +1151,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public ArrayList<Seat> getFlightBookedSeats(int flightID) {
-        
+
         try {
             Connection con = getConnection();
             String sql = "SELECT s.seat_id FROM reservation2seat s, reservations r WHERE flightid = ? AND r.id = s.reservation_id";
@@ -1181,7 +1180,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void editFlight(Flight flight) {
-        
+
         try {
             Connection con = getConnection();
             String sql = "UPDATE flights SET "
@@ -1216,7 +1215,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public void deleteFlight(Flight flight) {
-        
+
         try {
             Connection con = getConnection();
             String sql = "DELETE FROM flights WHERE id =?";
@@ -1241,7 +1240,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     @Override
     public Airplane getAirplane(int airplaneID) {
-        
+
         try {
             Connection con = getConnection();
             String sql = "SELECT * FROM airplanes WHERE id =?";
@@ -1279,16 +1278,14 @@ public class DatabaseHandler implements DatabaseInterface {
      *   Below are unimplemented methods.
      *   Below are unimplemented methods.
      */
-
     /**
      *
      * @param freeSeatsOnly
      * @return
      */
-    
     @Override
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly) {
-        
+
         flights = null;
         flights = new ArrayList();
 
@@ -1352,46 +1349,80 @@ public class DatabaseHandler implements DatabaseInterface {
         }
         return flights;
     }
+
     @Override
-    public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer){
+    public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer) {
         String sql = "SELECT f.id, a.id, CAST(f.departuretime AS DATE) + 0 FROM flights f, airplanes a WHERE f.airplane_id = a.id AND ";
-        for (String filter : filters){
-            switch(filter){
-                case "First Class": sql += "a.firstseats > 0 " + comparer;
-                    break;
-                case "Business Class": sql += "a.businesseats > 0 " + comparer;
-                    break;
-                case "Economy Class": sql += "a.economyseats > 0 " + comparer;
-                    break;
-               // case if(filter.startsWith("To")): sql += " f.arrivalplace = ? " + comparer;
-                 //   break;
-                case "From": sql += " f.departureplace = ? " + comparer;
-                    break;    
-                case "Airplane": sql += " a.name = ? " + comparer;
-                    break;
-                case "Today": sql += " CAST(f.departuretime AS DATE) + 0 = CAST( SYSDATE( ) AS DATE ) + 0 " + comparer;
-                    break;
-                case "Tomorrow": sql += " CAST(f.departuretime AS DATE) + 0 = CAST( SYSDATE( ) AS DATE ) + 1  " + comparer;
-                    break;
-                case "Date": sql += " CAST(f.departuretime AS DATE) + 0 = CAST(? AS DATE ) " + comparer;
-            }
-            
-        }
-      
-        
-        sql = sql.substring(0, sql.length() - comparer.length());
-        System.out.println(sql);
-        /*
-        try{
+        try {
             Connection con = getConnection();
-            PreparedStatement pstatement = con.prepareStatement(sql);
-            pstatement.
+            PreparedStatement pstatement = con.prepareStatement(sql);    
+
+            for (String filter : filters) {
+                String[] filterSplit = filter.split(" ");
+                int i = 0;
+                
+                switch (filterSplit[0]) {
+
+                    case "First":
+                        sql += " a.firstseats > 0 " + comparer;
+                        break;
+                    case "Business":
+                        sql += " a.businesseats > 0 " + comparer;
+                        break;
+                    case "Economy":
+                        sql += " a.economyseats > 0 " + comparer;
+                        break;
+                    case "Today":
+                        sql += " CAST(f.departuretime AS DATE) + 0 = CAST( SYSDATE( ) AS DATE ) + 0 " + comparer;
+                        break;
+                    case "Tomorrow":
+                        sql += " CAST(f.departuretime AS DATE) + 0 = CAST( SYSDATE( ) AS DATE ) + 1 " + comparer;
+                        break;
+                    case "Airplane":
+                        sql += " a.name = ? " + comparer;
+                        i++;
+                        pstatement = con.prepareStatement(sql);
+                        pstatement.setString(i,filterSplit[1]);
+                    break;
+                    case "Date":
+                        sql += " CAST(f.departuretime AS DATE) + 0 = CAST(? AS DATE ) " + comparer;
+                        i++;
+                        pstatement = con.prepareStatement(sql);
+                        pstatement.setString(i,filterSplit[1]);
+                        break;
+                    case "From":
+                        sql += " f.departureplace = ? " + comparer;
+                        i++;
+                        pstatement = con.prepareStatement(sql);
+                        pstatement.setString(i,filterSplit[1]);
+                        break;
+                    case "To":
+                        sql += " f.arrivalplace = ? " + comparer;
+                        i++;
+                        pstatement = con.prepareStatement(sql);
+                        pstatement.setString(i,filterSplit[1]);
+                        break;
+
+                }
+
+            }
+
+            sql = sql.substring(0, sql.length() - comparer.length());
+            System.out.println(sql);
+            ResultSet results = executeQuery(pstatement);
+            flights = new ArrayList();
+            while(results.next()){
+                flight = null;
+                flight = getFlight(results.getInt(1));
+                
+                flights.add(flight);
+            }
         } catch (SQLException ex) {
             printSQLException(ex);
         } finally {
             closeConnection(cons, pstatements, resultsets);
-        }*/
-        
+        }
+
         return flights;
     }
 }
