@@ -29,7 +29,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
         if (AirplaneCan.airplaneIsFull())
         {
             JOptionPane.showMessageDialog(null, "All seats on flight is booked.");
-            dispose();
+            this.dispose();
         }
         
         setTitle("Airplane Booking - New Reservation...");
@@ -412,6 +412,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
      */
     public void buttonCreateReservationMouseClicked()
     {
+        buttonCreateReservation.setLabel("Creating...");
         CurrentBooking.addCustomer(new Customer(customerID, textMaritialStatus.getText(), textFirstName.getText(), textLastName.getText(), textAddressStreet.getText(), Integer.parseInt(textAddressZip.getText()), textAddressCity.getText(), textAddressCountry.getText(), Integer.parseInt(textPhone.getText()), textEmail.getText()));
         CurrentBooking.saveBooking(false);
         this.dispose();

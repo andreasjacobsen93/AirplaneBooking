@@ -337,6 +337,7 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
      */
     public void buttonUpdateReservationMouseClicked()
     {
+        buttonUpdateReservation.setLabel("Updating...");
         CurrentBooking.saveBooking(true);
         this.dispose();
     }

@@ -453,9 +453,10 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
      */
     private void buttonNewReservationMouseClicked() {                                                  
 
-        if (CurrentFlight.getFlight().isFull())
+        if (AirplaneCanvasPanel.airplaneIsFull())
         {
             JOptionPane.showMessageDialog(null, "All seats on flight is booked.");
+            ready = false;
         }
         else
         {
@@ -592,11 +593,13 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         int dialogResult = JOptionPane.showConfirmDialog (null, "The reservation will be deleted from the system. Are you sure?","Warning",dialogButton);
         if(dialogResult == JOptionPane.YES_OPTION)
         {
+            buttonDeleteReservation.setLabel("Deleting...");
             Database.db().deleteReservation(booking);
             CurrentBooking.reset();
             //CurrentBooking.addFlight(db.getFlight(booking.getFlight().getID()));
             CurrentFlight.setFlight(Database.db().getFlight(booking.getFlight().getID()));
             CurrentFlight.updateFlights();
+            buttonDeleteReservation.setLabel("Delete reservation...");
         }
     }
     
