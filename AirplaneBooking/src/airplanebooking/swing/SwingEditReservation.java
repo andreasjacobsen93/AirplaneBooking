@@ -340,6 +340,7 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
     public void buttonUpdateReservationMouseClicked()
     {
         buttonUpdateReservation.setLabel("Updating...");
+        CurrentBooking.addCustomer(new Customer(0, textMaritialStatus.getText(), textFirstName.getText(), textLastName.getText(), textAddressStreet.getText(), Integer.parseInt(textAddressZip.getText()), textAddressCity.getText(), textAddressCountry.getText(), Integer.parseInt(textPhone.getText()), textEmail.getText()));
         CurrentBooking.saveBooking(true);
         this.dispose();
     }
