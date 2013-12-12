@@ -283,12 +283,13 @@ public class DatabaseHandler implements DatabaseInterface {
         try {
             Connection con = getConnection();
             //Create the prepared statement string.
-            String sql = "UPDATE customers SET maritalstatus = '?', firstname = '?', lastname = '?', addressstreet = '?', addresszip = ?, addresscity = '?', "
-                    + "addresscountry = '?', email = '?', phonenumber = ? WHERE id = ?";
+            String sql = "UPDATE customers SET maritalstatus = ?, firstname = ?, lastname = ?, addressstreet = ?, addresszip = ?, addresscity = ?, "
+                    + "addresscountry = ?, email = ?, phonenumber = ? WHERE id = ?";
             //Prepare the statement
             PreparedStatement pstatement = con.prepareStatement(sql);
             //Unpack the Customer object, and insert values relative to the the correct column positions in the database.
             pstatement.setString(1, customer.getMaritalStatus());
+            pstatement.setString(2, customer.getFirstName());
             pstatement.setString(3, customer.getLastName());
             pstatement.setString(4, customer.getAddressStreet());
             pstatement.setInt(5, customer.getAddressZip());
@@ -297,7 +298,7 @@ public class DatabaseHandler implements DatabaseInterface {
             pstatement.setString(8, customer.getEmail());
             pstatement.setInt(9, customer.getPhone());
             pstatement.setInt(10, customer.getID());
-
+            
             //Execute the prepared statement
             executeUpdate(pstatement);
 
@@ -806,7 +807,8 @@ public class DatabaseHandler implements DatabaseInterface {
             pstatement.setBoolean(3, booking.getFood());
             pstatement.setInt(4, booking.getPrice());
             pstatement.setInt(5, booking.getID());
-
+            
+            editCustomer(customer);
             executeUpdate(pstatement);
             seats = booking.getSeats();
 
