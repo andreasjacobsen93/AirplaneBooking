@@ -1,5 +1,6 @@
 package airplanebooking.swing;
 
+import airplanebooking.DB.Database;
 import airplanebooking.GUI;
 
 /**
@@ -208,19 +209,19 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
      */
     private void buttonApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonApplyFiltersMouseClicked
 
-        String comparer;
+        String comparer = "";
         switch (choiceComparer.getSelectedItem()){
             case "All of the above":
-                comparer = "and";
+                comparer = "AND";
                 break;
             case "Some of the above":
-                comparer = "or";
+                comparer = "OR";
                 break;
         }
         
         String[] filters = listFilters.getItems();
         
-        
+        swingMain.updateSearch(Database.db().getFilteredFlights(filters, comparer));
         
         this.dispose();
     }//GEN-LAST:event_buttonApplyFiltersMouseClicked
