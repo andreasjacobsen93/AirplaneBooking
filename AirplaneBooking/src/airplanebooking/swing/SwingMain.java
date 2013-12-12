@@ -10,6 +10,7 @@ import airplanebooking.DB.Seat;
 import airplanebooking.FlightListener;
 import airplanebooking.GUI;
 import airplanebooking.SeatListener;
+import java.awt.Cursor;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -491,8 +492,10 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
     private void buttonFilterMouseClicked(){
         if (filtered){
             filtered = false;
+            buttonFilter.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             buttonFilter.setLabel("Removing....");
             addFlightsToList(checkboxFreeSeatsOnly.getState());
+            buttonFilter.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             buttonFilter.setLabel("Filter...");
         }
         else
@@ -512,6 +515,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         if (filtered) 
         {
             listFlights.removeAll();
+            listFlights.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             listFlights.add("Searching...");
             
             flights.clear();
@@ -525,6 +529,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
                     flights.add(f);
                 }
             }
+            listFlights.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
         else addFlightsToList(checkboxFreeSeatsOnly.getState());
     }   
@@ -599,12 +604,14 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         int dialogResult = JOptionPane.showConfirmDialog (null, "The reservation will be deleted from the system. Are you sure?","Warning",dialogButton);
         if(dialogResult == JOptionPane.YES_OPTION)
         {
+            buttonDeleteReservation.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             buttonDeleteReservation.setLabel("Deleting...");
             Database.db().deleteReservation(booking);
             CurrentBooking.reset();
             //CurrentBooking.addFlight(db.getFlight(booking.getFlight().getID()));
             CurrentFlight.setFlight(Database.db().getFlight(booking.getFlight().getID()));
             CurrentFlight.updateFlights();
+            buttonDeleteReservation.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             buttonDeleteReservation.setLabel("Delete reservation...");
         }
     }
@@ -619,6 +626,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         buttonFilter.setLabel("Remove filter");
         
         listFlights.removeAll();
+        listFlights.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         listFlights.add("Searching...");
         
         backupFlights = flightsList;
@@ -633,6 +641,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
                 flights.add(f);
             }
         }
+        listFlights.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     /**
@@ -700,11 +709,11 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         for (Seat s : b.getSeats())
         {
             // Current seat is First Class
-            if (b.getFlight().getAirplane().getFirstSeats() > i) {
+            if (b.getFlight().getAirplane().getFirstSeats() > s.getSeatID()) {
                 FirstClass = true;
             } 
             // Current seat is Business Class
-            else if (b.getFlight().getAirplane().getFirstSeats() + b.getFlight().getAirplane().getBusinessSeats() > i) {
+            else if (b.getFlight().getAirplane().getFirstSeats() + b.getFlight().getAirplane().getBusinessSeats() > s.getSeatID()) {
                 BusinessClass = true;
             } 
             // Current seat is Economy Class

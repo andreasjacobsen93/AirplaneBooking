@@ -2,10 +2,12 @@ package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
+import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.Seat;
 import airplanebooking.GUI;
+import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
 /**
@@ -132,6 +134,12 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
         checkboxLunchOnboard.setLabel("Lunch on-board");
         checkboxLunchOnboard.setName(""); // NOI18N
         checkboxLunchOnboard.setState(true);
+        checkboxLunchOnboard.addItemListener(new java.awt.event.ItemListener() {
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkboxLunchOnboardItemStateChanged();
+            }
+        });
 
         labelTravelClass.setText("No seats chosen.");
 
@@ -340,9 +348,19 @@ public final class SwingEditReservation extends javax.swing.JFrame implements GU
     public void buttonUpdateReservationMouseClicked()
     {
         buttonUpdateReservation.setLabel("Updating...");
+        buttonUpdateReservation.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         CurrentBooking.addCustomer(new Customer(customerID, textMaritialStatus.getText(), textFirstName.getText(), textLastName.getText(), textAddressStreet.getText(), Integer.parseInt(textAddressZip.getText()), textAddressCity.getText(), textAddressCountry.getText(), Integer.parseInt(textPhone.getText()), textEmail.getText()));
         CurrentBooking.saveBooking(true);
         this.dispose();
+    }
+    
+    /**
+     * Called when lunch-on-board checkbox is clicked.
+     * Set the lunch for the current booking.
+     */
+    public void checkboxLunchOnboardItemStateChanged()
+    {
+        CurrentBooking.setLunch(checkboxLunchOnboard.getState());
     }
     
     private int customerID;

@@ -81,10 +81,12 @@ public class CurrentBooking {
      */
     public static void saveBooking(Boolean update)
     {
+        ArrayList<Seat> seatList = bookedSeats;
         if(update) Database.db().editReservation(new Booking(id, customer, flight, bookedSeats, lunch, totalCost));
         else Database.db().createReservation(customer, flight, bookedSeats, lunch, totalCost);
-        CurrentFlight.setFlight(Database.db().getFlight(flight.getID()));
         CurrentFlight.updateFlights();
+        CurrentFlight.setFlight(Database.db().getFlight(flight.getID()));
+        if(seatList != null) CurrentFlight.setSeat(seatList.get(0));
         reset();
     }
 
@@ -169,6 +171,7 @@ public class CurrentBooking {
         totalCost = b.getPrice();
         addSeats(b.getSeats());
         allowedSeats = b.getSeats();
+        System.out.println(bookedSeats);
     }
     
     /**

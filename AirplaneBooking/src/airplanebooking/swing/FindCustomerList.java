@@ -3,6 +3,7 @@ package airplanebooking.swing;
 import airplanebooking.CurrentBooking;
 import airplanebooking.DB.Customer;
 import airplanebooking.GUI;
+import java.awt.Cursor;
 import java.util.ArrayList;
 
 /**
@@ -75,6 +76,9 @@ public class FindCustomerList extends javax.swing.JFrame implements GUI
      * @param evt 
      */
     private void buttonChooseCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonChooseCustomerMouseClicked
+        buttonChooseCustomer.setLabel("Choosing customer...");
+        buttonChooseCustomer.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
         // Add customer from list to current booking.
         CurrentBooking.addCustomer(list.get(list1.getSelectedIndex()));
         CurrentBooking.update();

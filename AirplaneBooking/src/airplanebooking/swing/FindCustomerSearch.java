@@ -3,6 +3,7 @@ package airplanebooking.swing;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.Database;
 import airplanebooking.GUI;
+import java.awt.Cursor;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -111,6 +112,7 @@ public class FindCustomerSearch extends javax.swing.JFrame implements GUI {
 
     private void buttonSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchMouseClicked
         buttonSearch.setLabel("Searching...");
+        buttonSearch.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         String firstname = null;
         String lastname = null;
         String email = null;

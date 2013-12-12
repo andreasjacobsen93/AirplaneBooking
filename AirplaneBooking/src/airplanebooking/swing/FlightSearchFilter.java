@@ -2,6 +2,7 @@ package airplanebooking.swing;
 
 import airplanebooking.DB.Database;
 import airplanebooking.GUI;
+import java.awt.Cursor;
 
 /**
  * FlightSearchFilter is used to filter the list of flights.
@@ -236,6 +237,7 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
 
     private void buttonApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonApplyFiltersMouseClicked
         buttonApplyFilters.setLabel("Applying filters...");
+        buttonApplyFilters.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         
         String comparer = "";
         switch (choiceComparer.getSelectedItem()){

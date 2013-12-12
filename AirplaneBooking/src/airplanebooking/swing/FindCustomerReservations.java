@@ -6,6 +6,7 @@ import airplanebooking.DB.Customer;
 import airplanebooking.DB.Database;
 import airplanebooking.DB.Flight;
 import airplanebooking.GUI;
+import java.awt.Cursor;
 import java.util.ArrayList;
 
 /**
@@ -92,6 +93,7 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
      */
     private void listOfCustomersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listOfCustomersItemStateChanged
         listOfReservations.removeAll();
+        listOfReservations.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         listOfReservations.add("Searching...");
         
         bookingList = Database.db().getCustomerReservations(list.get(listOfCustomers.getSelectedIndex()).getID());
@@ -107,7 +109,7 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
         
         if (bookingList.size() > 0) buttonChooseReservation.setEnabled(true);
         else buttonChooseReservation.setEnabled(false);
-        this.setTitle("");
+        listOfReservations.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_listOfCustomersItemStateChanged
 
     /**
@@ -117,6 +119,7 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
      */
     private void buttonChooseReservationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonChooseReservationMouseClicked
         buttonChooseReservation.setLabel("Getting reservation...");
+        buttonChooseReservation.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         CurrentFlight.setFlight(bookingList.get(listOfReservations.getSelectedIndex()).getFlight());
         CurrentFlight.setSeat(bookingList.get(listOfReservations.getSelectedIndex()).getSeats().get(0));
         this.dispose();

@@ -406,6 +406,7 @@ public final class AirplaneCanvas extends javax.swing.JComponent implements Book
         {
             if (seats[i][1] == 1)
             {
+                changeCursor(new Cursor(Cursor.WAIT_CURSOR));
                 for (int s = 0; s < seatsCount; s++)
                 {
                     if (seats[s][1] == 3) seats[s][1] = 1;

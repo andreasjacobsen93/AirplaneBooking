@@ -2,6 +2,7 @@ package airplanebooking;
 
 import airplanebooking.DB.Database;
 import airplanebooking.swing.SwingMain;
+import com.mysql.jdbc.CommunicationsException;
 
 /**
  *
