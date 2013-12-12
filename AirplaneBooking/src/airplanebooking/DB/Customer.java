@@ -68,15 +68,15 @@ public class Customer {
      * For JavaDoc please refer to:<p>
      * {@link #Customer(int, String, String, String, String, int, String, String, int, String) Customer constructor - JavaDoc}
      * 
-     * @param maritialStatus
-     * @param firstName
-     * @param lastName
-     * @param addressStreet
-     * @param addressZip
-     * @param addressCity
-     * @param addressCountry
-     * @param phone
-     * @param email
+     * @param maritialStatus N/A
+     * @param firstName N/A
+     * @param lastName N/A
+     * @param addressStreet N/A
+     * @param addressZip N/A
+     * @param addressCity N/A
+     * @param addressCountry N/A
+     * @param phone N/A
+     * @param email N/A
      */
     public Customer(String maritialStatus, String firstName, String lastName, String addressStreet, int addressZip, String addressCity, String addressCountry, int phone, String email)
     {
@@ -101,8 +101,8 @@ public class Customer {
     }
     
     /**
-     * This method gets the maritial status of the customer.
-     * @return Maritial status of customer as string.
+     * This method gets the marital status of the customer.
+     * @return Marital status of customer as string.
      */
     public String getMaritalStatus(){
         return maritialStatus;

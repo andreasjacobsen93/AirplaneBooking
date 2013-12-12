@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * If you are spawning more than one of these objects, you are most likely doing
  * it wrong.
  *
+ * {@inheritDoc}
  * @author Aleksandar Jonovic
  */
 public class DatabaseHandler implements DatabaseInterface {
@@ -54,7 +55,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * Constructor for this object.
-     * For more detail about the API method of this class, please refer to:
+     * For more detail about the API methods of this class, please refer to:
      * {@link airplanebooking.DB.DatabaseInterface DatabaseInterface}
      */
     public DatabaseHandler() {
@@ -76,7 +77,9 @@ public class DatabaseHandler implements DatabaseInterface {
         cpds.setMinPoolSize(1);
         cpds.setAcquireIncrement(3);
         cpds.setMaxPoolSize(100);
-
+        cpds.setIdleConnectionTestPeriod(10);
+        cpds.setTestConnectionOnCheckin(true);
+        cpds.setMaxIdleTimeExcessConnections(5);
     }
 
     private Connection getConnection() {
@@ -91,12 +94,12 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
-     * This method is borrowed from:
+     * This method is borrowed from:<br>
      *
-     * http://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html
+     * http://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html<p>
      *
-     * Direct download link to original source code:
-     * http://docs.oracle.com/javase/tutorial/jdbc/basics/examples/zipfiles/JDBCTutorial.zip
+     * Direct download link to original source code:<br>
+     * http://docs.oracle.com/javase/tutorial/jdbc/basics/examples/zipfiles/JDBCTutorial.zip<p>
      *
      * It provides a way of handling Exceptions, while ignoring common errors
      * which are not critical for application function.
@@ -122,12 +125,12 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
-     * This method is borrowed from:
+     * This method is borrowed from:<br>
      *
-     * http://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html
+     * http://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html<p>
      *
-     * Direct download link to original source code:
-     * http://docs.oracle.com/javase/tutorial/jdbc/basics/examples/zipfiles/JDBCTutorial.zip
+     * Direct download link to original source code:<br>
+     * http://docs.oracle.com/javase/tutorial/jdbc/basics/examples/zipfiles/JDBCTutorial.zip<p>
      *
      * It provides a way of handling Exceptions, while ignoring common errors
      * which are not critical for application function.
@@ -190,7 +193,7 @@ public class DatabaseHandler implements DatabaseInterface {
      *
      */
     
-    public void getNumCon() {
+    private void getNumCon() {
         //Maintenance debug method, for getting all number of alive connections and connection pools - use to debug current state of the pool.
         try {
             System.out.println("Number of Connections: " + cpds.getNumConnections());
@@ -238,12 +241,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
-     * This method creates a row in the database, containing the parameters that
-     * match the input, and thus creates and stores a new Customer.
-     *
-     * @param customer Please refer to the JavaDoc for the Customer object for specifics about this object.
-     * 
-     *  {@link #Customer(int, String, String, String, String, int, String, String, int, String) Customer constructor - JavaDoc}
+     *  
      */
     @Override
     public void createCustomer(Customer customer) {
