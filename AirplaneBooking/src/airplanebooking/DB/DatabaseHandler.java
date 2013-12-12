@@ -1363,8 +1363,8 @@ public class DatabaseHandler implements DatabaseInterface {
                     break;
                 case "Economy Class": sql += "a.economyseats > 0 " + comparer;
                     break;
-                case "To": sql += " f.arrivalplace = ? " + comparer;
-                    break;
+               // case if(filter.startsWith("To")): sql += " f.arrivalplace = ? " + comparer;
+                 //   break;
                 case "From": sql += " f.departureplace = ? " + comparer;
                     break;    
                 case "Airplane": sql += " a.name = ? " + comparer;
