@@ -1112,17 +1112,14 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public ArrayList<Booking> getCustomerReservations(int customerID) {
 
-        String sql = "SELECT rsv.id "
-                + "FROM `reservations` rsv "
-                + "INNER JOIN customers cs "
-                + "ON rsv.id = cs.id "
-                + "WHERE rsv.id = ?";
+        String sql = "SELECT rsv.id, cs.id FROM reservations rsv, customers cs WHERE cs.id = ?";
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
         try {
             Connection con = getConnection();
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, customerID);
             //System.out.println(customerID);
+            reservations = new ArrayList();
             ResultSet results = executeQuery(pstatement);
             while (results.next()) {
                 //System.out.println(results.getInt(1));
