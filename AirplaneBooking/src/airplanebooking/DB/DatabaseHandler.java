@@ -30,27 +30,27 @@ public class DatabaseHandler implements DatabaseInterface {
     private static final String pass = "Jegeradministratorher123";
     private static final String jdbcurl = "jdbc:mysql://mysql.itu.dk/Airplanebooking";
 
-    ArrayList<PreparedStatement> pstatements = new ArrayList<>();
-    ArrayList<ResultSet> resultsets = new ArrayList<>();
-    ArrayList<Connection> cons = new ArrayList<>();
-    ArrayList<SQLWarning> warnings = new ArrayList<>();
+    ArrayList<PreparedStatement> pstatements = new ArrayList();
+    ArrayList<ResultSet> resultsets = new ArrayList();
+    ArrayList<Connection> cons = new ArrayList();
+    ArrayList<SQLWarning> warnings = new ArrayList();
     ComboPooledDataSource cpds = new ComboPooledDataSource();
 
     //Customer field
     Customer customer;
-    ArrayList<Customer> customers = new ArrayList<>();
+    ArrayList<Customer> customers = new ArrayList();
 
     //Booking field
     Booking reservation;
-    ArrayList<Booking> reservations = new ArrayList<>();
+    ArrayList<Booking> reservations = new ArrayList();
 
     //Flight field
     Flight flight;
-    ArrayList<Flight> flights = new ArrayList<>();
+    ArrayList<Flight> flights = new ArrayList();
 
     //Seat field
     Seat seat;
-    ArrayList<Seat> seats = new ArrayList<>();
+    ArrayList<Seat> seats = new ArrayList();
 
     //Airplane field
     Airplane airplane;
@@ -1159,6 +1159,7 @@ public class DatabaseHandler implements DatabaseInterface {
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, flightID);
             ResultSet results = executeQuery(pstatement);
+            seats = new ArrayList();
             while (results.next()) {
                 seat = new Seat(results.getInt(1));
                 seats.add(seat);
