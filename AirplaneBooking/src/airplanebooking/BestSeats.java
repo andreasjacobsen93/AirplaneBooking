@@ -6,7 +6,7 @@
 
 package airplanebooking;
 
-import airplanebooking.DB.Seat;
+import airplanebooking.database.Seat;
 import java.util.ArrayList;
 
 /**

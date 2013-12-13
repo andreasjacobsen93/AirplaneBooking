@@ -1,10 +1,10 @@
-package airplanebooking.swing;
+package airplanebooking.gui;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
-import airplanebooking.DB.Customer;
-import airplanebooking.DB.Flight;
-import airplanebooking.DB.Seat;
+import airplanebooking.database.Customer;
+import airplanebooking.database.Flight;
+import airplanebooking.database.Seat;
 import airplanebooking.GUI;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;

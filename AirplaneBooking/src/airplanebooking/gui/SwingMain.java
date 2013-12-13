@@ -1,12 +1,12 @@
-package airplanebooking.swing;
+package airplanebooking.gui;
 
 import airplanebooking.CurrentBooking;
 import airplanebooking.CurrentFlight;
-import airplanebooking.DB.Booking;
-import airplanebooking.DB.Customer;
-import airplanebooking.DB.Database;
-import airplanebooking.DB.Flight;
-import airplanebooking.DB.Seat;
+import airplanebooking.database.Booking;
+import airplanebooking.database.Customer;
+import airplanebooking.database.Database;
+import airplanebooking.database.Flight;
+import airplanebooking.database.Seat;
 import airplanebooking.FlightListener;
 import airplanebooking.GUI;
 import airplanebooking.SeatListener;

@@ -1,4 +1,4 @@
-package airplanebooking.DB;
+package airplanebooking.database;
 
 /**
  * Airplane class. Used to store data about an airplane.

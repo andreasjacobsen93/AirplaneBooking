@@ -6,6 +6,12 @@
 
 package airplanebooking.DB;
 
+import airplanebooking.database.Airplane;
+import airplanebooking.database.Customer;
+import airplanebooking.database.Booking;
+import airplanebooking.database.DatabaseHandler;
+import airplanebooking.database.Seat;
+import airplanebooking.database.Flight;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import org.junit.After;

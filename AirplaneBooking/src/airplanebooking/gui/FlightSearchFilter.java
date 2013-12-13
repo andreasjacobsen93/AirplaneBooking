@@ -1,6 +1,6 @@
-package airplanebooking.swing;
+package airplanebooking.gui;
 
-import airplanebooking.DB.Database;
+import airplanebooking.database.Database;
 import airplanebooking.GUI;
 import java.awt.Cursor;
 import java.text.ParseException;

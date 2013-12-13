@@ -1,4 +1,4 @@
-package airplanebooking.DB;
+package airplanebooking.database;
 
 /**
  * Customer class is used to store all data about a customer.

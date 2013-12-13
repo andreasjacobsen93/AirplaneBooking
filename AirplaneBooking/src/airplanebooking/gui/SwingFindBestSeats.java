@@ -1,4 +1,4 @@
-package airplanebooking.swing;
+package airplanebooking.gui;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.GUI;

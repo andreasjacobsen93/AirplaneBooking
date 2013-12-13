@@ -1,4 +1,4 @@
-package airplanebooking.DB;
+package airplanebooking.database;
 
 /**
  * Seat class is used to create a seat with data.

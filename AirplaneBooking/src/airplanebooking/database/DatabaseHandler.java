@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package airplanebooking.DB;
+package airplanebooking.database;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package airplanebooking.DB;
+package airplanebooking.database;
 
 /**
  * There can only be one of this class.

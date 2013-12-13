@@ -1,8 +1,8 @@
 package airplanebooking;
 
-import airplanebooking.DB.Airplane;
-import airplanebooking.DB.Flight;
-import airplanebooking.DB.Seat;
+import airplanebooking.database.Airplane;
+import airplanebooking.database.Flight;
+import airplanebooking.database.Seat;
 import java.util.ArrayList;
 
 /**

@@ -1,4 +1,4 @@
-package airplanebooking.DB;
+package airplanebooking.database;
 
 import java.util.ArrayList;
 

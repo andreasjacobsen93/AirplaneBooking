@@ -1,4 +1,4 @@
-package airplanebooking.DB;
+package airplanebooking.database;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;

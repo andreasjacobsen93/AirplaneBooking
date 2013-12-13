@@ -1,6 +1,6 @@
 package airplanebooking;
 
-import airplanebooking.DB.Flight;
+import airplanebooking.database.Flight;
 
 /**
  * Interface for event listener.

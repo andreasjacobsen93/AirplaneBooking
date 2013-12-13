@@ -1,11 +1,11 @@
 package airplanebooking;
 
-import airplanebooking.DB.Airplane;
-import airplanebooking.DB.Booking;
-import airplanebooking.DB.Flight;
-import airplanebooking.DB.Customer;
-import airplanebooking.DB.Database;
-import airplanebooking.DB.Seat;
+import airplanebooking.database.Airplane;
+import airplanebooking.database.Booking;
+import airplanebooking.database.Flight;
+import airplanebooking.database.Customer;
+import airplanebooking.database.Database;
+import airplanebooking.database.Seat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

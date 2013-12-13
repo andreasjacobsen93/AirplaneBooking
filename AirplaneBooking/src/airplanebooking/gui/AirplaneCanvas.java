@@ -1,12 +1,12 @@
-package airplanebooking.swing;
+package airplanebooking.gui;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
 import airplanebooking.CurrentFlight;
-import airplanebooking.DB.Airplane;
-import airplanebooking.DB.Database;
-import airplanebooking.DB.Flight;
-import airplanebooking.DB.Seat;
+import airplanebooking.database.Airplane;
+import airplanebooking.database.Database;
+import airplanebooking.database.Flight;
+import airplanebooking.database.Seat;
 import airplanebooking.SeatListener;
 import java.awt.Color;
 import java.awt.Graphics;
