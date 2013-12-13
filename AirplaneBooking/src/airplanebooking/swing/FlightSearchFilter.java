@@ -3,6 +3,7 @@ package airplanebooking.swing;
 import airplanebooking.DB.Database;
 import airplanebooking.GUI;
 import java.awt.Cursor;
+import java.util.ArrayList;
 
 /**
  * FlightSearchFilter is used to filter the list of flights.
@@ -13,6 +14,9 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
     // The main frame to change list on.
     private final SwingMain swingMain;
     
+    // List of filters to send.
+    private final ArrayList<String> filterList;
+    
     /**
      * Creates new form FlightSearchFilter.
      * Sets the swingMain object
@@ -21,6 +25,7 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
      */
     public FlightSearchFilter(SwingMain sm) {
         this.swingMain = sm;
+        filterList = new ArrayList<>();
         initComponents();
     }
 
@@ -202,36 +207,46 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
         {
             case "First Class":
                     listFilters.add("First Class");
+                    filterList.add("FirstClass");
                 break;
             case "Business Class":
                     listFilters.add("Business Class");
+                    filterList.add("BusinessClass");
                 break;
             case "Economy Class":
                     listFilters.add("Economy Class");
+                    filterList.add("EconomyClass");
                 break;
             case "From":
                     listFilters.add("From " + textField.getText());
+                    filterList.add("From." + textField.getText());
                 break;
             case "Destination":
                     listFilters.add("To " + textField.getText());
+                    filterList.add("To." + textField.getText());
                 break;
             case "Airplane name":
                     listFilters.add("Airplane " + textField.getText());
+                    filterList.add("Airplane." + textField.getText());
                 break;
             case "Today":
                     listFilters.add("Today");
+                    filterList.add("Today");
                 break;
             case "Tomorrow":
                     listFilters.add("Tomorrow");
+                    filterList.add("Tomorrow");
                 break;
             case "Date":
                     listFilters.add("Date: " + textField.getText());
+                    filterList.add("Date." + textField.getText());
                 break;
         }
     }//GEN-LAST:event_buttonCreateFilterMouseClicked
 
     private void buttonDeleteFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteFilterMouseClicked
-        listFilters.remove(listFilters.getSelectedItem());
+        listFilters.remove(listFilters.getSelectedIndex());
+        filterList.remove(listFilters.getSelectedIndex());
         buttonDeleteFilter.setEnabled(false);
     }//GEN-LAST:event_buttonDeleteFilterMouseClicked
 
@@ -249,7 +264,11 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
                 break;
         }
         
-        String[] filters = listFilters.getItems();
+        String[] filters = new String[filterList.size()];
+        for (int i = 0; i < filterList.size(); i++)
+        {
+            filters[i] = filterList.get(i);
+        }
         
         swingMain.updateSearch(Database.db().getFilteredFlights(filters, comparer));
         
