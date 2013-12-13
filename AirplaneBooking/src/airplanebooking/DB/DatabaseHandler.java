@@ -912,17 +912,24 @@ public class DatabaseHandler implements DatabaseInterface {
                 int flightid = results.getInt("flightid");
                 Boolean food = results.getBoolean("food");
                 int price = results.getInt("price");
-
-                String getSeats = "SELECT r2s.seat_id "
-                        + "FROM `reservation2seat` r2s "
-                        + "INNER JOIN reservations rs "
-                        + "ON r2s.reservation_id = ? "
-                        + "WHERE r2s.reservation_id = rs.id ";
+                System.out.println("Reservation ID: "+id);
+                System.out.println("Customer ID: "+customerid);
+                System.out.println("Flight ID: "+flightid);
+                System.out.println("Boolean: "+food);
+                System.out.println("Cost: "+price);
+                System.out.println("");
+                String getSeats = "SELECT r2s.seat_id FROM `reservation2seat` r2s, reservations rs, customers cs  WHERE r2s.reservation_id = ? AND rs.id = ? AND r2s.flight_id = ? AND cs.id = ?";
                 PreparedStatement pstatement2 = con.prepareStatement(getSeats);
                 pstatement2.setInt(1, id);
+                pstatement2.setInt(2, id);
+                pstatement2.setInt(3, flightid);
+                pstatement2.setInt(4, customerid);
+                
                 ResultSet seatResults = executeQuery(pstatement2);
                 while (seatResults.next()) {
-                    seat = new Seat(seatResults.getInt("seat_id"));
+                    seat = null;
+                    seat = new Seat(seatResults.getInt(1));
+                    System.out.println(seat.getSeatID());
                     seats.add(seat);
                     seat = null;
                 }
@@ -1122,7 +1129,7 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public ArrayList<Booking> getCustomerReservations(int customerID) {
 
-        String sql = "SELECT rsv.id FROM reservations rsv WHERE rsv.customer_ID = ?";
+        String sql = "SELECT rsv.id FROM reservations rsv WHERE rsv.customer_id = ?";
         //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
         try {
             Connection con = getConnection();
