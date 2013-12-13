@@ -682,7 +682,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         jPanel6.setVisible(true);
         checkboxLunchOnboard.setVisible(true);
         labelPrice.setVisible(true);
-        labelTravelClass.setVisible(true); 
+        labelTravelClass.setVisible(true);
         labelSeats.setVisible(true);
         buttonEditReservation.setVisible(true);
         labelSeats.setToolTipText("");

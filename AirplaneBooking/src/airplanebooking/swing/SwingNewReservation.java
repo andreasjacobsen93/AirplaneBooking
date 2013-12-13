@@ -6,6 +6,7 @@ import airplanebooking.DB.Customer;
 import airplanebooking.DB.Flight;
 import airplanebooking.DB.Seat;
 import airplanebooking.GUI;
+import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
 /**
@@ -413,6 +414,7 @@ public class SwingNewReservation extends javax.swing.JFrame implements GUI, Book
     public void buttonCreateReservationMouseClicked()
     {
         buttonCreateReservation.setLabel("Creating...");
+        buttonCreateReservation.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         CurrentBooking.addCustomer(new Customer(customerID, textMaritialStatus.getText(), textFirstName.getText(), textLastName.getText(), textAddressStreet.getText(), Integer.parseInt(textAddressZip.getText()), textAddressCity.getText(), textAddressCountry.getText(), Integer.parseInt(textPhone.getText()), textEmail.getText()));
         CurrentBooking.saveBooking(false);
         this.dispose();
