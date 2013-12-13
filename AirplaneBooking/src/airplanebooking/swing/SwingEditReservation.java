@@ -2,7 +2,6 @@ package airplanebooking.swing;
 
 import airplanebooking.CurrentBooking; 
 import airplanebooking.BookingListener;
-import airplanebooking.CurrentFlight;
 import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.Seat;

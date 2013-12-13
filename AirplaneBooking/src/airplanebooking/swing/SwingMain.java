@@ -685,6 +685,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelTravelClass.setVisible(true); 
         labelSeats.setVisible(true);
         buttonEditReservation.setVisible(true);
+        labelSeats.setToolTipText("");
         
         Booking b = Database.db().getReservation(CurrentFlight.getSeat().getSeatID(), CurrentFlight.getFlight().getID());
         booking = b;
