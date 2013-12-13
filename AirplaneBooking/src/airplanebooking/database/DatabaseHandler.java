@@ -103,8 +103,8 @@ public class DatabaseHandler implements DatabaseInterface {
      * which are not critical for application function.
      *
      *
-     * @param sqlState
-     * @return
+     * @param sqlState SQL-state value
+     * @return Boolean value TRUE or FALSE
      */
     public static boolean ignoreSQLException(String sqlState) {
         if (sqlState == null) {
@@ -270,8 +270,6 @@ public class DatabaseHandler implements DatabaseInterface {
     /**
      * {@inheritDoc}
      *
-     * @param customer
-     *
      */
     @Override
     public void editCustomer(Customer customer) {
@@ -310,8 +308,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param customer
      */
     @Override
     public void deleteCustomer(Customer customer) {
@@ -339,9 +335,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param customerID
-     * @return
+     * 
      */
     @Override
     public Customer getCustomer(int customerID) {
@@ -388,8 +382,6 @@ public class DatabaseHandler implements DatabaseInterface {
     /**
      * {@inheritDoc}
      *
-     * @param q
-     * @return
      */
     @Override
     public ArrayList<Customer> getCustomers(int q) {
@@ -434,9 +426,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param q
-     * @return
      */
     @Override
     public ArrayList<Customer> getCustomers(String q) {
@@ -483,12 +472,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param Phone
-     * @return
      */
     @Override
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone) {
@@ -584,9 +567,10 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
-     *
-     * @param customer
-     * @return
+     * For more detailed information about the Customer object, please refer
+     * to:<br> {@link airplanebooking.DB.Customer}
+     * @param customer {@link airplanebooking.DB.Customer}
+     * @return TRUE or FALSE
      */
     private boolean customerExists(Customer customer) {
 
@@ -653,12 +637,12 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      *
-     * THIS METHOD IS PARTIALLY BROKEN IN FUNKTIONALITY, IF --*ANY*-- OF THE
+     * THIS METHOD IS PARTIALLY 'BROKEN' IN FUNKTIONALITY, IF --*ANY*-- OF THE
      * SEATS EXISTS, IT WILL RETURN TRUE!
      *
      *
-     * @param seats
-     * @param flight
+     * @param seats {@link airplanebooking.DB.Seat}
+     * @param flight {@link airplanebooking.DB.Flight}
      * @return Beware; returns TRUE if ANY of the seats sent, exist in the
      * database, even if the rest do not.
      */
@@ -694,11 +678,6 @@ public class DatabaseHandler implements DatabaseInterface {
     /**
      * {@inheritDoc}
      *
-     * @param currentCustomer
-     * @param flight
-     * @param seats
-     * @param food
-     * @param cost
      */
     @Override
     public void createReservation(Customer currentCustomer, Flight flight, ArrayList<Seat> seats, Boolean food, int cost) {
@@ -791,8 +770,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param booking
      */
     @Override
     public void editReservation(Booking booking) {
@@ -860,8 +837,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param booking
      */
     @Override
     public void deleteReservation(Booking booking) {
@@ -894,9 +869,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param reservationID
-     * @return
      */
     @Override
     public Booking getReservation(int reservationID) {
@@ -965,10 +937,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param seatID
-     * @param flightID
-     * @return
      */
     @Override
     public Booking getReservation(int seatID, int flightID) {
@@ -1040,8 +1008,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param flight
      */
     @Override
     public void createFlight(Flight flight) {
@@ -1078,8 +1044,6 @@ public class DatabaseHandler implements DatabaseInterface {
     /**
      * {@inheritDoc}
      *
-     * @param flightID
-     * @return
      */
     @Override
     public Flight getFlight(int flightID) {
@@ -1135,9 +1099,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param customerID
-     * @return
      */
     @Override
     public ArrayList<Booking> getCustomerReservations(int customerID) {
@@ -1173,9 +1134,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param flightID
-     * @return
      */
     @Override
     public ArrayList<Seat> getFlightBookedSeats(int flightID) {
@@ -1205,8 +1163,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param flight
      */
     @Override
     public void editFlight(Flight flight) {
@@ -1241,8 +1197,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param flight
      */
     @Override
     public void deleteFlight(Flight flight) {
@@ -1266,9 +1220,6 @@ public class DatabaseHandler implements DatabaseInterface {
 
     /**
      * {@inheritDoc}
-     *
-     * @param airplaneID
-     * @return
      */
     @Override
     public Airplane getAirplane(int airplaneID) {
@@ -1313,8 +1264,6 @@ public class DatabaseHandler implements DatabaseInterface {
     /**
      * {@inheritDoc}
      *
-     * @param freeSeatsOnly
-     * @return
      */
     @Override
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly) {
@@ -1386,9 +1335,6 @@ public class DatabaseHandler implements DatabaseInterface {
     /**
      * {@inheritDoc}
      *
-     * @param filters
-     * @param comparer
-     * @return
      */
     @Override
     public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer) {

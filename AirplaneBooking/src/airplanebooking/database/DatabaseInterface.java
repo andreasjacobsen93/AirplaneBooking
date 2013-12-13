@@ -119,7 +119,7 @@ public interface DatabaseInterface {
      * customers Email.
      * @param Phone Integer value which related to a potentially existing
      * customers Phone.
-     * @return
+     * @return Returns an ArrayList of Customer objects.
      */
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone);
 
