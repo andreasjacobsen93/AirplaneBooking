@@ -17,7 +17,11 @@ import java.util.ArrayList;
 
 /**
  * If you are spawning more than one of these objects, you are most likely doing
- * it wrong.
+ * it wrong.<p>
+ * 
+ * SQLExceptions are handled by each and every method in this class.<p>
+ * 
+ * NullPointerExceptions are not handled, unless explicitly stated.<p>
  *
  * {@inheritDoc}
  *

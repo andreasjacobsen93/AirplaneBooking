@@ -230,7 +230,8 @@ public interface DatabaseInterface {
 
     /**
      * This method edits a flight in the database, by taking a Flight object,
-     * and reading the fields, and editing the specific row from the database.<p>
+     * and reading the fields, and editing the specific row from the
+     * database.<p>
      *
      * For more detailed information about the Flight object, please refer
      * to:<br> {@link airplanebooking.DB.Flight}
@@ -241,7 +242,8 @@ public interface DatabaseInterface {
 
     /**
      * This method deletes a flight in the database, by taking a Flight object,
-     * and reading the fields, and deleting the specific row from the database.<p>
+     * and reading the fields, and deleting the specific row from the
+     * database.<p>
      *
      * For more detailed information about the Flight object, please refer
      * to:<br> {@link airplanebooking.DB.Flight}
@@ -265,48 +267,65 @@ public interface DatabaseInterface {
     public Flight getFlight(int flightID);
 
     /**
-     * This method gets an ArrayList of Flight objects, by searching the database based on an
-     * a Boolean value.<p>
-     * This method returns only flights which have more than 2 hours left before departure time - depending on the database SYSDATE() / NOW().
+     * This method gets an ArrayList of Flight objects, by searching the
+     * database based on an a Boolean value.<p>
+     * This method returns only flights which have more than 2 hours left before
+     * departure time - depending on the database SYSDATE() / NOW().
      * <p>
-     * 
+     *
      * For more detailed information about the Flight object, please refer
      * to:<br> {@link airplanebooking.DB.Flight}
      *
-     * @param freeSeatsOnly Boolean value which determines whether or not this method should return flights that are not full only, or not. 'TRUE' will return only not full flights. 'FALSE' will return all flights from the database.
+     * @param freeSeatsOnly Boolean value which determines whether or not this
+     * method should return flights that are not full only, or not. 'TRUE' will
+     * return only not full flights. 'FALSE' will return all flights from the
+     * database.
      * @return Returns the flights as an ArrayList of Flight objects, filled
-     * with information from the database. Only returns flights which have more than 2 hours left before departure time.
+     * with information from the database. Only returns flights which have more
+     * than 2 hours left before departure time.
      */
     public ArrayList<Flight> getFlights(Boolean freeSeatsOnly);
-    
-    public ArrayList<Flight> getFilteredFlights(String[] flights, String comparer);
 
     /**
-     * This method gets an ArrayList of Seat objects, by searching the database based on an
-     * Integer value.<p>
+     * This method creates gets an ArrayList of flights from the database, by
+     * taking an array of strings containing filter arguments, and values and
+     * splitting them to construct a valid SQL statement and sending it to the
+     * database.<p>
      *
-     * For more detailed information about the Seat object, please refer
-     * to:<br> {@link airplanebooking.DB.Seat}
+     * For more detailed information about the Flight object, please refer
+     * to:<br> {@link airplanebooking.DB.Flight}
+     *
+     * @param filters String array, which contains arguments and values separated with a '.'.
+     * @param comparer String, containing either AND, or, OR.
+     */
+    public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer);
+
+    /**
+     * This method gets an ArrayList of Seat objects, by searching the database
+     * based on an Integer value.<p>
+     *
+     * For more detailed information about the Seat object, please refer to:<br>
+     * {@link airplanebooking.DB.Seat}
      *
      * @param flightID Takes an Integer value, which corresponds to the unique
      * auto_incremented ID of a flight.
-     * @return Returns the booked seats of a specific flight, filled with information from the
-     * database.
+     * @return Returns the booked seats of a specific flight, filled with
+     * information from the database.
      */
     public ArrayList<Seat> getFlightBookedSeats(int flightID);
 
     //Below are all airplane related DB method declarations.
     /**
-     * This method gets an Airplane object, by searching the database based on an
-     * an Integer value.<p>
-     *  
+     * This method gets an Airplane object, by searching the database based on
+     * an an Integer value.<p>
+     *
      * For more detailed information about the Airplane object, please refer
      * to:<br> {@link airplanebooking.DB.Airplane}
      *
      * @param airplaneID Takes an Integer value, which corresponds to the unique
      * auto_incremented ID of an airplane.
-     * @return Returns the airplane as a Airplane object, filled
-     * with information from the database.
+     * @return Returns the airplane as a Airplane object, filled with
+     * information from the database.
      */
     public Airplane getAirplane(int airplaneID);
 }
