@@ -1366,17 +1366,19 @@ public class DatabaseHandler implements DatabaseInterface {
             int i = 0;
             String[] filterArguments = new String[filters.length];
             for (String filter : filters) {
-                String[] filterSplit = filter.split(" ");
+                System.out.println(filters.length);
+                System.out.println(filter);
+                String[] filterSplit = filter.split("\\.");
 
                 switch (filterSplit[0].toString()) {
 
-                    case "First":
+                    case "FirstClass":
                         sql += " a.firstseats > 0 " + comparer;
                         break;
-                    case "Business":
+                    case "BusinessClass":
                         sql += " a.businessseats > 0 " + comparer;
                         break;
-                    case "Economy":
+                    case "EconomyClass":
                         sql += " a.economyseats > 0 " + comparer;
                         break;
                     case "Today":
@@ -1392,6 +1394,8 @@ public class DatabaseHandler implements DatabaseInterface {
                     case "Date":
                         sql += " CAST(f.departuretime AS DATE) + 0 = CAST( ? AS DATE) " + comparer;
                         i++;
+                        String[] filterDate = filterSplit[1].split("/");
+                        filterSplit[1] = filterDate[2] + filterDate[1] + filterDate[0];
                         break;
                     case "From":
                         sql += " f.departureplace = ? " + comparer;
