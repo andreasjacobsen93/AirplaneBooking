@@ -905,7 +905,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
             //pass query to query handler -> db. REMEMBER THAT THIS METHOD DOESN'T CLOSE STATEMENTS , CLOSING IS PARAMOUNT!
             ResultSet results = executeQuery(pstatement);
-
+            results.beforeFirst();
             while (results.next()) {
                 int id = results.getInt("id");
                 int customerid = results.getInt("customer_id");
@@ -926,17 +926,18 @@ public class DatabaseHandler implements DatabaseInterface {
                 pstatement2.setInt(4, customerid);
                 
                 ResultSet seatResults = executeQuery(pstatement2);
-                seats = new ArrayList();
+                seat = null;
+                ArrayList<Seat> bookingSeats = new ArrayList();
                 while (seatResults.next()) {
                     seat = null;
                     seat = new Seat(seatResults.getInt(1));
                     System.out.println(seat.getSeatID());
-                    seats.add(seat);
+                    bookingSeats.add(seat);
                     seat = null;
                 }
-
-                reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), seats, food, price);
-
+                reservation = null;
+                reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), bookingSeats, food, price);
+                System.out.println(reservation.getSeats());
                 //Tidy up the connection
                 resultsets.add(seatResults);
                 pstatements.add(pstatement2);
