@@ -926,6 +926,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 pstatement2.setInt(4, customerid);
                 
                 ResultSet seatResults = executeQuery(pstatement2);
+                seats = new ArrayList();
                 while (seatResults.next()) {
                     seat = null;
                     seat = new Seat(seatResults.getInt(1));
@@ -999,14 +1000,17 @@ public class DatabaseHandler implements DatabaseInterface {
                     PreparedStatement pstatement3 = con.prepareStatement(getSeats);
                     pstatement3.setInt(1, id);
                     ResultSet seatResults = executeQuery(pstatement3);
+                    
                     ArrayList<Seat> bookingSeats = new ArrayList();
+                    
                     while (seatResults.next()) {
+                        
                         seat = new Seat(seatResults.getInt("seat_id"));
                         bookingSeats.add(seat);
                     }
-
+                    
                     reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), bookingSeats, food, price);
-
+                    
                     //Tidy up the connection
                     pstatements.add(pstatement3);
                     resultsets.add(seatResults);
