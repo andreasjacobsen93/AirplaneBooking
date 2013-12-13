@@ -16,10 +16,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
- * If you are spawning more than one of these objects, you are most likely doing
- * it wrong.
+ * If you are looking for more details on the methods of this class, please
+ * refer to the Interface that this class implements<p>
  *
- * {@inheritDoc}
+ * SQLExceptions are handled by each and every method in this class.<p>
+ *
+ * NullPointerExceptions are not handled, unless explicitly stated.<p>
  *
  * @author Aleksandar Jonovic
  */
@@ -179,12 +181,6 @@ public class DatabaseHandler implements DatabaseInterface {
         return results;
     }
 
-    /*
-     *
-     *
-     * Still testing this sucker. Not yet implemented.
-     *
-     */
     /**
      *
      */
@@ -236,7 +232,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void createCustomer(Customer customer) {
@@ -273,6 +269,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param customer
      *
@@ -298,7 +295,7 @@ public class DatabaseHandler implements DatabaseInterface {
             pstatement.setString(8, customer.getEmail());
             pstatement.setInt(9, customer.getPhone());
             pstatement.setInt(10, customer.getID());
-            
+
             //Execute the prepared statement
             executeUpdate(pstatement);
 
@@ -313,6 +310,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param customer
      */
@@ -341,6 +339,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param customerID
      * @return
@@ -388,6 +387,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param q
      * @return
@@ -434,6 +434,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param q
      * @return
@@ -482,6 +483,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param firstName
      * @param lastName
@@ -623,7 +625,7 @@ public class DatabaseHandler implements DatabaseInterface {
      *
      * @param customerID Must be a valid customer ID which relates to the ID
      * field in the table 'customers' in the database.
-     * @return
+     * @return TRUE or FALSE
      */
     private boolean customerExists(int customerID) {
 
@@ -691,6 +693,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param currentCustomer
      * @param flight
@@ -752,7 +755,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 int phonenumber = currentCustomer.getPhone();
 
                 String sql = "INSERT INTO customers VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                
+
                 PreparedStatement pstatement2 = pstatement2 = con.prepareStatement(sql, 1);
                 pstatement2.setString(1, maritalstatus);
                 pstatement2.setString(2, firstname);
@@ -763,15 +766,14 @@ public class DatabaseHandler implements DatabaseInterface {
                 pstatement2.setString(7, addressCountry);
                 pstatement2.setString(8, email);
                 pstatement2.setInt(9, phonenumber);
-                
+
                 pstatement2.executeUpdate();
                 ResultSet rs = pstatement2.getGeneratedKeys();
                 rs.first();
                 int id = rs.getInt(1);
-                System.out.println("ID of customer: "+id);
+                System.out.println("ID of customer: " + id);
                 Customer newCustomer = getCustomer(id);
-                
-                
+
                 createReservation(newCustomer, flight, seats, food, cost);
 
                 //Tidy up the connection
@@ -789,6 +791,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param booking
      */
@@ -807,7 +810,7 @@ public class DatabaseHandler implements DatabaseInterface {
             pstatement.setBoolean(3, booking.getFood());
             pstatement.setInt(4, booking.getPrice());
             pstatement.setInt(5, booking.getID());
-            
+
             editCustomer(customer);
             executeUpdate(pstatement);
             seats = booking.getSeats();
@@ -857,6 +860,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param booking
      */
@@ -890,6 +894,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param reservationID
      * @return
@@ -912,11 +917,11 @@ public class DatabaseHandler implements DatabaseInterface {
                 int flightid = results.getInt("flightid");
                 Boolean food = results.getBoolean("food");
                 int price = results.getInt("price");
-                System.out.println("Reservation ID: "+id);
-                System.out.println("Customer ID: "+customerid);
-                System.out.println("Flight ID: "+flightid);
-                System.out.println("Boolean: "+food);
-                System.out.println("Cost: "+price);
+                System.out.println("Reservation ID: " + id);
+                System.out.println("Customer ID: " + customerid);
+                System.out.println("Flight ID: " + flightid);
+                System.out.println("Boolean: " + food);
+                System.out.println("Cost: " + price);
                 System.out.println("");
                 String getSeats = "SELECT r2s.seat_id FROM `reservation2seat` r2s, reservations rs, customers cs  WHERE r2s.reservation_id = ? AND rs.id = ? AND r2s.flight_id = ? AND cs.id = ?";
                 PreparedStatement pstatement2 = con.prepareStatement(getSeats);
@@ -924,7 +929,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 pstatement2.setInt(2, id);
                 pstatement2.setInt(3, flightid);
                 pstatement2.setInt(4, customerid);
-                
+
                 ResultSet seatResults = executeQuery(pstatement2);
                 seat = null;
                 ArrayList<Seat> bookingSeats = new ArrayList();
@@ -960,6 +965,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param seatID
      * @param flightID
@@ -1001,17 +1007,17 @@ public class DatabaseHandler implements DatabaseInterface {
                     PreparedStatement pstatement3 = con.prepareStatement(getSeats);
                     pstatement3.setInt(1, id);
                     ResultSet seatResults = executeQuery(pstatement3);
-                    
+
                     ArrayList<Seat> bookingSeats = new ArrayList();
-                    
+
                     while (seatResults.next()) {
-                        
+
                         seat = new Seat(seatResults.getInt("seat_id"));
                         bookingSeats.add(seat);
                     }
-                    
+
                     reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), bookingSeats, food, price);
-                    
+
                     //Tidy up the connection
                     pstatements.add(pstatement3);
                     resultsets.add(seatResults);
@@ -1034,6 +1040,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param flight
      */
@@ -1070,6 +1077,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param flightID
      * @return
@@ -1127,6 +1135,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param customerID
      * @return
@@ -1164,6 +1173,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param flightID
      * @return
@@ -1195,6 +1205,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param flight
      */
@@ -1230,6 +1241,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param flight
      */
@@ -1254,6 +1266,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     /**
+     * {@inheritDoc}
      *
      * @param airplaneID
      * @return
@@ -1299,6 +1312,7 @@ public class DatabaseHandler implements DatabaseInterface {
      *   Below are unimplemented methods.
      */
     /**
+     * {@inheritDoc}
      *
      * @param freeSeatsOnly
      * @return
@@ -1370,6 +1384,13 @@ public class DatabaseHandler implements DatabaseInterface {
         return flights;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param filters
+     * @param comparer
+     * @return
+     */
     @Override
     public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer) {
         String sql = "SELECT f.id FROM flights f, airplanes a WHERE f.airplane_id = a.id AND";
@@ -1420,7 +1441,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
                 }
                 if (filterSplit.length > 1 && filterSplit[1].contains("Class") != true) {
-                    filterArguments[i-1] = filterSplit[1];
+                    filterArguments[i - 1] = filterSplit[1];
 
                 }
 
@@ -1428,13 +1449,13 @@ public class DatabaseHandler implements DatabaseInterface {
             sql = sql.substring(0, sql.length() - comparer.length() - 1);
             PreparedStatement pstatement = con.prepareStatement(sql);
             for (int u = 0; u < i; u++) {
-                pstatement.setString(u+1, filterArguments[u]);
+                pstatement.setString(u + 1, filterArguments[u]);
             }
             System.out.println(sql);
             ResultSet results = executeQuery(pstatement);
             flights.clear();
             flights = new ArrayList();
-            
+
             while (results.next()) {
                 flight = null;
                 flight = getFlight(results.getInt(1));
