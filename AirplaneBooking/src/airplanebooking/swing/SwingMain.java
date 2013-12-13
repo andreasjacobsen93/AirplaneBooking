@@ -67,6 +67,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelTravelClass.setVisible(false); 
         labelSeats.setVisible(false);
         buttonEditReservation.setVisible(false);
+        buttonDeleteReservation.setVisible(false);
         
         addFlightsToList(false);
     }
@@ -664,6 +665,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelTravelClass.setVisible(false);
         labelSeats.setVisible(false);
         buttonEditReservation.setVisible(false);
+        buttonDeleteReservation.setVisible(false);
         
         ready = true;
         
@@ -685,6 +687,7 @@ public class SwingMain extends javax.swing.JFrame implements GUI, FlightListener
         labelTravelClass.setVisible(true);
         labelSeats.setVisible(true);
         buttonEditReservation.setVisible(true);
+        buttonDeleteReservation.setVisible(true);
         labelSeats.setToolTipText("");
         
         Booking b = Database.db().getReservation(CurrentFlight.getSeat().getSeatID(), CurrentFlight.getFlight().getID());
