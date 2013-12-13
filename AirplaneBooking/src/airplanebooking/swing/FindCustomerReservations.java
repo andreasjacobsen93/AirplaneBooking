@@ -5,6 +5,7 @@ import airplanebooking.DB.Booking;
 import airplanebooking.DB.Customer;
 import airplanebooking.DB.Database;
 import airplanebooking.DB.Flight;
+import airplanebooking.DB.Seat;
 import airplanebooking.GUI;
 import java.awt.Cursor;
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class FindCustomerReservations extends javax.swing.JFrame implements GUI 
         for (int i = 0; i < bookingList.size(); i++)
         {
             Flight f = bookingList.get(i).getFlight();
-            listOfReservations.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " @" + f.getDepartureTime());
+            listOfReservations.add(f.getDeparturePlace() + " - " + f.getArrivalPlace() + " (" + f.getDepartureTime() + ")");
         }
         
         if (bookingList.size() > 0) buttonChooseReservation.setEnabled(true);
