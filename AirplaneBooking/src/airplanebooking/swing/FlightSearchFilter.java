@@ -3,7 +3,11 @@ package airplanebooking.swing;
 import airplanebooking.DB.Database;
 import airplanebooking.GUI;
 import java.awt.Cursor;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  * FlightSearchFilter is used to filter the list of flights.
@@ -238,8 +242,25 @@ public class FlightSearchFilter extends javax.swing.JFrame implements GUI {
                     filterList.add("Tomorrow");
                 break;
             case "Date":
-                    listFilters.add("Date: " + textField.getText());
-                    filterList.add("Date." + textField.getText());
+                    try{
+                        SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
+                        String dateString = textField.getText().replaceAll("-", "/");
+                        dateString = dateString.replaceAll("_", "/");
+                        dateString = dateString.replaceAll("\\*", "/");
+                        dateString = dateString.replaceAll(",", "/");
+                        dateString = dateString.replaceAll("@", "/");
+                        dateString = dateString.replaceAll(":", "/");
+                        dateString = dateString.replaceAll(";", "/");
+                        dateString = dateString.replaceAll("&", "/");
+                        dateString = dateString.replaceAll("\\.", "/");
+                        Date date = d.parse(dateString);
+
+                        listFilters.add("Date: " + d.format(date));
+                        filterList.add("Date." + d.format(date));
+                    }
+                    catch(ParseException e) {
+                        JOptionPane.showMessageDialog(null, "Not a valid date format. Use dd/mm/yyy.");
+                    }
                 break;
         }
     }//GEN-LAST:event_buttonCreateFilterMouseClicked
