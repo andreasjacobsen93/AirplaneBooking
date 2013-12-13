@@ -8,6 +8,13 @@ package airplanebooking.DB;
 import java.util.ArrayList;
 
 /**
+ * This interface states all public methods available for interaction with the
+ * database, and should provide sufficient coverage for developers wishing to
+ * use it, and it's associated classes to build a user interface.
+ * <p>
+ *
+ * Please note that while SQLExceptions are handled, NullPointerExceptions are
+ * not, unless explicitly stated.
  *
  * @author Aleksandar Jonovic
  */
@@ -295,7 +302,8 @@ public interface DatabaseInterface {
      * For more detailed information about the Flight object, please refer
      * to:<br> {@link airplanebooking.DB.Flight}
      *
-     * @param filters String array, which contains arguments and values separated with a '.'.
+     * @param filters String array, which contains arguments and values
+     * separated with a '.'.
      * @param comparer String, containing either AND, or, OR.
      */
     public ArrayList<Flight> getFilteredFlights(String[] filters, String comparer);
