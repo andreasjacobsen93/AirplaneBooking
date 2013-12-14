@@ -270,20 +270,18 @@ public class DatabaseHandlerTest {
      */
     @Test
     public void testEditFlight1() {
+        
+
+
         System.out.println("createFlight");
         DatabaseHandler instance = new DatabaseHandler();
         //Flight currentFlight = instance.getFlight(currentFlightID);
         Airplane currentAirplane = instance.getAirplane(1);
         ArrayList<Seat> seats = new ArrayList();
+        System.out.println("ID IF THE FLIGHT GETTING EDITED: "+currentFlightID);
         Timestamp departureTime = java.sql.Timestamp.valueOf("2013-12-25 08:00:00.0"); 
         Timestamp arrivalTime = java.sql.Timestamp.valueOf("2013-12-25 10:00:00.0");
-        Flight currentEditedFlight = new Flight(currentFlightID, currentAirplane, 120, 80, 50, seats, "Copenhagen", departureTime, "Bornholm", arrivalTime, false);
-        instance.editFlight(currentEditedFlight);
-        int currentAirplaneID = currentEditedFlight.getAirplaneID();
         
-        
-        // Store the ID of the current flight for later use.
-        //currentFlightID = currentFlight.getID();
         ArrayList<Flight> flights = instance.getFlights(true);
         Flight newestFlight = flights.get(1);
         for (Flight thisFlight : flights){
@@ -291,6 +289,14 @@ public class DatabaseHandlerTest {
                 newestFlight = thisFlight;
                 currentFlightID = newestFlight.getID();
             }
+        Flight currentEditedFlight = new Flight(currentFlightID, currentAirplane, 120, 80, 50, seats, "Copenhagen", departureTime, "Bornholm", arrivalTime, false);
+        instance.editFlight(currentEditedFlight);
+        int currentAirplaneID = currentEditedFlight.getAirplaneID();
+        
+        
+        // Store the ID of the current flight for later use.
+        //currentFlightID = currentFlight.getID();
+
            
             //assertEquals(currentFlightID, currentFlight.getID());
         
