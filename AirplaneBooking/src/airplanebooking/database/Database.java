@@ -8,16 +8,7 @@ package airplanebooking.database;
 public class Database 
 {
     // The database interface
-    private static DatabaseInterface db;
-    
-    /**
-     * ALWAYS CALL THIS METHOD FIRST!
-     * Used to initialize the database handler.
-     */
-    public static void set()
-    {
-        db = new DatabaseHandler();
-    }
+    private static DatabaseInterface db = new DatabaseHandler();;
     
     /**
      * This method gets the database interface for use.
