@@ -537,9 +537,9 @@ public class CurrentBooking {
      */
     private static void findSeatsAlgorithm(int amount) {
 
-        // Først laver vi et int 2d array som holder alle sæde numrene
+        // First, we create a 2d array to store all seats in
         int[][] seatsArray = new int[EseatGroups * ErowSeats][EseatLength];
-        int s = FirstSeats + BusinessSeats; // Antallet af sæder som ikke er med i economy class
+        int s = FirstSeats + BusinessSeats; // The total number of seats before economy class.
         for (int j = 0; j < EseatLength; j++) {
             for (int i = 0; i < EseatGroups * ErowSeats; i++) {
                 s++;
@@ -547,10 +547,10 @@ public class CurrentBooking {
             }
         }
 
-        // Vi laver så en liste over alle de mulige kombinationer vi kan få
+        // We make a list to store all the possible combinations
         ArrayList<BestSeats> list = new ArrayList<>();
 
-        // Så kører vi alle sæderne i gennem
+        // Go through all the seats
         for (int i = 0; i < EseatGroups * ErowSeats; i++) {
             for (int j = 0; j < EseatLength; j++) {
                 
@@ -583,7 +583,7 @@ public class CurrentBooking {
             }
         }
 
-        // Sorter alle kombinationerne efter højeste score
+        // Sort all combinations by highest score
         Collections.sort(list, new Comparator<BestSeats>() {
             @Override
             public int compare(BestSeats o1, BestSeats o2) {

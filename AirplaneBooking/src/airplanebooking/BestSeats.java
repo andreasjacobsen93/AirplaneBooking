@@ -1,17 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package airplanebooking;
 
 import airplanebooking.database.Seat;
 import java.util.ArrayList;
 
 /**
- *
- * @author Andreas
+ * This class is used to store
+ * seats, so the algorithm can compare them.
+ * @author Andreas Jacobsen
  */
 public class BestSeats {
     public ArrayList<Seat> seats;
