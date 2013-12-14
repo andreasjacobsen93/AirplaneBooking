@@ -1,4 +1,4 @@
-package airplanebooking;
+package airplanebooking.gui;
 
 /**
  * Interface for windows.

@@ -8,7 +8,6 @@ import airplanebooking.database.Database;
 import airplanebooking.database.Flight;
 import airplanebooking.database.Seat;
 import airplanebooking.FlightListener;
-import airplanebooking.GUI;
 import airplanebooking.SeatListener;
 import java.awt.Cursor;
 import java.util.ArrayList;

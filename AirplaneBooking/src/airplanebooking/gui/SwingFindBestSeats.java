@@ -1,7 +1,6 @@
 package airplanebooking.gui;
 
 import airplanebooking.CurrentBooking; 
-import airplanebooking.GUI;
 
 /**
  * Used to get the amount of seats to find as best seats.

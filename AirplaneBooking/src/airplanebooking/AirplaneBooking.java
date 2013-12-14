@@ -1,5 +1,6 @@
 package airplanebooking;
 
+import airplanebooking.gui.GUI;
 import airplanebooking.database.Database;
 import airplanebooking.gui.SwingMain;
 

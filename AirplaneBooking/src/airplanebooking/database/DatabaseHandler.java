@@ -108,7 +108,7 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     public static boolean ignoreSQLException(String sqlState) {
         if (sqlState == null) {
-            System.out.println("The SQL state is not defined!");
+            //System.out.println("The SQL state is not defined!");
             return false;
         }
         // X0Y32: Jar file already exists in schema
@@ -155,7 +155,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
                     Throwable t = ex.getCause();
                     while (t != null) {
-                        System.out.println("Cause: " + t);
+                        //System.out.println("Cause: " + t);
                         t = t.getCause();
                     }
                 }
@@ -185,15 +185,15 @@ public class DatabaseHandler implements DatabaseInterface {
      */
     private void getNumCon() {
         //Maintenance debug method, for getting all number of alive connections and connection pools - use to debug current state of the pool.
-        try {
-            System.out.println("Number of Connections: " + cpds.getNumConnections());
-            System.out.println("Number of Idle Connections: " + cpds.getNumIdleConnections());
-            System.out.println("Number of Busy Connections: " + cpds.getNumBusyConnections());
-            System.out.println("Number of Connection Pools: " + cpds.getNumUserPools());
-            System.out.println("");
+        /*try {
+            //System.out.println("Number of Connections: " + cpds.getNumConnections());
+            //System.out.println("Number of Idle Connections: " + cpds.getNumIdleConnections());
+            //System.out.println("Number of Busy Connections: " + cpds.getNumBusyConnections());
+            //System.out.println("Number of Connection Pools: " + cpds.getNumUserPools());
+            //System.out.println("");
         } catch (SQLException ex) {
             printSQLException(ex);
-        }
+        }*/
     }
 
     private void closeConnection(ArrayList<Connection> cons, ArrayList<PreparedStatement> pstatements, ArrayList<ResultSet> resultsets) {
@@ -517,7 +517,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     sql += sqlArr[i];
                     if (sqlArr[i] != null) {
                         sql += "AND ";
-                        System.out.println(sql);
+                        //System.out.println(sql);
                     }
 
                 }
@@ -749,7 +749,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 ResultSet rs = pstatement2.getGeneratedKeys();
                 rs.first();
                 int id = rs.getInt(1);
-                System.out.println("ID of customer: " + id);
+                //System.out.println("ID of customer: " + id);
                 Customer newCustomer = getCustomer(id);
 
                 createReservation(newCustomer, flight, seats, food, cost);
@@ -888,12 +888,12 @@ public class DatabaseHandler implements DatabaseInterface {
                 int flightid = results.getInt("flightid");
                 Boolean food = results.getBoolean("food");
                 int price = results.getInt("price");
-                System.out.println("Reservation ID: " + id);
-                System.out.println("Customer ID: " + customerid);
-                System.out.println("Flight ID: " + flightid);
-                System.out.println("Boolean: " + food);
-                System.out.println("Cost: " + price);
-                System.out.println("");
+                //System.out.println("Reservation ID: " + id);
+                //System.out.println("Customer ID: " + customerid);
+                //System.out.println("Flight ID: " + flightid);
+                //System.out.println("Boolean: " + food);
+                //System.out.println("Cost: " + price);
+                //System.out.println("");
                 String getSeats = "SELECT r2s.seat_id FROM `reservation2seat` r2s, reservations rs, customers cs  WHERE r2s.reservation_id = ? AND rs.id = ? AND r2s.flight_id = ? AND cs.id = ?";
                 PreparedStatement pstatement2 = con.prepareStatement(getSeats);
                 pstatement2.setInt(1, id);
@@ -907,13 +907,13 @@ public class DatabaseHandler implements DatabaseInterface {
                 while (seatResults.next()) {
                     seat = null;
                     seat = new Seat(seatResults.getInt(1));
-                    System.out.println(seat.getSeatID());
+                    //System.out.println(seat.getSeatID());
                     bookingSeats.add(seat);
                     seat = null;
                 }
                 reservation = null;
                 reservation = new Booking(id, getCustomer(customerid), getFlight(flightid), bookingSeats, food, price);
-                System.out.println(reservation.getSeats());
+                //System.out.println(reservation.getSeats());
                 //Tidy up the connection
                 resultsets.add(seatResults);
                 pstatements.add(pstatement2);
@@ -1109,11 +1109,11 @@ public class DatabaseHandler implements DatabaseInterface {
             Connection con = getConnection();
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, customerID);
-            //System.out.println(customerID);
+            ////System.out.println(customerID);
             reservations = new ArrayList();
             ResultSet results = executeQuery(pstatement);
             while (results.next()) {
-                //System.out.println(results.getInt(1));
+                ////System.out.println(results.getInt(1));
                 Booking currentBooking = getReservation(results.getInt(1));
                 reservations.add(currentBooking);
 
@@ -1344,8 +1344,8 @@ public class DatabaseHandler implements DatabaseInterface {
             int i = 0;
             String[] filterArguments = new String[filters.length];
             for (String filter : filters) {
-                System.out.println(filters.length);
-                System.out.println(filter);
+                //System.out.println(filters.length);
+                //System.out.println(filter);
                 String[] filterSplit = filter.split("\\.");
 
                 switch (filterSplit[0].toString()) {
@@ -1396,7 +1396,7 @@ public class DatabaseHandler implements DatabaseInterface {
             for (int u = 0; u < i; u++) {
                 pstatement.setString(u + 1, filterArguments[u]);
             }
-            System.out.println(sql);
+            //System.out.println(sql);
             ResultSet results = executeQuery(pstatement);
             flights.clear();
             flights = new ArrayList();
@@ -1404,7 +1404,7 @@ public class DatabaseHandler implements DatabaseInterface {
             while (results.next()) {
                 flight = null;
                 flight = getFlight(results.getInt(1));
-                //System.out.println(flight.getID());
+                ////System.out.println(flight.getID());
                 flights.add(flight);
             }
         } catch (SQLException ex) {

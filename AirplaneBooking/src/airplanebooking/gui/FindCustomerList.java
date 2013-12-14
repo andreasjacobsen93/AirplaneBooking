@@ -2,7 +2,6 @@ package airplanebooking.gui;
 
 import airplanebooking.CurrentBooking;
 import airplanebooking.database.Customer;
-import airplanebooking.GUI;
 import java.awt.Cursor;
 import java.util.ArrayList;
 

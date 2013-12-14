@@ -1,7 +1,6 @@
 package airplanebooking.gui;
 
 import airplanebooking.database.Database;
-import airplanebooking.GUI;
 import java.awt.Cursor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

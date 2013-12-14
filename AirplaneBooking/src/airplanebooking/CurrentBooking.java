@@ -332,7 +332,7 @@ public class CurrentBooking {
      */
     public static ArrayList<Seat> getBookedSeats() 
     {
-        // Sorter alle kombinationerne efter højeste id nummer
+        // Sort all seats by lowest seat number
         Collections.sort(bookedSeats, new Comparator<Seat>() {
             @Override
             public int compare(Seat o1, Seat o2) {
