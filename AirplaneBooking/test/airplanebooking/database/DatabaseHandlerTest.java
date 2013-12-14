@@ -7,10 +7,8 @@
 package airplanebooking.database;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
+
 //
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 //
 import java.util.ArrayList;
 import org.junit.After;
@@ -19,14 +17,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.sql.Timestamp;
 
 /**
  *
  * @author Christian
  */
 public class DatabaseHandlerTest {
+    private int currentFlightID;
     
     public DatabaseHandlerTest() {
+       currentFlightID = 0;
     }
     
     @BeforeClass
@@ -124,21 +125,61 @@ public class DatabaseHandlerTest {
     @Test
     public void testCreateFlight() {
         System.out.println("createFlight");
-        
         DatabaseHandler instance = new DatabaseHandler();
-        int currentFlightID = 0;
         Airplane currentAirplane = instance.getAirplane(1);
-        ArrayList<Seat> seats;
-        //ALEX
-        Timestamp departureTime = new Timestamp.valueOf("2013-12-25 08:00:00");
-       // Timestamp departureTime = Timestamp.valueOf("2007-09-23 10:10:10.0");
-        Flight currentFlight = new Flight(currentAirplane, 100, 80, 50, seats, "Copenhagen", 2013-12-11 00:00:00, "Bornholm", 2013-12-11 00:00:00, 0);
+        ArrayList<Seat> seats = new ArrayList();
+        Timestamp departureTime = java.sql.Timestamp.valueOf("2013-12-25 08:00:00.0"); 
+        Timestamp arrivalTime = java.sql.Timestamp.valueOf("2013-12-25 10:00:00.0");
+        Flight currentFlight = new Flight(currentAirplane, 100, 80, 50, seats, "Copenhagen", departureTime, "Bornholm", arrivalTime, false);
+        instance.createFlight(currentFlight);
         
-        instance.createFlight(flight);
+        // Store the ID of the current flight for later use.
+        //currentFlightID = currentFlight.getID();
+        ArrayList<Flight> flights = instance.getFlights(true);
+        Flight newestFlight = flights.get(1);
+        for (Flight thisFlight : flights){
+            if (thisFlight.getID() > newestFlight.getID()){
+                newestFlight = thisFlight;
+                currentFlightID = newestFlight.getID();
+            }
+           
+        }
+        
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
+    /**
+     * ALEX
+     * Test of createReservation method, of class DatabaseHandler.
+     */
+    @Test
+    public void testCreateReservation1() {
+        System.out.println("createReservation");
+        int currentCustomerID = 0;
+        DatabaseHandler instance = new DatabaseHandler();
+        
+        ArrayList<Customer> customers = instance.getCustomers("Jens", "Andersen", "jensandersen@gmail.com", 28718355);
+        for(Customer customer : customers) {
+            currentCustomerID = customer.getID();
+        }
+        
+        Customer currentCustomer = instance.getCustomer(currentCustomerID);
+        // Retrieves the current flight by using the ID of that flight which was created and stored in a variable in previous methods.
+        Flight currentFlight = instance.getFlight(currentFlightID);
+        
+        ArrayList<Seat> seats = new ArrayList();
+        
+        seats.add(new Seat(1));
+        seats.add(new Seat(2));
+        
+        Boolean food = true;
+        int cost = 100;
+        
+        instance.createReservation(currentCustomer, currentFlight, seats, food, cost);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
+    }
     
     /**
      * 
@@ -311,22 +352,22 @@ public class DatabaseHandlerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of createReservation method, of class DatabaseHandler.
-     */
-    @Test
-    public void testCreateReservation() {
-        System.out.println("createReservation");
-        Customer currentCustomer = null;
-        Flight flight = null;
-        ArrayList<Seat> seats = null;
-        Boolean food = null;
-        int cost = 0;
-        DatabaseHandler instance = new DatabaseHandler();
-        instance.createReservation(currentCustomer, flight, seats, food, cost);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+   // /**
+   //  * Test of createReservation method, of class DatabaseHandler.
+   //  */
+   // @Test
+   // public void testCreateReservation() {
+   //     System.out.println("createReservation");
+   //    Customer currentCustomer = null;
+    //    Flight flight = null;
+   //     ArrayList<Seat> seats = null;
+   //     Boolean food = null;
+   //     int cost = 0;
+   //     DatabaseHandler instance = new DatabaseHandler();
+   //     instance.createReservation(currentCustomer, flight, seats, food, cost);
+   //     // TODO review the generated test code and remove the default call to fail.
+   //     fail("The test case is a prototype.");
+   // }
 
     /**
      * Test of editReservation method, of class DatabaseHandler.
