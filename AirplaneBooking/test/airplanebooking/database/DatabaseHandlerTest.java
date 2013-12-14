@@ -7,6 +7,11 @@
 package airplanebooking.database;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+//
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+//
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -79,6 +84,7 @@ public class DatabaseHandlerTest {
         fail("The test case is a prototype.");
     }
    /**
+    * WORKS!
     * Test of createCustomer method, of class DatabaseHandler.
     * This method tests the createCustomer method by testing if
     * the fields of the newly created customer are correctly assigned.
@@ -113,109 +119,130 @@ public class DatabaseHandlerTest {
     }
     
     /**
-     * Test of editCustomer method, of class DatabaseHandler.
+     * Test of createFlight method, of class DatabaseHandler.
      */
     @Test
-    public void testEditCustomer() {
-        System.out.println("editCustomer");
-        Customer customer = null;
+    public void testCreateFlight() {
+        System.out.println("createFlight");
+        
         DatabaseHandler instance = new DatabaseHandler();
-        instance.editCustomer(customer);
+        int currentFlightID = 0;
+        Airplane currentAirplane = instance.getAirplane(1);
+        ArrayList<Seat> seats;
+        Timestamp departureTime = new Timestamp.valueOf("2013-12-25 08:00:00");
+       // Timestamp departureTime = Timestamp.valueOf("2007-09-23 10:10:10.0");
+        Flight currentFlight = new Flight(currentAirplane, 100, 80, 50, seats, "Copenhagen", 2013-12-11 00:00:00, "Bornholm", 2013-12-11 00:00:00, 0);
+        
+        instance.createFlight(flight);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+    
+    
+    /**
+     * 
+     * Test of editCustomer method, of class DatabaseHandler.
+     */
+  //  @Test
+  //  public void testEditCustomer() {
+  //      System.out.println("editCustomer");
+  //      Customer customer = null;
+  //      DatabaseHandler instance = new DatabaseHandler();
+  //      instance.editCustomer(customer);
+        // TODO review the generated test code and remove the default call to fail.
+  //    //  fail("The test case is a prototype.");
+  //  }
 
     
      /**
+      * WORKS!
      * Test of editCustomer method, of class DatabaseHandler.
      */
-    @Test
-    public void testEditCustomer1() {
-        System.out.println("editCustomer");
-        
-        int currentCustomerID = 0; 
-        
-        DatabaseHandler instance = new DatabaseHandler();
-        
-        ArrayList<Customer> customers = instance.getCustomers("Jens", "Andersen", "jensandersen@gmail.com", 28718355);
-        for(Customer customer : customers) {
-            currentCustomerID = customer.getID();
-        }
+    //@Test
+    //public void testEditCustomer1() {
+    //    System.out.println("editCustomer");
+    //    
+    //    int currentCustomerID = 0; 
+    //    
+    //    DatabaseHandler instance = new DatabaseHandler();
+    //    
+    //    ArrayList<Customer> customers = instance.getCustomers("Jens", "Andersen", "jensandersen@gmail.com", 28718355);
+    //    for(Customer customer : customers) {
+    //        currentCustomerID = customer.getID();
+    //    }
         
         //Customer currentCustomer = instance.getCustomer(currentCustomerID);
         
        
-        Customer currentEditedCustomer = new Customer(currentCustomerID, "Mr", "Jenson", "Andersen", "Vesterbrogade", 2300, "København", "Danmark", 28718355, "jensandersen@gmail.com");
+    //    Customer currentEditedCustomer = new Customer(currentCustomerID, "Mr", "Jenson", "Andersen", "Vesterbrogade", 2300, "København", "Danmark", 28718355, "jensandersen@gmail.com");
         
-        instance.editCustomer(currentEditedCustomer);
+     //   instance.editCustomer(currentEditedCustomer);
         
         
         
-        assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
-        assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
-        assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
-        assertEquals("Vesterbrogade" ,instance.getCustomer(currentCustomerID).getAddressStreet());
-        assertEquals(2300 ,instance.getCustomer(currentCustomerID).getAddressZip());
-        assertEquals("København" ,instance.getCustomer(currentCustomerID).getAddressCity());
-        assertEquals("Danmark" ,instance.getCustomer(currentCustomerID).getAddressCountry());
-        assertEquals(28718355 ,instance.getCustomer(currentCustomerID).getPhone());
-        assertEquals("jensandersen@gmail.com" ,instance.getCustomer(currentCustomerID).getEmail());
+     //   assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
+    //    assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
+    //    assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
+    //    assertEquals("Vesterbrogade" ,instance.getCustomer(currentCustomerID).getAddressStreet());
+    //    assertEquals(2300 ,instance.getCustomer(currentCustomerID).getAddressZip());
+    //    assertEquals("København" ,instance.getCustomer(currentCustomerID).getAddressCity());
+    //    assertEquals("Danmark" ,instance.getCustomer(currentCustomerID).getAddressCountry());
+    //    assertEquals(28718355 ,instance.getCustomer(currentCustomerID).getPhone());
+   //     assertEquals("jensandersen@gmail.com" ,instance.getCustomer(currentCustomerID).getEmail());
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
-    }
+   // }
     
     /**
      * Test of deleteCustomer method, of class DatabaseHandler.
      */
-    @Test
-    public void testDeleteCustomer() {
-        System.out.println("deleteCustomer");
-        Customer customer = null;
-        DatabaseHandler instance = new DatabaseHandler();
-        instance.deleteCustomer(customer);
+  //  @Test
+  //  public void testDeleteCustomer() {
+  //      System.out.println("deleteCustomer");
+  //      Customer customer = null;
+  //      DatabaseHandler instance = new DatabaseHandler();
+  //      instance.deleteCustomer(customer);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+  //      fail("The test case is a prototype.");
+  //  }
     
     /**
+     * WORKS!
      * Test of deleteCustomer method, of class DatabaseHandler.
      */
-    @Test
-    public void testDeleteCustomer1() {
-        System.out.println("deleteCustomer");
+    //@Test
+    //public void testDeleteCustomer1() {
+    //    System.out.println("deleteCustomer");
         
-        int currentCustomerID = 0; 
+    //   int currentCustomerID = 0; 
         
-        DatabaseHandler instance = new DatabaseHandler();
+    //    DatabaseHandler instance = new DatabaseHandler();
         
-        ArrayList<Customer> customers = instance.getCustomers("Jenson", "Andersen", "jensandersen@gmail.com", 28718355);
-        for(Customer customer : customers) {
-            currentCustomerID = customer.getID();
-       }
+    //    ArrayList<Customer> customers = instance.getCustomers("Jenson", "Andersen", "jensandersen@gmail.com", 28718355);
+    //    for(Customer customer : customers) {
+    //        currentCustomerID = customer.getID();
+    //   }
         
-        Customer currentCustomer = instance.getCustomer(currentCustomerID);
+    //    Customer currentCustomer = instance.getCustomer(currentCustomerID);
         
-       
-        //Customer myEditedCustomer = new Customer(currentCustomerID, "Mr", "Jenson", "Andersen", "Vesterbrogade", 2300, "København", "Danmark", 28718355, "jensandersen@gmail.com");
         
-        instance.deleteCustomer(currentCustomer);
+   //     instance.deleteCustomer(currentCustomer);
         
         
         
-        assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
-        assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
-        assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
-        assertEquals("Vesterbrogade" ,instance.getCustomer(currentCustomerID).getAddressStreet());
-        assertEquals(2300 ,instance.getCustomer(currentCustomerID).getAddressZip());
-        assertEquals("København" ,instance.getCustomer(currentCustomerID).getAddressCity());
-        assertEquals("Danmark" ,instance.getCustomer(currentCustomerID).getAddressCountry());
-        assertEquals(28718355 ,instance.getCustomer(currentCustomerID).getPhone());
-        assertEquals("jensandersen@gmail.com" ,instance.getCustomer(currentCustomerID).getEmail());
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+   //     assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
+   //     assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
+   //     assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
+   //     assertEquals("Vesterbrogade" ,instance.getCustomer(currentCustomerID).getAddressStreet());
+   //     assertEquals("København" ,instance.getCustomer(currentCustomerID).getAddressCity());
+   //     assertEquals("Danmark" ,instance.getCustomer(currentCustomerID).getAddressCountry());
+   //     assertEquals(28718355 ,instance.getCustomer(currentCustomerID).getPhone());
+   //     assertEquals("jensandersen@gmail.com" ,instance.getCustomer(currentCustomerID).getEmail());
+   //     // TODO review the generated test code and remove the default call to fail.
+   //     //fail("The test case is a prototype.");
     
        
-    }
+   // }
     
     
     
@@ -357,18 +384,7 @@ public class DatabaseHandlerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of createFlight method, of class DatabaseHandler.
-     */
-    @Test
-    public void testCreateFlight() {
-        System.out.println("createFlight");
-        Flight flight = null;
-        DatabaseHandler instance = new DatabaseHandler();
-        instance.createFlight(flight);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    
 
     /**
      * Test of getFlight method, of class DatabaseHandler.
