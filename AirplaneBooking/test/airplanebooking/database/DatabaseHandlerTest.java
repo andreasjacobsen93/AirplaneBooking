@@ -166,6 +166,15 @@ public class DatabaseHandlerTest {
         
         Customer currentCustomer = instance.getCustomer(currentCustomerID);
         // Retrieves the current flight by using the ID of that flight which was created and stored in a variable in previous methods.
+                ArrayList<Flight> flights = instance.getFlights(true);
+        Flight newestFlight = flights.get(1);
+        for (Flight thisFlight : flights){
+            if (thisFlight.getID() > newestFlight.getID()){
+                newestFlight = thisFlight;
+                currentFlightID = newestFlight.getID();
+            }
+           
+        }
         Flight currentFlight = instance.getFlight(currentFlightID);
         
         ArrayList<Seat> seats = new ArrayList();
