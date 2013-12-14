@@ -687,6 +687,7 @@ public class DatabaseHandler implements DatabaseInterface {
             if (customerExists(currentCustomer)) {
                 if (!seatsExist(seats, flight)) {
                     customer = currentCustomer;
+                    editCustomer(currentCustomer);
                     int customerID = customer.getID();
                     int flightID = flight.getID();
 
