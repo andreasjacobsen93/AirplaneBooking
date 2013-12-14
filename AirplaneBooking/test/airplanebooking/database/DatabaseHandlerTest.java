@@ -131,7 +131,7 @@ public class DatabaseHandlerTest {
         Timestamp arrivalTime = java.sql.Timestamp.valueOf("2013-12-25 10:00:00.0");
         Flight currentFlight = new Flight(currentAirplane, 100, 80, 50, seats, "Copenhagen", departureTime, "Bornholm", arrivalTime, false);
         instance.createFlight(currentFlight);
-        
+        int currentAirplaneID = currentFlight.getAirplaneID();
         
         
         // Store the ID of the current flight for later use.
@@ -144,6 +144,21 @@ public class DatabaseHandlerTest {
                 currentFlightID = newestFlight.getID();
             }
            
+            //assertEquals(currentFlightID, currentFlight.getID());
+        
+            assertEquals(currentAirplane, currentFlight.getAirplane());
+            assertEquals(currentAirplaneID, currentFlight.getAirplaneID());
+            assertEquals(100, currentFlight.getFirstClassSeatCost());
+            assertEquals(80, currentFlight.getBusinessClassSeatCost());
+            assertEquals(50, currentFlight.getEconomyClassSeatCost());
+        
+            assertEquals(seats, currentFlight.getSeats());
+            assertEquals("Copenhagen", currentFlight.getDeparturePlace());
+            assertEquals(departureTime, currentFlight.getDepartureTimestamp());
+            assertEquals("Bornholm", currentFlight.getArrivalPlace());
+            assertEquals(arrivalTime, currentFlight.getArrivalTimestamp());
+            assertEquals(false, currentFlight.isFull());
+            
         }
         
         
@@ -152,7 +167,7 @@ public class DatabaseHandlerTest {
     }
     
     /**
-     * ALEX
+     * 
      * Test of createReservation method, of class DatabaseHandler.
      */
     @Test
@@ -200,7 +215,7 @@ public class DatabaseHandlerTest {
         assertEquals(currentReservationID, instance.getReservation(currentReservationID).getID());
         assertEquals(currentCustomerID, currentCustomer.getID());
         assertEquals(currentFlightID, currentFlight.getID());
-        assertEquals(currentReservation.getSeats().size(), 2);
+        assertEquals(2, currentReservation.getSeats().size());
         assertEquals(true, food);
         assertEquals(100, cost);
       
@@ -250,16 +265,47 @@ public class DatabaseHandlerTest {
     }
     
     /**
+     * ALEX
      * Test of editFlight method, of class DatabaseHandler.
      */
     @Test
     public void testEditFlight1() {
-        System.out.println("editFlight");
-        Flight flight = null;
+        System.out.println("createFlight");
         DatabaseHandler instance = new DatabaseHandler();
-        instance.editFlight(flight);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //Flight currentFlight = instance.getFlight(currentFlightID);
+        Airplane currentAirplane = instance.getAirplane(1);
+        ArrayList<Seat> seats = new ArrayList();
+        Timestamp departureTime = java.sql.Timestamp.valueOf("2013-12-25 08:00:00.0"); 
+        Timestamp arrivalTime = java.sql.Timestamp.valueOf("2013-12-25 10:00:00.0");
+        Flight currentEditedFlight = new Flight(currentFlightID, currentAirplane, 120, 80, 50, seats, "Copenhagen", departureTime, "Bornholm", arrivalTime, false);
+        instance.editFlight(currentEditedFlight);
+        int currentAirplaneID = currentEditedFlight.getAirplaneID();
+        
+        
+        // Store the ID of the current flight for later use.
+        //currentFlightID = currentFlight.getID();
+        ArrayList<Flight> flights = instance.getFlights(true);
+        Flight newestFlight = flights.get(1);
+        for (Flight thisFlight : flights){
+            if (thisFlight.getID() > newestFlight.getID()){
+                newestFlight = thisFlight;
+                currentFlightID = newestFlight.getID();
+            }
+           
+            //assertEquals(currentFlightID, currentFlight.getID());
+        
+            assertEquals(currentAirplane, currentEditedFlight.getAirplane());
+            assertEquals(currentAirplaneID, currentEditedFlight.getAirplaneID());
+            assertEquals(120,currentEditedFlight.getFirstClassSeatCost());
+            assertEquals(80, currentEditedFlight.getBusinessClassSeatCost());
+            assertEquals(50, currentEditedFlight.getEconomyClassSeatCost());
+        
+            assertEquals(seats, currentEditedFlight.getSeats());
+            assertEquals("Copenhagen", currentEditedFlight.getDeparturePlace());
+            assertEquals(departureTime, currentEditedFlight.getDepartureTimestamp());
+            assertEquals("Bornholm", currentEditedFlight.getArrivalPlace());
+            assertEquals(arrivalTime, currentEditedFlight.getArrivalTimestamp());
+            assertEquals(false, currentEditedFlight.isFull());
     }
     
     /**
@@ -290,45 +336,45 @@ public class DatabaseHandlerTest {
   //      instance.deleteCustomer(customer);
         // TODO review the generated test code and remove the default call to fail.
   //      fail("The test case is a prototype.");
-  //  }
+    }
     
     /**
      * WORKS!
      * Test of deleteCustomer method, of class DatabaseHandler.
      */
-    @Test
-    public void testDeleteCustomer1() {
-        System.out.println("deleteCustomer");
+ //   @Test
+ //   public void testDeleteCustomer1() {
+ //       System.out.println("deleteCustomer");
         
-       int currentCustomerID = 0; 
+ //      int currentCustomerID = 0; 
         
-        DatabaseHandler instance = new DatabaseHandler();
+ //       DatabaseHandler instance = new DatabaseHandler();
+ //       
+ //       ArrayList<Customer> customers = instance.getCustomers("Jenson", "Andersen", "jensandersen@gmail.com", 28718355);
+ //       for(Customer customer : customers) {
+ //           currentCustomerID = customer.getID();
+ //      }
         
-        ArrayList<Customer> customers = instance.getCustomers("Jenson", "Andersen", "jensandersen@gmail.com", 28718355);
-        for(Customer customer : customers) {
-            currentCustomerID = customer.getID();
-       }
-        
-        Customer currentCustomer = instance.getCustomer(currentCustomerID);
-        
-        
-        instance.deleteCustomer(currentCustomer);
+ //       Customer currentCustomer = instance.getCustomer(currentCustomerID);
         
         
+ //       instance.deleteCustomer(currentCustomer);
         
-        assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
-        assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
-        assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
-        assertEquals("Vesterbrogade" ,instance.getCustomer(currentCustomerID).getAddressStreet());
-        assertEquals("København" ,instance.getCustomer(currentCustomerID).getAddressCity());
-        assertEquals("Danmark" ,instance.getCustomer(currentCustomerID).getAddressCountry());
-        assertEquals(28718355 ,instance.getCustomer(currentCustomerID).getPhone());
-        assertEquals("jensandersen@gmail.com" ,instance.getCustomer(currentCustomerID).getEmail());
+        
+        
+ //       assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
+ //       assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
+  //      assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
+ //       assertEquals("Vesterbrogade" ,instance.getCustomer(currentCustomerID).getAddressStreet());
+ //       assertEquals("København" ,instance.getCustomer(currentCustomerID).getAddressCity());
+ //       assertEquals("Danmark" ,instance.getCustomer(currentCustomerID).getAddressCountry());
+ //       assertEquals(28718355 ,instance.getCustomer(currentCustomerID).getPhone());
+ //       assertEquals("jensandersen@gmail.com" ,instance.getCustomer(currentCustomerID).getEmail());
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     
        
-    }
+ //   }
     
     
     
