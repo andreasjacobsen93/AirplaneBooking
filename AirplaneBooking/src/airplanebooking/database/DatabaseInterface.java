@@ -21,16 +21,16 @@ import java.util.ArrayList;
 public interface DatabaseInterface {
 
     /*
-     //Below are all customer related DB method declarations.
+     //Below are all customer related database method declarations.
      */
     /**
      * This method creates a customer in the database, by taking a Customer
      * object, and reading the fields, and storing it in the database.<p>
      *
      * For more detailed information about the Customer object, please refer
-     * to:<br> {@link airplanebooking.DB.Customer}
+     * to:<br> {@link airplanebooking.database.Customer}
      *
-     * @param customer {@link airplanebooking.DB.Customer}
+     * @param customer {@link airplanebooking.database.Customer}
      */
     public void createCustomer(Customer customer);
 
@@ -40,9 +40,9 @@ public interface DatabaseInterface {
      * database.<p>
      *
      * For more detailed information about the Customer object, please refer
-     * to:<br> {@link airplanebooking.DB.Customer}
+     * to:<br> {@link airplanebooking.database.Customer}
      *
-     * @param customer {@link airplanebooking.DB.Customer}
+     * @param customer {@link airplanebooking.database.Customer}
      */
     public void editCustomer(Customer customer);
 
@@ -52,9 +52,9 @@ public interface DatabaseInterface {
      * database.<p>
      *
      * For more detailed information about the Customer object, please refer
-     * to:<br> {@link airplanebooking.DB.Customer}
+     * to:<br> {@link airplanebooking.database.Customer}
      *
-     * @param customer {@link airplanebooking.DB.Customer}
+     * @param customer {@link airplanebooking.database.Customer}
      */
     public void deleteCustomer(Customer customer);
 
@@ -63,7 +63,7 @@ public interface DatabaseInterface {
      * value.<p>
      *
      * For more detailed information about the Customer object, please refer
-     * to:<br> {@link airplanebooking.DB.Customer}
+     * to:<br> {@link airplanebooking.database.Customer}
      *
      * @param customerID Takes an Integer value, which corresponds to the
      * auto_incremented ID field of a Customer, and returns a Customer object
@@ -78,7 +78,7 @@ public interface DatabaseInterface {
      * database based on a String value.<p>
      *
      * For more detailed information about the Customer object, please refer
-     * to:<br> {@link airplanebooking.DB.Customer}
+     * to:<br> {@link airplanebooking.database.Customer}
      *
      * @param q Takes a String value, which corresponds to either the Firstname,
      * Lastname or Email of customers.
@@ -92,7 +92,7 @@ public interface DatabaseInterface {
      * database based on an integer value.<p>
      *
      * For more detailed information about the Customer object, please refer
-     * to:<br> {@link airplanebooking.DB.Customer}
+     * to:<br> {@link airplanebooking.database.Customer}
      *
      * @param q Takes an Integer value, which corresponds to either the Zip
      * code, or the Phone number of customers.
@@ -109,7 +109,7 @@ public interface DatabaseInterface {
      * The more search parameters that are used, the more specific the search
      * will become.<p>
      * For more detailed information about the Customer object, please refer
-     * to:<br> {@link airplanebooking.DB.Customer}
+     * to:<br> {@link airplanebooking.database.Customer}
      *
      * @param firstName String value which related to a potentially existing
      * customers Firstname.
@@ -124,27 +124,27 @@ public interface DatabaseInterface {
     public ArrayList<Customer> getCustomers(String firstName, String lastName, String email, Integer Phone);
 
     /*
-     //Below are all reservation related DB method declarations.
+     //Below are all reservation related database method declarations.
      */
     /**
      * This method creates a Booking in the database, by taking a Customer
      * object, a Flight object, an ArrayList of Seat objects, and two other
      * parameter.<p>
      * For more detailed information about the Booking object, please refer
-     * to:<br> {@link airplanebooking.DB.Booking}
+     * to:<br> {@link airplanebooking.database.Booking}
      * <p>
      * For more detailed information about the Customer object, please refer
-     * to:<br> {@link airplanebooking.DB.Customer}
+     * to:<br> {@link airplanebooking.database.Customer}
      * <p>
      * For more detailed information about the Flight object, please refer
-     * to:<br> {@link airplanebooking.DB.Flight}
+     * to:<br> {@link airplanebooking.database.Flight}
      * <p>
      * For more detailed information about the Seat Object, please refer to:<br>
-     * {@link airplanebooking.DB.Seat}
+     * {@link airplanebooking.database.Seat}
      *
-     * @param currentCustomer {@link airplanebooking.DB.Customer}
-     * @param flight {@link airplanebooking.DB.Flight}
-     * @param seats {@link airplanebooking.DB.Seat}
+     * @param currentCustomer {@link airplanebooking.database.Customer}
+     * @param flight {@link airplanebooking.database.Flight}
+     * @param seats {@link airplanebooking.database.Seat}
      * @param food Boolean value, where false indicates that the customer does
      * not want food on board the flight.
      * @param cost Integer value, which is the saved value for the total price
@@ -158,9 +158,9 @@ public interface DatabaseInterface {
      * database.<p>
      *
      * For more detailed information about the Booking object, please refer
-     * to:<br> {@link airplanebooking.DB.Booking}
+     * to:<br> {@link airplanebooking.database.Booking}
      *
-     * @param booking {@link airplanebooking.DB.Booking}
+     * @param booking {@link airplanebooking.database.Booking}
      */
     public void editReservation(Booking booking);
 
@@ -170,9 +170,9 @@ public interface DatabaseInterface {
      * database.<p>
      *
      * For more detailed information about the Booking object, please refer
-     * to:<br> {@link airplanebooking.DB.Booking}
+     * to:<br> {@link airplanebooking.database.Booking}
      *
-     * @param booking {@link airplanebooking.DB.Booking}
+     * @param booking {@link airplanebooking.database.Booking}
      */
     public void deleteReservation(Booking booking);
 
@@ -181,7 +181,7 @@ public interface DatabaseInterface {
      * Integer value.<p>
      *
      * For more detailed information about the Booking object, please refer
-     * to:<br> {@link airplanebooking.DB.Booking}
+     * to:<br> {@link airplanebooking.database.Booking}
      *
      * @param reservationID Takes an Integer value, which corresponds to the
      * unique auto_incremented ID of a booking.
@@ -196,7 +196,7 @@ public interface DatabaseInterface {
      * database based on an Integer value.<p>
      *
      * For more detailed information about the Booking object, please refer
-     * to:<br> {@link airplanebooking.DB.Booking}
+     * to:<br> {@link airplanebooking.database.Booking}
      *
      * @param customerID Takes an Integer value, which corresponds to the unique
      * auto_incremented ID of a customer.
@@ -210,7 +210,7 @@ public interface DatabaseInterface {
      * two Integer values.<p>
      *
      * For more detailed information about the Booking object, please refer
-     * to:<br> {@link airplanebooking.DB.Booking}
+     * to:<br> {@link airplanebooking.database.Booking}
      *
      * @param seatID Takes an Integer value, which corresponds to the ID of a
      * given seat.
@@ -222,16 +222,16 @@ public interface DatabaseInterface {
     public Booking getReservation(int seatID, int flightID);
 
     /*
-     //Below are all flight related DB method declarations.
+     //Below are all flight related database method declarations.
      */
     /**
      * This method creates a flight in the database, by taking a Flight object,
      * and reading the fields, and storing it in the database.<p>
      *
      * For more detailed information about the Flight object, please refer
-     * to:<br> {@link airplanebooking.DB.Flight}
+     * to:<br> {@link airplanebooking.database.Flight}
      *
-     * @param flight {@link airplanebooking.DB.Flight}
+     * @param flight {@link airplanebooking.database.Flight}
      */
     public void createFlight(Flight flight);
 
@@ -241,9 +241,9 @@ public interface DatabaseInterface {
      * database.<p>
      *
      * For more detailed information about the Flight object, please refer
-     * to:<br> {@link airplanebooking.DB.Flight}
+     * to:<br> {@link airplanebooking.database.Flight}
      *
-     * @param flight {@link airplanebooking.DB.Flight}
+     * @param flight {@link airplanebooking.database.Flight}
      */
     public void editFlight(Flight flight);
 
@@ -253,9 +253,9 @@ public interface DatabaseInterface {
      * database.<p>
      *
      * For more detailed information about the Flight object, please refer
-     * to:<br> {@link airplanebooking.DB.Flight}
+     * to:<br> {@link airplanebooking.database.Flight}
      *
-     * @param flight {@link airplanebooking.DB.Flight}
+     * @param flight {@link airplanebooking.database.Flight}
      */
     public void deleteFlight(Flight flight);
 
@@ -264,7 +264,7 @@ public interface DatabaseInterface {
      * Integer value.<p>
      *
      * For more detailed information about the Flight object, please refer
-     * to:<br> {@link airplanebooking.DB.Flight}
+     * to:<br> {@link airplanebooking.database.Flight}
      *
      * @param flightID Takes an Integer value, which corresponds to the unique
      * auto_incremented ID of a flight.
@@ -281,7 +281,7 @@ public interface DatabaseInterface {
      * <p>
      *
      * For more detailed information about the Flight object, please refer
-     * to:<br> {@link airplanebooking.DB.Flight}
+     * to:<br> {@link airplanebooking.database.Flight}
      *
      * @param freeSeatsOnly Boolean value which determines whether or not this
      * method should return flights that are not full only, or not. 'TRUE' will
@@ -300,7 +300,7 @@ public interface DatabaseInterface {
      * database.<p>
      *
      * For more detailed information about the Flight object, please refer
-     * to:<br> {@link airplanebooking.DB.Flight}
+     * to:<br> {@link airplanebooking.database.Flight}
      *
      * @param filters String array, which contains arguments and values
      * separated with a '.'.
@@ -313,7 +313,7 @@ public interface DatabaseInterface {
      * based on an Integer value.<p>
      *
      * For more detailed information about the Seat object, please refer to:<br>
-     * {@link airplanebooking.DB.Seat}
+     * {@link airplanebooking.database.Seat}
      *
      * @param flightID Takes an Integer value, which corresponds to the unique
      * auto_incremented ID of a flight.
@@ -322,13 +322,13 @@ public interface DatabaseInterface {
      */
     public ArrayList<Seat> getFlightBookedSeats(int flightID);
 
-    //Below are all airplane related DB method declarations.
+    //Below are all airplane related database method declarations.
     /**
      * This method gets an Airplane object, by searching the database based on
      * an an Integer value.<p>
      *
      * For more detailed information about the Airplane object, please refer
-     * to:<br> {@link airplanebooking.DB.Airplane}
+     * to:<br> {@link airplanebooking.database.Airplane}
      *
      * @param airplaneID Takes an Integer value, which corresponds to the unique
      * auto_incremented ID of an airplane.

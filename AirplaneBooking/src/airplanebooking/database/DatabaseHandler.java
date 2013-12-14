@@ -59,7 +59,7 @@ public class DatabaseHandler implements DatabaseInterface {
     /**
      * Constructor for this object. For more detail about the API methods of
      * this class, please refer to:
-     * {@link airplanebooking.DB.DatabaseInterface DatabaseInterface}
+     * {@link airplanebooking.database.DatabaseInterface DatabaseInterface}
      */
     public DatabaseHandler() {
         try {
