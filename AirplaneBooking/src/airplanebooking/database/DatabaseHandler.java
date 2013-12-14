@@ -1172,7 +1172,7 @@ public class DatabaseHandler implements DatabaseInterface {
             Connection con = getConnection();
             String sql = "UPDATE flights SET "
                     + "airplane_id = ?, firstcost = ?, businesscost = ?, economycost = ?, departuretime = ?, "
-                    + "departureplace = ?, arrivaltime = ?, arrivalplace = ?, WHERE id = ?";
+                    + "departureplace = ?, arrivaltime = ?, arrivalplace = ? WHERE id = ?";
 
             PreparedStatement pstatement = con.prepareStatement(sql);
             pstatement.setInt(1, flight.getAirplaneID());
