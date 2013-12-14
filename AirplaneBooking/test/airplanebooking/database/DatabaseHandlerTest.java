@@ -129,6 +129,7 @@ public class DatabaseHandlerTest {
         int currentFlightID = 0;
         Airplane currentAirplane = instance.getAirplane(1);
         ArrayList<Seat> seats;
+        //ALEX
         Timestamp departureTime = new Timestamp.valueOf("2013-12-25 08:00:00");
        // Timestamp departureTime = Timestamp.valueOf("2007-09-23 10:10:10.0");
         Flight currentFlight = new Flight(currentAirplane, 100, 80, 50, seats, "Copenhagen", 2013-12-11 00:00:00, "Bornholm", 2013-12-11 00:00:00, 0);
