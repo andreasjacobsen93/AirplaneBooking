@@ -264,6 +264,8 @@ public class DatabaseHandlerTest {
     public void testEditReservation() {
         System.out.println("editReservation");
         //code not written.
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     /**
      * Implenented.
@@ -286,7 +288,6 @@ public class DatabaseHandlerTest {
         Customer currentCustomer = instance.getCustomer(currentCustomerID);
    
         instance.deleteCustomer(currentCustomer);
-        
 
         assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
         assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
@@ -312,7 +313,6 @@ public class DatabaseHandlerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
 
     /**
      * NOT IMPLEMENTED!
