@@ -268,9 +268,9 @@ public class DatabaseHandlerTest {
         fail("The test case is a prototype.");
     }
     /**
-     * Implenented.
+     * Implemented.
      * Test of deleteCustomer method, of class DatabaseHandler.
-     * This method tests the createCustomer method.
+     * This method tests the deleteCustomer method.
      */
     @Test
     public void testDeleteCustomer() {
@@ -300,7 +300,7 @@ public class DatabaseHandlerTest {
     }
     
     /**
-     * NOT IMPLEMENTED!
+     * Not implemented.
      * Test of deleteReservation method, of class DatabaseHandler.
      * This method tests the deleteCustomer method.
      */
@@ -310,21 +310,26 @@ public class DatabaseHandlerTest {
         Booking booking = null;
         DatabaseHandler instance = new DatabaseHandler();
         instance.deleteReservation(booking);
+    
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * NOT IMPLEMENTED!
+     * Not implemented.
      * Test of deleteFlight method, of class DatabaseHandler.
      */
     @Test
     public void testDeleteFlight() {
-        System.out.println("deleteFlight");
-        Flight flight = null;
+        //System.out.println("deleteFlight");
+        //Flight flight = null;
+        //DatabaseHandler instance = new DatabaseHandler();
+        //instance.deleteFlight(flight);
+       
         DatabaseHandler instance = new DatabaseHandler();
-        instance.deleteFlight(flight);
+        Flight currentFlight = instance.getFlight(currentFlightID);
+        instance.deleteFlight(currentFlight);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 }
