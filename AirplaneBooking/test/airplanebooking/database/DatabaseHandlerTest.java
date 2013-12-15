@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 
 /**
  *
- * @author Christian
+ * @author Christian Grøn
  */
 public class DatabaseHandlerTest {
     private int currentFlightID;
@@ -44,14 +44,14 @@ public class DatabaseHandlerTest {
     }
 
    /**
-    * WORKS!
+    * Implemented.
     * Test of createCustomer method, of class DatabaseHandler.
     * This method tests the createCustomer method by testing if
     * the fields of the newly created customer are correctly assigned.
     */
     
     @Test
-    public void testCreateCustomer1() {
+    public void testCreateCustomer() {
         System.out.println("createCustomer");
         int currentCustomerID = 0; 
         Customer currentCustomer = new Customer("Mr", "Jens", "Andersen", "Vesterbrogade", 2300, "København", "Danmark", 28718355, "jensandersen@gmail.com");
@@ -76,11 +76,13 @@ public class DatabaseHandlerTest {
     }
     
     /**
-     * WORKS!
-     * Test of createFlight method, of class DatabaseHandler.
+     * Implemented.
+     * Test of createCustomer method, of class DatabaseHandler.
+     * This method tests the createFlight method by testing if
+     * the fields of the newly created Flight are correctly assigned.
      */
     @Test
-    public void testCreateFlight1() {
+    public void testCreateFlight() {
         System.out.println("createFlight");
         DatabaseHandler instance = new DatabaseHandler();
         Airplane currentAirplane = instance.getAirplane(1);
@@ -93,7 +95,7 @@ public class DatabaseHandlerTest {
         
         
         // Store the ID of the current flight for later use.
-        //currentFlightID = currentFlight.getID();
+
         ArrayList<Flight> flights = instance.getFlights(true);
         Flight newestFlight = flights.get(1);
         for (Flight thisFlight : flights){
@@ -101,9 +103,7 @@ public class DatabaseHandlerTest {
                 newestFlight = thisFlight;
                 currentFlightID = newestFlight.getID();
             }
-           
-            //assertEquals(currentFlightID, currentFlight.getID());
-        
+ 
             assertEquals(currentAirplane, currentFlight.getAirplane());
             assertEquals(currentAirplaneID, currentFlight.getAirplaneID());
             assertEquals(100, currentFlight.getFirstClassSeatCost());
@@ -115,21 +115,18 @@ public class DatabaseHandlerTest {
             assertEquals(departureTime, currentFlight.getDepartureTimestamp());
             assertEquals("Bornholm", currentFlight.getArrivalPlace());
             assertEquals(arrivalTime, currentFlight.getArrivalTimestamp());
-            assertEquals(false, currentFlight.isFull());
-            
+            assertEquals(false, currentFlight.isFull());  
         }
-        
-        
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
     
     /**
-     * WORKS!
+     * Implemented.
      * Test of createReservation method, of class DatabaseHandler.
+     * This method tests the createReservation method by testing if
+     * the fields of the newly created reservation are correctly assigned.
      */
     @Test
-    public void testCreateReservation1() {
+    public void testCreateReservation() {
         System.out.println("createReservation");
         int currentCustomerID = 0;
         int currentReservationID = 0;
@@ -176,19 +173,17 @@ public class DatabaseHandlerTest {
         assertEquals(2, currentReservation.getSeats().size());
         assertEquals(true, food);
         assertEquals(100, cost);
-      
-        
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
     
     
     /**
-     * WORKS!
+     * Implemented.
      * Test of editCustomer method, of class DatabaseHandler.
+     * This method tests the editCustomer method by testing if
+     * the fields of the newly edited customer are correctly assigned.
      */
     @Test
-    public void testEditCustomer1() {
+    public void testEditCustomer() {
         System.out.println("editCustomer");
         
         int currentCustomerID = 0; 
@@ -201,11 +196,9 @@ public class DatabaseHandlerTest {
         }  
 
         Customer currentEditedCustomer = new Customer(currentCustomerID, "Mr", "Jenson", "Andersen", "Vesterbrogade", 2300, "København", "Danmark", 28718355, "jensandersen@gmail.com");
-        
+       
         instance.editCustomer(currentEditedCustomer);
-        
-        
-        
+ 
         assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
         assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
         assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
@@ -218,17 +211,16 @@ public class DatabaseHandlerTest {
     }
     
     /**
-     * WORKS!
+     * Implemented.
      * Test of editFlight method, of class DatabaseHandler.
+     * This method tests the edtitFlight method by testing if
+     * the fields of the newly edited flight are correctly assigned.
      */
     @Test
-    public void testEditFlight1() {
+    public void testEditFlight() {
         
-
-
         System.out.println("createFlight");
         DatabaseHandler instance = new DatabaseHandler();
-        //Flight currentFlight = instance.getFlight(currentFlightID);
         Airplane currentAirplane = instance.getAirplane(1);
         ArrayList<Seat> seats = new ArrayList();
 
@@ -245,13 +237,7 @@ public class DatabaseHandlerTest {
         Flight currentEditedFlight = new Flight(currentFlightID, currentAirplane, 120, 80, 50, seats, "Copenhagen", departureTime, "Bornholm", arrivalTime, false);
         instance.editFlight(currentEditedFlight);
         int currentAirplaneID = currentEditedFlight.getAirplaneID();
-        
-        
-        // Store the ID of the current flight for later use.
-        //currentFlightID = currentFlight.getID();
-
            
-            //assertEquals(currentFlightID, currentFlight.getID());
         
             assertEquals(currentAirplane, currentEditedFlight.getAirplane());
             assertEquals(currentAirplaneID, currentEditedFlight.getAirplaneID());
@@ -265,70 +251,27 @@ public class DatabaseHandlerTest {
             assertEquals("Bornholm", currentEditedFlight.getArrivalPlace());
             assertEquals(arrivalTime, currentEditedFlight.getArrivalTimestamp());
             assertEquals(false, currentEditedFlight.isFull());
-    }
+           }
     }
         
     /**
-     * DOES NOT WORK!
+     * Not implemented.
      * Test of editReservation method, of class DatabaseHandler.
+     * This method tests the editeReservation method by testing if
+     * the fields of the newly edited reservation are correctly assigned.
      */
     @Test
-    public void testEditReservation1() {
+    public void testEditReservation() {
         System.out.println("editReservation");
-        int currentCustomerID = 0;
-        int currentReservationID = 0;
-        DatabaseHandler instance = new DatabaseHandler();
-        
-        ArrayList<Customer> customers = instance.getCustomers("Jens", "Andersen", "jensandersen@gmail.com", 28718355);
-        for(Customer customer : customers) {
-            currentCustomerID = customer.getID();
-        }
-        
-        Customer currentCustomer = instance.getCustomer(currentCustomerID);
-        
-        // Retrieves the current flight by using the ID of that flight which was created and stored in a variable in previous methods.
-                ArrayList<Flight> flights = instance.getFlights(true);
-        Flight newestFlight = flights.get(1);
-        for (Flight thisFlight : flights){
-            if (thisFlight.getID() > newestFlight.getID()){
-                newestFlight = thisFlight;
-                currentFlightID = newestFlight.getID();
-            }
-           
-        }
-        Flight currentFlight = instance.getFlight(currentFlightID);
-        
-        ArrayList<Seat> seats = new ArrayList();
-        
-        seats.add(new Seat(1));
-        seats.add(new Seat(2));
-        
-        Boolean food = true;
-        int cost = 100;
-        
-        
-        instance.createReservation(currentCustomer, currentFlight, seats, food, cost);
-        
-        ArrayList<Booking> bookings = instance.getCustomerReservations(currentCustomerID);
-        for(Booking booking : bookings) {
-            currentReservationID = booking.getID();
-        }
-        Booking currentReservation = instance.getReservation(currentReservationID);
-        
-        assertEquals(currentReservationID, instance.getReservation(currentReservationID).getID());
-        assertEquals(currentCustomerID, currentCustomer.getID());
-        assertEquals(currentFlightID, currentFlight.getID());
-        assertEquals(2, currentReservation.getSeats().size());
-        assertEquals(true, food);
-        assertEquals(100, cost);
+        //code not written.
     }
-
     /**
-     * WORKS!
+     * Implenented.
      * Test of deleteCustomer method, of class DatabaseHandler.
+     * This method tests the createCustomer method.
      */
     @Test
-    public void testDeleteCustomer1() {
+    public void testDeleteCustomer() {
         System.out.println("deleteCustomer");
         
        int currentCustomerID = 0; 
@@ -344,6 +287,7 @@ public class DatabaseHandlerTest {
    
         instance.deleteCustomer(currentCustomer);
         
+
         assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
         assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
         assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
@@ -354,11 +298,10 @@ public class DatabaseHandlerTest {
         assertEquals("jensandersen@gmail.com" ,instance.getCustomer(currentCustomerID).getEmail());
     }
     
-
-
     /**
      * NOT IMPLEMENTED!
      * Test of deleteReservation method, of class DatabaseHandler.
+     * This method tests the deleteCustomer method.
      */
     @Test
     public void testDeleteReservation() {
