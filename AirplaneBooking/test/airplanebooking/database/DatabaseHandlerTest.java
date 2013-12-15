@@ -260,15 +260,15 @@ public class DatabaseHandlerTest {
      * This method tests the editeReservation method by testing if
      * the fields of the newly edited reservation are correctly assigned.
      */
-    @Test
-    public void testEditReservation() {
-        System.out.println("editReservation");
+ //   @Test
+ //   public void testEditReservation() {
+ //       System.out.println("editReservation");
         //code not written.
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+ //       fail("The test case is a prototype.");
+ //   }
     /**
-     * Implemented.
+     * Implemented. (This only deletes the customer object to make all the tests ready for testing again.)
      * Test of deleteCustomer method, of class DatabaseHandler.
      * This method tests the deleteCustomer method.
      */
@@ -276,7 +276,7 @@ public class DatabaseHandlerTest {
     public void testDeleteCustomer() {
         System.out.println("deleteCustomer");
         
-       int currentCustomerID = 0; 
+        int currentCustomerID = 0; 
         
         DatabaseHandler instance = new DatabaseHandler();
         
@@ -288,15 +288,7 @@ public class DatabaseHandlerTest {
         Customer currentCustomer = instance.getCustomer(currentCustomerID);
    
         instance.deleteCustomer(currentCustomer);
-
-        assertEquals("Mr" ,instance.getCustomer(currentCustomerID).getMaritalStatus());
-        assertEquals("Jenson" ,instance.getCustomer(currentCustomerID).getFirstName());
-        assertEquals("Andersen" ,instance.getCustomer(currentCustomerID).getLastName());
-        assertEquals("Vesterbrogade" ,instance.getCustomer(currentCustomerID).getAddressStreet());
-        assertEquals("København" ,instance.getCustomer(currentCustomerID).getAddressCity());
-        assertEquals("Danmark" ,instance.getCustomer(currentCustomerID).getAddressCountry());
-        assertEquals(28718355 ,instance.getCustomer(currentCustomerID).getPhone());
-        assertEquals("jensandersen@gmail.com" ,instance.getCustomer(currentCustomerID).getEmail());
+        
     }
     
     /**
@@ -304,32 +296,37 @@ public class DatabaseHandlerTest {
      * Test of deleteReservation method, of class DatabaseHandler.
      * This method tests the deleteCustomer method.
      */
-    @Test
-    public void testDeleteReservation() {
-        System.out.println("deleteReservation");
-        Booking booking = null;
-        DatabaseHandler instance = new DatabaseHandler();
-        instance.deleteReservation(booking);
-    
+ //   @Test
+ //   public void testDeleteReservation() {
+      
+   // Code not written
+        
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        //fail("The test case is a prototype.");
+ //   }
 
     /**
-     * Not implemented.
+     * Not implemented. (This only deletes the flight object to make all the tests ready for testing again.)
      * Test of deleteFlight method, of class DatabaseHandler.
+     * This method tests the deleteFlight method.
      */
     @Test
     public void testDeleteFlight() {
-        //System.out.println("deleteFlight");
-        //Flight flight = null;
-        //DatabaseHandler instance = new DatabaseHandler();
-        //instance.deleteFlight(flight);
-       
+        System.out.println("deleteFlight");
+      
         DatabaseHandler instance = new DatabaseHandler();
+        
+        ArrayList<Flight> flights = instance.getFlights(true);
+        Flight newestFlight = flights.get(1);
+        for (Flight thisFlight : flights){
+            if (thisFlight.getID() > newestFlight.getID()){
+                newestFlight = thisFlight;
+                currentFlightID = newestFlight.getID();
+       
         Flight currentFlight = instance.getFlight(currentFlightID);
         instance.deleteFlight(currentFlight);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        
+            }
+        }
     }
 }
